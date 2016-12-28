@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,47 +17,39 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.poiexcel.util.ImportExcelUtil;
 import com.poiexcel.vo.InfoVo;
+import com.poiexcel.service.DataMoveService;
 
 @Controller
 @RequestMapping("/uploadExcel/*")  
 public class UploadExcelControl {
 	
+	@Autowired
+	private DataMoveService moveDataServices;
 	/**
-	 * ÃèÊö£ºÍ¨¹ı´«Í³·½Ê½form±íµ¥Ìá½»·½Ê½µ¼ÈëexcelÎÄ¼ş
+	 * é€šè¿‡ä¼ ç»Ÿæ–¹å¼formè¡¨å•æäº¤æ–¹å¼å¯¼å…¥excelæ–‡ä»¶
 	 * @param request
 	 * @throws Exception
 	 */
-	@RequestMapping(value="upload.do",method={RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value="upload",method={RequestMethod.GET,RequestMethod.POST})
 	public  String  uploadExcel(HttpServletRequest request) throws Exception {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;  
-		System.out.println("Í¨¹ı´«Í³·½Ê½form±íµ¥Ìá½»·½Ê½µ¼ÈëexcelÎÄ¼ş£¡");
-		
+		System.out.println("Í¨é€šè¿‡ä¼ ç»Ÿæ–¹å¼formè¡¨å•æäº¤æ–¹å¼å¯¼å…¥excelæ–‡ä»¶ï¼");
 		InputStream in =null;
 		List<List<Object>> listob = null;
 		MultipartFile file = multipartRequest.getFile("upfile");
 		if(file.isEmpty()){
-			throw new Exception("ÎÄ¼ş²»´æÔÚ£¡");
+			throw new Exception("");
 		}
  		in = file.getInputStream();
 		listob = new ImportExcelUtil().getBankListByExcel(in,file.getOriginalFilename());
 		in.close();
+		moveDataServices.insertDataToTemp(listob);
 		
-		//¸Ã´¦¿Éµ÷ÓÃserviceÏàÓ¦·½·¨½øĞĞÊı¾İ±£´æµ½Êı¾İ¿âÖĞ£¬ÏÖÖ»¶ÔÊı¾İÊä³ö
-		for (int i = 0; i < listob.size(); i++) {
-			List<Object> lo = listob.get(i);
-			InfoVo vo = new InfoVo();
-			vo.setCode(String.valueOf(lo.get(0)));
-			vo.setName(String.valueOf(lo.get(1)));
-			vo.setDate(String.valueOf(lo.get(2)));
-			vo.setMoney(String.valueOf(lo.get(3)));
-			
-			System.out.println("´òÓ¡ĞÅÏ¢-->»ú¹¹:"+vo.getCode()+"  Ãû³Æ£º"+vo.getName()+"   Ê±¼ä£º"+vo.getDate()+"   ×Ê²ú£º"+vo.getMoney());
-		}
-		return "result";
+		return "hello";
 	}
 	
 	/**
-	 * ÃèÊö£ºÍ¨¹ı jquery.form.js ²å¼şÌá¹©µÄajax·½Ê½ÉÏ´«ÎÄ¼ş
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ jquery.form.js ï¿½ï¿½ï¿½ï¿½á¹©ï¿½ï¿½ajaxï¿½ï¿½Ê½ï¿½Ï´ï¿½ï¿½Ä¼ï¿½
 	 * @param request
 	 * @param response
 	 * @throws Exception
@@ -66,19 +59,19 @@ public class UploadExcelControl {
 	public  void  ajaxUploadExcel(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;  
 		
-		System.out.println("Í¨¹ı jquery.form.js Ìá¹©µÄajax·½Ê½ÉÏ´«ÎÄ¼ş£¡");
+		System.out.println("Í¨ï¿½ï¿½ jquery.form.js ï¿½á¹©ï¿½ï¿½ajaxï¿½ï¿½Ê½ï¿½Ï´ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½");
 		
 		InputStream in =null;
 		List<List<Object>> listob = null;
 		MultipartFile file = multipartRequest.getFile("upfile");
 		if(file.isEmpty()){
-			throw new Exception("ÎÄ¼ş²»´æÔÚ£¡");
+			throw new Exception("ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½");
 		}
 		
  		in = file.getInputStream();
 		listob = new ImportExcelUtil().getBankListByExcel(in,file.getOriginalFilename());
 		
-		//¸Ã´¦¿Éµ÷ÓÃserviceÏàÓ¦·½·¨½øĞĞÊı¾İ±£´æµ½Êı¾İ¿âÖĞ£¬ÏÖÖ»¶ÔÊı¾İÊä³ö
+		//ï¿½Ã´ï¿½ï¿½Éµï¿½ï¿½ï¿½serviceï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ±ï¿½ï¿½æµ½ï¿½ï¿½ï¿½İ¿ï¿½ï¿½Ğ£ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		for (int i = 0; i < listob.size(); i++) {
 			List<Object> lo = listob.get(i);
 			InfoVo vo = new InfoVo();
@@ -87,13 +80,13 @@ public class UploadExcelControl {
 			vo.setDate(String.valueOf(lo.get(2))); 
 			vo.setMoney(String.valueOf(lo.get(3)));
 			
-			System.out.println("´òÓ¡ĞÅÏ¢-->»ú¹¹:"+vo.getCode()+"  Ãû³Æ£º"+vo.getName()+"   Ê±¼ä£º"+vo.getDate()+"   ×Ê²ú£º"+vo.getMoney());
+			System.out.println("ï¿½ï¿½Ó¡ï¿½ï¿½Ï¢-->ï¿½ï¿½ï¿½ï¿½:"+vo.getCode()+"  ï¿½ï¿½ï¿½Æ£ï¿½"+vo.getName()+"   Ê±ï¿½ä£º"+vo.getDate()+"   ï¿½Ê²ï¿½ï¿½ï¿½"+vo.getMoney());
 		}
 		
 		PrintWriter out = null;
-		response.setCharacterEncoding("utf-8");  //·ÀÖ¹ajax½ÓÊÜµ½µÄÖĞÎÄĞÅÏ¢ÂÒÂë
+		response.setCharacterEncoding("utf-8");  //ï¿½ï¿½Ö¹ajaxï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
 		out = response.getWriter();
-		out.print("ÎÄ¼şµ¼Èë³É¹¦£¡");
+		out.print("ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
 		out.flush();
 		out.close();
 	}

@@ -3,7 +3,7 @@ package com.poiexcel.vo;
 import java.util.Date;
 
 
-//将Excel每一行数值转换为对象
+//锟斤拷Excel每一锟斤拷锟斤拷值转锟斤拷为锟斤拷锟斤拷
 public class InfoVo {
 	
 	private String code;
@@ -11,6 +11,8 @@ public class InfoVo {
 	private String date;
 	private String money;
 	
+	private String cardCode;
+	private String remark;
 	private String  IMSI ; 
 	private String ICCID ;
 	private String userStatus  ; 
@@ -46,6 +48,20 @@ public class InfoVo {
 	}
 	public void setMoney(String money) {
 		this.money = money;
+	}
+	
+	
+	public String getCardCode() {
+		return cardCode;
+	}
+	public void setCardCode(String cardCode) {
+		this.cardCode = cardCode;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	public String getIMSI() {
 		return IMSI;
