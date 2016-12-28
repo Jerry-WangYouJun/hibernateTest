@@ -39,6 +39,8 @@ public class DataMoveDao {
 	String[] colTypeArr;
 	// 存储数据数组List
 	List<String[]> valueList = new ArrayList<String[]>();
+	
+	List<List<Object>> objectList = new ArrayList<List<Object>>();
 	// 存储当前表的插入语句
 	String INSERTSQL = "";
 	// 存储当前插入表的缓存 ， 未进行插入操作的表为false 插入的表为true
@@ -535,11 +537,6 @@ public class DataMoveDao {
 		} catch (Exception e) {
 			mailMessage.append("执行" + INSERTSQL + "时发生错误：" + e.getMessage()
 					+ "<br>");
-			// try {
-			// SendMail.sendmail(mailMessage.toString());
-			// } catch (MessagingException e1) {
-			// e1.printStackTrace();
-			// }
 			e.printStackTrace();
 		}
 		// }
@@ -689,6 +686,53 @@ public class DataMoveDao {
 			mailMessage.append("执行中出错：" + e.getMessage());
 		}
 
+	}
+
+	public int insertDataTemp(List<List<Object>> listob) {
+		 String insertsqlTemp = "INSERT INTO cmtp_temp (IMSI, ICCID, userStatus, cardStatus, gprsUsed, messageUsed,"
+		 		+ " openDate, withMessageService, withGPRSService, packageType, monthTotalStream) "
+		 		+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		 objectList = listob ;
+		// batchUpdate可以高效进行批量插入操作
+		try {
+			jdbcTemplate.batchUpdate(insertsqlTemp,
+					new BatchPreparedStatementSetter() {
+						public void setValues(PreparedStatement ps, int i) {
+							try {
+								// 并根据数据类型对Statement 中的占位符进行赋值
+								
+									List<Object> valueList = objectList.get(i);
+									ps.setString(0, String.valueOf(valueList.get(0)));
+									ps.setString(1, String.valueOf(valueList.get(1)));
+									ps.setString(2, String.valueOf(valueList.get(2)));
+									ps.setString(3, String.valueOf(valueList.get(3)));
+									ps.setString(4, String.valueOf(valueList.get(4)));
+									ps.setString(5, String.valueOf(valueList.get(5)));
+									ps.setDate(6, Date.valueOf(String.valueOf(valueList.get(6))));
+									ps.setString(7, String.valueOf(valueList.get(7)));
+									ps.setString(8, String.valueOf(valueList.get(8)));
+									ps.setString(9, String.valueOf(valueList.get(9)));
+									ps.setString(10, String.valueOf(valueList.get(10)));
+									ps.setString(11, String.valueOf(valueList.get(11)));
+								
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+
+						public int getBatchSize() {
+							return valueList.size();
+						}
+					});
+		} catch (Exception e) {
+			mailMessage.append("执行" + INSERTSQL + "时发生错误：" + e.getMessage()
+					+ "<br>");
+			e.printStackTrace();
+		}
+		// }
+		return valueList.size();
+	
+		
 	}
 
 }

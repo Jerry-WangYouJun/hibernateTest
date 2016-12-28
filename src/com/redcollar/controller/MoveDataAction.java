@@ -1,20 +1,14 @@
 package com.redcollar.controller;
 
 
-import java.util.List;
-import java.util.Map;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.redcollar.commons.RS;
 import com.redcollar.service.DataMoveService;
-import com.redcollar.service.SendMail;
 
 /**
  * <p>Title: MoveDataAction.java</p>
