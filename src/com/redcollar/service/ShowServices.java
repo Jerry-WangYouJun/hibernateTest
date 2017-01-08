@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
  * @author lx g
  *
  */
-@Component
 public class ShowServices {
 
 	@SuppressWarnings("rawtypes")

@@ -21,10 +21,8 @@ import com.redcollar.service.ShowServices;
  * @date 2015年4月14日
  * @version 1.0
  */
-@Controller
 public class ShowAction{
 	
-	@Autowired
 	private ShowServices show;
 	@RequestMapping(value="/showdata.do", method=RequestMethod.GET)
 	@ResponseBody

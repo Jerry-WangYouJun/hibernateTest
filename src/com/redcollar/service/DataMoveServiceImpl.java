@@ -20,11 +20,9 @@ import com.redcollar.dao.DataMoveDao;
  * @author lx g
  *
  */
-@Service
 public class DataMoveServiceImpl implements DataMoveService {
 
 	public Properties pro = new Properties();
-	@Autowired
 	public DataMoveDao dataMoveDao;
 	StringBuffer message;
 	

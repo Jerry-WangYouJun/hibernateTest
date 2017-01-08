@@ -19,11 +19,9 @@ import com.redcollar.service.DataMoveService;
  * @date 2015年6月25日
  * @version 1.0
  */
-@Controller
 public class MoveDataAction {
 	
 //	private Logger logger  =  Logger.getLogger(MoveDataAction. class );
-	@Autowired
 	private DataMoveService moveDataServices;
 	
 	@RequestMapping(value="/movedata.do", method=RequestMethod.GET)

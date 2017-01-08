@@ -27,10 +27,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
  * @author wang_yjun
  *
  */
-@Controller
 public class UploadAction {
 
-	@Autowired
 	private ServletContext servletContext;
 
 	/**

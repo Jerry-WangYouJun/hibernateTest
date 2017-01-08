@@ -16,11 +16,9 @@ import com.redcollar.service.DataMoveService;
  * @author lx g
  *
  */
-@Service
 public class DataMoveJob {
 	
 	public Properties pro = new Properties();
-	@Autowired
 	public DataMoveService service;
 
 	public void processDataMove() {

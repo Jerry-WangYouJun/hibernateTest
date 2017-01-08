@@ -25,11 +25,8 @@ import org.springframework.stereotype.Repository;
  * @author lx g
  *
  */
-@Repository
 public class DataMoveDao {
-	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Autowired
 	private JdbcTemplate jdbcTemplate2;
 	// G.取得ResultSet 对象中各字段名称
 	StringBuffer colStr;
