@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Bootstrap 101 Template</title>
+
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="css/style.css" />
+
+
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<!-- Tab panes -->
+				<div class="col-lg-12">
+					<div class="input-group">
+						<input id="password"  type="text" class="form-control input"  required>
+						<a class="clear" onclick="cleardiv()"></a>
+						<span class="input-group-btn">
+							<button class="btn btn-default" type="button"><span class="glyphicon glyphicon-camera"></span></button>
+						</span>
+					</div>
+					<!-- /input-group -->
+					<button type="button" class="btn btn-primary btn-lg btn-block" onclick="window.location.href='index.html'">查询续费</button>
+					<div class="img-box">
+						<img src="img/img.png" />
+						<h5>点击"扫码"，对着卡的条形码扫一扫</h5>
+					</div>
+				</div>
+				<!-- /.col-lg-6 -->
+			</div>
+			<!-- /.row -->
+		</div>
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+		<!-- Include all compiled plugins (below), or include individual files as needed -->
+		<script src="js/bootstrap.min.js"></script>
+		<script >
+			function cleardiv(){
+				
+				document.getElementById("password").value="";
+			}
+		</script>
+	</body>
+
+</html>

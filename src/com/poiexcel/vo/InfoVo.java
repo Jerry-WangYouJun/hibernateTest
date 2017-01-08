@@ -2,8 +2,6 @@ package com.poiexcel.vo;
 
 import java.util.Date;
 
-
-//��Excelÿһ����ֵת��Ϊ����
 public class InfoVo {
 	
 	private String code;
@@ -11,6 +9,7 @@ public class InfoVo {
 	private String date;
 	private String money;
 	
+	private String id ;
 	private String cardCode;
 	private String remark;
 	private String  IMSI ; 
@@ -19,11 +18,15 @@ public class InfoVo {
 	private String cardStatus ;
 	private String gprsUsed;
 	private String messageUsed;
-	private Date openDate;
+	private String openDate;
 	private String withMessageService ;
 	private String withGPRSService ;
 	private String packageType ;
 	private String monthTotalStream;
+	private Date updateTime ;
+	private String status ;
+	private String dateBegin;
+	private String dateEnd ;
 	
 	public String getCode() {
 		return code;
@@ -51,6 +54,13 @@ public class InfoVo {
 	}
 	
 	
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getCardCode() {
 		return cardCode;
 	}
@@ -99,10 +109,10 @@ public class InfoVo {
 	public void setMessageUsed(String messageUsed) {
 		this.messageUsed = messageUsed;
 	}
-	public Date getOpenDate() {
+	public String getOpenDate() {
 		return openDate;
 	}
-	public void setOpenDate(Date openDate) {
+	public void setOpenDate(String openDate) {
 		this.openDate = openDate;
 	}
 	public String getWithMessageService() {
@@ -129,6 +139,29 @@ public class InfoVo {
 	public void setMonthTotalStream(String monthTotalStream) {
 		this.monthTotalStream = monthTotalStream;
 	}
-	
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getDateBegin() {
+		return dateBegin;
+	}
+	public void setDateBegin(String dateBegin) {
+		this.dateBegin = dateBegin;
+	}
+	public String getDateEnd() {
+		return dateEnd;
+	}
+	public void setDateEnd(String dateEnd) {
+		this.dateEnd = dateEnd;
+	}
 	
 }
