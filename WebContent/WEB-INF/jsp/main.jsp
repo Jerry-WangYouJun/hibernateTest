@@ -15,21 +15,23 @@
 	//ajax 方式上传文件操作
 	$(document).ready(function() {
 		$('#btn').click(function() {
-			if (checkData()) {
+			//if (checkData()) {
 				$('#form1').ajaxSubmit({
-					url : 'uploadExcel/ajaxUpload.do',
+					url : '${basePath}/uploadExcel/ajaxUpload.do',
 					dataType : 'text',
 					success : resutlMsg,
 					error : errorMsg
 				});
 				function resutlMsg(msg) {
 					alert(msg);
+					parent.closeModal();
+					window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=&dateEnd=&status=";
 					$("#upfile").val("");
 				}
 				function errorMsg() {
 					alert("导入excel出错！");
 				}
-			}
+			//}
 		});
 	});
 
@@ -45,7 +47,7 @@
 			alert("选择Excel格式的文件导入！");
 			return false;
 		}
-		return true;
+		$("#form1").submit();
 	}
 
 	//ajax 方式下载文件操作
@@ -61,103 +63,50 @@
 		});
 	});
 	
+	/* function download(){
+	       var form=$("<form>");//定义一个form表单
+	       form.attr("style","display:none");
+	       form.attr("target","$");
+	       form.attr("method","post");
+	       form.attr("action","");//请求url
+	       var input1=$("<input>");
+	       input1.attr("type","hidden");
+	       input1.attr("name","rows");//设置属性的名字
+	        input1.attr("value","test");//设置属性的值
+	        $("body").append(form);//将表单放置在web中
+	        form.append(input1);
+	        form.submit();//表单提交             
+	                            } */
 </script>
 </head>
 
 <body class="innerbody">
-	<div>文件以模板的方式导出，模板存放在项目中(WEB-INF/ExcelDemoFile/)</div>
-	<form action="ExportExcel/ajaxExport.do" method="post" id="form2">
-		<input type="submit" id="exportExcel" name="exportExcel"
-			value="Excel导出" />
-	</form>
-		<form class="form-signin"   role="form" method="POST"
-			enctype="multipart/form-data" id="form1"
-			action="uploadExcel/upload.do">
-				<div >
-					<table style="width: 30%"
-						class="table col-md-4 col-md-offset-4">
-						<tr>
-							<td colspan="2">
-								<div class="row form-group">
-									<div class="col-xs-12 col-sm-6 col-md-12">1.通过简单的form表单提交方式</div>
-									<div class="col-xs-6 col-md-12">
-										2.通过jquery.form.js插件提供的form表单异步提交功能</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td >
-								<div class="row form-group">
-									<label for="inputEmail3" class="control-label col-md-12">上传文件:</label>
-									<input id="upfile" type="file" name="upfile"
-										class="control-label col-md-12" required>
-								</div>
-							</td>
-							<td>
-								<div class="row form-group">
-								<label for="inputEmail3" class="control-label col-md-12">下载模板:</label>
-									<a id = "exportFile" style="cursor:pointer;">点击下载</a>文件以模板的方式导出
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<div class="row form-group ">
-									<button
-										class="btn btn-primary col-sm-6 col-md-4 col-md-offset-4"
-										type="submit" onclick="checkData();">提交</button>
-								</div>
-							</td>
-						</tr>
-					</table>
-				</div>
-				<div class="content">
-					<div class="main-list">
-						<div class="main-list-cont">
-							<table width="100%" class="table">
-								<tbody>
-								<tr class = "main-list-top">
-										<td width = "8%">卡号</td>
-										<td width = "8%">IMSI</td>
-										<td width = "8%">ICCID</td>
-										<td width = "5%">用户状态</td>
-										<td width = "5%">工作状态</td>
-										<td width = "10%">本月累计使用流量(MB)</td>
-										<td width = "6%">本月累计使用短信(条)</td>
-										<td width = "9%">开户日期</td>
-										<td width = "6%">是否签约短信服务</td>
-										<td width = "6%">是否签约GPRS服务</td>
-										<td width = "10%">套餐资费</td>
-										<td width = "5%">本月总量</td>
-										<td width = "5%">备注</td>
-									</tr>
-									<c:forEach var="order" items="${list}" varStatus="status">
-										<tr>
-										<%-- 	<c:forEach var="prcessIndex" items="${order}"
-												varStatus="status">
-
-												<td>${prcessIndex}</td>
-											</c:forEach> --%>
-										<td width = "8%">${order[0]}</td>
-										<td width = "8%">${order[2]}</td>
-										<td width = "8%">${order[3]}</td>
-										<td width = "5%">${order[4]}</td>
-										<td width = "5%">${order[5]}</td>
-										<td width = "10%">${order[6]}</td>
-										<td width = "6%">${order[7]}</td>
-										<td width = "9%">${order[8]}</td>
-										<td width = "6%">${order[9]}</td>
-										<td width = "6%">${order[10]}</td>
-										<td width = "10%">${order[11]}</td>
-										<td width = "5%">${order[12]}</td>
-										<td width = "5%">${status.index + 1}</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-		</form>
+	
+		<div id="base" class="box">
+			<ul class="cont-list">
+				<li>
+					<form class="form-signin" role="form" method="POST"
+						enctype="multipart/form-data" id="form1"
+						action="${basePath}/uploadExcel/upload.do">
+						<label for="inputEmail3"
+							class="control-label col-md-12 col-sm-12" style="float:left">上传文件:</label> <input style="float:left"
+							id="upfile" type="file" name="upfile"
+							class="control-label col-md-12" required>
+					</form>
+				</li>
+				<li>
+					<form action="${basePath}/ExportExcel/ajaxExport.do" method="post" id="form2">
+						<label for="inputEmail3"
+						class="control-label col-md-12 col-sm-12" style="float:left">下载模板:</label> &nbsp;&nbsp;&nbsp;&nbsp;<button
+						id="exportExcel" style="cursor: pointer;" style="float:left;position: relative;">点击下载</button>文件以模板的方式导出
+					</form>
+				</li>
+			</ul>
+			<div class="box-b">
+				<input class="bta" type="button" id="btn" value="上传" />
+				<input class="btd" type="button" onclick="parent.closeModal()"
+					value="取消" />
+			</div>
+		</div>
 </body>
 </html>

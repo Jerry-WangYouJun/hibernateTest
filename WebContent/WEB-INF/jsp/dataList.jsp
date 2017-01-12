@@ -101,12 +101,20 @@
 	}
 	
 	function editbtn(){
-		var path = "${basePath}/uploadExcel/uploadInit.do";
-		$('#form1').attr("action", path).submit();
+		 $("#myModalLabel").html("新增设备");
+         $("#iframeDialog").attr("src", "${basePath}/DeviceServlet?action=addOrEidtJsp&motion=" + motion
+             + "&pageNo=" + $("#pageNo").val() + "&pageSize=" + $("#pageSize").val());
 	}
 	function exportInit(){
-		$("#myModal").modal({backdrop:"static"});
+		 $("#myModalLabel").html("导入模板");
+         $("#iframeDialog").attr("src", "${basePath}/uploadExcel/uploadInit");
+	     $("#myModal").modal({backdrop:"static"});
 	}
+	
+	   //关闭Modal框
+    function closeModal() {
+        $("#myModal").modal('hide');
+    }
 </script>
 </head>
 
@@ -211,26 +219,17 @@
 			</div>
 		</div>
 	</form>
+<!-- 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal"
-						aria-hidden="true">×</button>
-					<h4 class="modal-title" id="myModalLabel">导入</h4>
-				</div>
-				<%-- <jsp:include page="main.jsp" flush="true" /> --%>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭
-					</button>
-        			<button type="button" class="btn btn-primary" onclick = "editbtn()">导出</button>
-					
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <iframe frameborder="0" width="100%" height="250px;" id="iframeDialog" name="iframeDialog"
+                    marginwidth="0" marginheight="0" frameborder="0" scrolling="no"></iframe>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
 </div>
 </body>
 </html>

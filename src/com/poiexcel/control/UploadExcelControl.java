@@ -52,7 +52,7 @@ public class UploadExcelControl {
 	 */
 	@RequestMapping(value = "upload", method = { RequestMethod.GET,
 			RequestMethod.POST })
-	public ModelAndView uploadExcel(HttpServletRequest request, Model model)
+	public ModelAndView uploadExcel(HttpServletRequest request , Model model)
 			throws Exception {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		System.out.println("ͨ通过传统方式form表单提交方式导入excel文件！");
@@ -113,28 +113,31 @@ public class UploadExcelControl {
 	public void ajaxUploadExcel(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		System.out.println("ͨ通过传统方式form表单提交方式导入excel文件！");
 		InputStream in = null;
 		List<List<Object>> listob = null;
 		MultipartFile file = multipartRequest.getFile("upfile");
 		if (file.isEmpty()) {
-			throw new Exception("找不到文件");
+			throw new Exception("");
 		}
 		in = file.getInputStream();
+		System.out.println("读取表插入开始：" + System.currentTimeMillis());
 		listob = new ImportExcelUtil().getBankListByExcel(in,
 				file.getOriginalFilename());
-		for (int i = 0; i < listob.size(); i++) {
-			List<Object> lo = listob.get(i);
-			InfoVo vo = new InfoVo();
-			vo.setCode(String.valueOf(lo.get(0)));
-			vo.setName(String.valueOf(lo.get(1)));
-			vo.setDate(String.valueOf(lo.get(2)));
-			vo.setMoney(String.valueOf(lo.get(3)));
-		}
-
+		in.close();
+		System.out.println("删除表插入开始：" + System.currentTimeMillis());
+		moveDataServices.deleteDataTemp();
+		System.out.println("临时表插入开始：" + System.currentTimeMillis());
+		moveDataServices.insertDataToTemp(listob);
+		System.out.println("覆盖数据开始    ：" + System.currentTimeMillis());
+		moveDataServices.updateExistData();
+		System.out.println("插入新数据开始：" + System.currentTimeMillis());
+		moveDataServices.dataMoveSql2Oracle();
+		System.out.println("执行结束            ：" + System.currentTimeMillis());
 		PrintWriter out = null;
 		response.setCharacterEncoding("utf-8");
 		out = response.getWriter();
-		out.print("");
+		out.print("更新数据" + listob.size() + "条");
 		out.flush();
 		out.close();
 	}

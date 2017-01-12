@@ -35,17 +35,8 @@ public class ExportExcelControl {
 		
 		try {
 			List<InfoVo> lo = new ArrayList<InfoVo>();
-			for (int i = 0; i < 8; i++) {
-				InfoVo vo = new InfoVo();
-				vo.setCode("110"+i);
-				vo.setDate("2015-11-0"+i);
-				vo.setMoney("1000"+i+".00"); 
-				vo.setName("导出模板"+i);
-				lo.add(vo);
-			}
-			
 			ExportExcelUtil util = new ExportExcelUtil();
-			File file =util.getExcelDemoFile("/ExcelDemoFile/测试模板.xlsx");
+			File file =util.getExcelDemoFile("/ExcelDemoFile/移动充值卡.xlsx");
 			String sheetName="sheet1";  
 			wb = util.writeNewExcel(file, sheetName,lo); 
 			
