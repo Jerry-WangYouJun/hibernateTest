@@ -12,7 +12,7 @@ public class Encrypt
    * @param strText 
    * @return 
    */  
-  public String SHA256(final String strText)  
+  public static String SHA256(final String strText)  
   {  
     return SHA(strText, "SHA-256");  
   }  
@@ -34,7 +34,7 @@ public class Encrypt
    * @param strSourceText 
    * @return 
    */  
-  private String SHA(final String strText, final String strType)  
+  private static String SHA(final String strText, final String strType)  
   {  
     // 返回值  
     String strResult = null;  

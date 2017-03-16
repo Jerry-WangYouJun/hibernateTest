@@ -34,6 +34,7 @@
 				function resutlMsg(msg) {
 					alert(msg);
 					$("#upfile").val("");
+					window.location.href="uploadExcel/dataList.do?dateBegin=&dateEnd=&status=";
 				}
 				function errorMsg() {
 					alert("导入excel出错！");
