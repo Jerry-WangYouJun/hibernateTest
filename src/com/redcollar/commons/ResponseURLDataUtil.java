@@ -17,7 +17,7 @@ public class ResponseURLDataUtil {
             URL url = new URL(urlString);  
             java.net.HttpURLConnection conn = (java.net.HttpURLConnection)url.openConnection();  
             conn.setDoOutput(true);  
-            conn.setRequestMethod("POST");  
+            conn.setRequestMethod("POST");   
             java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream(),"UTF-8"));  
             String line;  
             while ((line = in.readLine()) != null) {  

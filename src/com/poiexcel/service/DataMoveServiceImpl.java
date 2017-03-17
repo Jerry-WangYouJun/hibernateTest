@@ -105,6 +105,7 @@ public class DataMoveServiceImpl implements DataMoveService {
 				+ " WHERE id = " + id  ;
 		dataMoveDao.updateTables(updateDataSql);
 	}
-
+	
+	
 	
 }

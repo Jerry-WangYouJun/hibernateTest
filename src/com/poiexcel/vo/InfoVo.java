@@ -1,6 +1,7 @@
 package com.poiexcel.vo;
 
 import java.util.Date;
+import java.util.List;
 
 public class InfoVo {
 	
@@ -27,7 +28,29 @@ public class InfoVo {
 	private String status ;
 	private String dateBegin;
 	private String dateEnd ;
+	private CardDetail  detail;
+	private List<InfoPackage> packageList; 
+	private List<History> history ;
 	
+	
+	public List<InfoPackage> getPackageList() {
+		return packageList;
+	}
+	public void setPackageList(List<InfoPackage> packageList) {
+		this.packageList = packageList;
+	}
+	public List<History> getHistory() {
+		return history;
+	}
+	public void setHistory(List<History> history) {
+		this.history = history;
+	}
+	public CardDetail getDetail() {
+		return detail;
+	}
+	public void setDetail(CardDetail detail) {
+		this.detail = detail;
+	}
 	public String getCode() {
 		return code;
 	}

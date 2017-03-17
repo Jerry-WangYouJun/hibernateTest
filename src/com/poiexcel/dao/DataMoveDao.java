@@ -15,6 +15,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.poiexcel.vo.CardDetail;
+import com.poiexcel.vo.History;
+import com.poiexcel.vo.InfoPackage;
 import com.poiexcel.vo.InfoVo;
 
 /**
@@ -129,6 +132,68 @@ public class DataMoveDao {
 			}
 		});
 		return list ;
+	}
+
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void queryDetail(InfoVo info) {
+		String sql = "select id, gprs ,gprsused ,gprsrest  from card_detail where id = " + info.getId() ;
+		/*List<CardDetail> cardDetailList = jdbcTemplate.queryForList(sql, CardDetail.class);
+		info.setDetailList(cardDetailList);*/
+		final List<CardDetail> list = new ArrayList<CardDetail>();
+		//Map<String, String> map = new HashMap<String, String>();
+		jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+				CardDetail  vo = new CardDetail(); 
+				vo.setId(rs.getInt("id"));
+				vo.setGprs(rs.getInt("gprs"));
+				vo.setGprsused(rs.getDouble("gprsused"));
+				vo.setGprsrest(rs.getDouble("gprsrest"));
+				 list.add(vo);
+				 return null ;
+			}
+		});
+		info.setDetail(list.get(0));
+	}
+
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void queryPackage(InfoVo info) {
+		String sql = "select *   from package  where imsi = '" + info.getIMSI() + "'" ;
+		final List<InfoPackage> list = new ArrayList<InfoPackage>();
+		//Map<String, String> map = new HashMap<String, String>();
+		jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+				InfoPackage  vo = new InfoPackage(); 
+				vo.setId(rs.getInt("id"));
+				vo.setPackageName(rs.getString("package_name"));
+				vo.setRemark(rs.getString("remark"));
+				 list.add(vo);
+				 return null ;
+			}
+		});
+		info.setPackageList(list);
+		
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void queryHistory(InfoVo info) {
+		String sql = "select  h.imsi ,  p.package_name pname ,  h.update_date utime  , money  ,p.remark  premark  from history  h,  package p    where h.package_id= p.id and h.imsi = '" + info.getIMSI() + "'" ;
+		final List<History> list = new ArrayList<History>();
+		//Map<String, String> map = new HashMap<String, String>();
+		jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+				History  vo = new History(); 
+				vo.setImsi(rs.getString("imsi"));
+				vo.setPname(rs.getString("pname"));
+				vo.setUpdateDate(rs.getString("utime"));
+				vo.setMoney(rs.getDouble("money"));
+				vo.setPremark(rs.getString("premark"));
+				 list.add(vo);
+				 return null ;
+			}
+		});
+		info.setHistory(list);
 	}
 
 
