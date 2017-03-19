@@ -34,7 +34,7 @@ public class DataMoveDao {
 	String INSERTSQL = "";
 	StringBuffer mailMessage = new StringBuffer("");
 	String columuns = "cardcode,	remark,	IMSI,	ICCID,	userStatus,	cardStatus,	gprsUsed,"
-			+ "	messageUsed,	openDate,	withMessageService,	withGPRSService,	packageType,	monthTotalStream , updateTime ";
+			+ "	messageUsed,	openDate,	withMessageService,	withGPRSService,	packageType,  updateTime ";
 
 	public void updateTables(String sql) {
 		
@@ -60,7 +60,7 @@ public class DataMoveDao {
 	
 	public int insertDataTemp(List<List<Object>> listob) {
 		 String insertsqlTemp = "INSERT INTO cmtp_temp ( " + columuns + ") "
-		 		+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? )";
+		 		+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?  )";
 		 objectList = listob ;
 		// batchUpdate可以高效进行批量插入操作
 		try {
@@ -83,8 +83,8 @@ public class DataMoveDao {
 									ps.setString(10, String.valueOf(valueList.get(9)));
 									ps.setString(11, String.valueOf(valueList.get(10)));
 									ps.setString(12, String.valueOf(valueList.get(11)));
-									ps.setString(13, String.valueOf(valueList.get(12)));
-									ps.setString(14,format.format(new Date(System.currentTimeMillis())));
+									//ps.setString(13, String.valueOf(valueList.get(12)));
+									ps.setString(13,format.format(new Date(System.currentTimeMillis())));
 							} catch (Exception e) {
 								e.printStackTrace();
 							}

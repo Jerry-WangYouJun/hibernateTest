@@ -20,9 +20,9 @@ public class CardInfoService {
 		 List<InfoVo>  infoList =  dao.queryDataList(sql);
 		 if(infoList.size() > 0 ){
 			 InfoVo  info = infoList.get(0);
-			 	dao.queryDetail(info);
-			 	dao.queryPackage(info);
-			 	dao.queryHistory(info);
+//			 	dao.queryDetail(info);
+//			 	dao.queryPackage(info);
+//			 	dao.queryHistory(info);
 			   return info;
 		 }
 		return  null ;

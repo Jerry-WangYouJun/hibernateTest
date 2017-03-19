@@ -46,4 +46,9 @@ public class CardInfoController {
 	    	
 	    }
 	    
+	    @RequestMapping("/xinfu_wechat_pay")
+	    public String getPay(){
+	    	return "xfpay";
+	    }
+	    
 }

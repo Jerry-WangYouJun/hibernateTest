@@ -21,6 +21,11 @@ import com.poiexcel.vo.InfoVo;
 @RequestMapping("/ExportExcel/*")  
 public class ExportExcelControl {
 	
+	@RequestMapping("hello")
+	public String getUpoadPage(){
+		return "hello";
+	}
+	
 	/**
 	 * 
 	 * @param request
