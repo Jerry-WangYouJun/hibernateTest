@@ -12,9 +12,11 @@ public class PropertyCommons {
 	String token = Encrypt.SHA256(appid + httpClientPwd + ebid);
 	String BASE_URL = "http://183.230.96.66:8087/v2/";
 	 public static void main(String[] args) {
-		 PropertyCommons p = new PropertyCommons();
+		// PropertyCommons p = new PropertyCommons();
 		 try {
-			 ResponseURLDataUtil.getReturnData(p.gprsUsedInfoSingle());
+			 String u = "http://www.057110086.cn/api/WlkAPI.ashx?msisdn=1064861395216&transid=898602B6111600035004&ebid=0001000000035&appid=20170320213458465&token=20170320213458465";
+			//ResponseURLDataUtil.getReturnData(p.gprsUsedInfoSingle());
+			 ResponseURLDataUtil.getReturnData(u);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

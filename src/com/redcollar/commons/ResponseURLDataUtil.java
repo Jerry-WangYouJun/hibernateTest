@@ -17,7 +17,7 @@ public class ResponseURLDataUtil {
             URL url = new URL(urlString);  
             java.net.HttpURLConnection conn = (java.net.HttpURLConnection)url.openConnection();  
             conn.setDoOutput(true);  
-            conn.setRequestMethod("POST");   
+            conn.setRequestMethod("GET");   
             java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(conn.getInputStream(),"UTF-8"));  
             String line;  
             while ((line = in.readLine()) != null) {  
@@ -27,7 +27,7 @@ public class ResponseURLDataUtil {
         } catch (Exception e) {  
             System.out.println("error in wapaction,and e is " + e.getMessage());  
         }  
-        	System.out.println(res);  	
+        	//System.out.println(res);  	
         return res;  
     }  
 }
