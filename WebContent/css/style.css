@@ -34,6 +34,8 @@ a:active {
 	background-color: transparent;
 }
 
+
+
 h1,
 h2,
 h3,
@@ -97,7 +99,7 @@ h6,
 	border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
 	color: #FFFFFF;
-	padding: 10px;
+	padding: 5px 10px 5px 10px;
 	position: relative;
 	text-align: center;
 }
@@ -120,16 +122,17 @@ h6,
 .twt-feed h1 {
 	font-weight: 300;
 	margin-top: 5px;
+	font-size: 24px;
 }
 
 .twt-feed p {
-	font-size: 18px;
+	font-size: 12px;
 	font-weight: 300;
-	margin-top: 10px;
+	margin-top: 4px;
 }
 
 .twt-feed h1 span {
-	font-size: 18px;
+	font-size: 12px;
 }
 
 .twt-category {
@@ -138,7 +141,7 @@ h6,
 }
 
 .weather-category {
-	padding: 10px 0;
+	/*padding: 10px 0;*/
 	color: #74829C;
 }
 
@@ -146,9 +149,19 @@ h6,
 	padding-left: 0px;
 }
 
+.twt-category h5{
+	font-size:9px ;
+}
+
+
 .twt-category ul li {
 	color: #FFFFFF;
-	font-size: 16px;
+	font-size: 14px;
+}
+
+ul, ol {
+    margin-top: 0;
+    margin-bottom: 0px;
 }
 
 .weather-category ul li {
@@ -241,6 +254,6 @@ h6,
 	display: none;
 }
 
-.input:valid+ .clear {
+.input:valid+.clear {
 	display: inline;
 }

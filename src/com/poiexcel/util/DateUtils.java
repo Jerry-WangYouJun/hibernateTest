@@ -100,6 +100,30 @@ public class DateUtils {
         dateFormat.applyPattern(pattern);
         return dateFormat.format(d);
     }
+    
+    public static String formatDateYear (String pattern, String date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
+        Date d = null;
+        try {
+            d = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        dateFormat.applyPattern(pattern);
+        return dateFormat.format(d);
+    }
+    
+    public static String formatDateMonth (String pattern, String date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
+        Date d = null;
+        try {
+            d = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        dateFormat.applyPattern(pattern);
+        return dateFormat.format(d);
+    }
     /**
      * 根据指定的日期字符串和日期格式，把字符串转换成指定的日期格式。
      * @param orgPattern 原始日期格式
@@ -155,6 +179,18 @@ public class DateUtils {
      */
     public static String formatDate(String pattern, Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
+        dateFormat.applyPattern(pattern);
+        return dateFormat.format(date);
+    }
+    
+    public static String formatDateYear(String pattern, Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy");
+        dateFormat.applyPattern(pattern);
+        return dateFormat.format(date);
+    }
+    
+    public static String formatDateMonth(String pattern, Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM");
         dateFormat.applyPattern(pattern);
         return dateFormat.format(date);
     }

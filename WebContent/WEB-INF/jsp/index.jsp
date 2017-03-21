@@ -22,22 +22,33 @@
 					<button type="button" class="btn btn-info pull-right" onclick="window.location.href='${basePath}/search.html'">切换</button>
 				</div>
 				<div class="container user-name">
-					<h3>${info.IMSI }<span>[${info.userStatus }]</span></h3>
-					<p>剩余时间313天<span>(到期时间  ${info.openDate} )</span></p>
+					<h3>${info.ICCID }<span>[<c:if test="${info.userStatus == '00'}">正常</c:if>
+					<c:if test="${info.userStatus == '01'}">单向停机</c:if>
+					<c:if test="${info.userStatus == '02'}">停机</c:if>
+					<c:if test="${info.userStatus == '03'}">预销号</c:if>
+					<c:if test="${info.userStatus == '04'}">销号</c:if>
+					<c:if test="${info.userStatus == '05'}">过户</c:if>
+					<c:if test="${info.userStatus == '06'}">休眠</c:if>
+					<c:if test="${info.userStatus == '07'}">代缴</c:if>
+					<c:if test="${info.userStatus == '99'}">号码不存在</c:if>]</span></h3>
+					<p>剩余时间${info.restDay }天<span>(到期时间  ${info.dateEnd} )</span></p>
 				</div>
 			</div>
 			<div class="row container">
 				<section class="panel">
 					<div class="twt-feed blue-bg">
 						<p>剩余流量</p>
-						<h1>${info.detail.gprsrest }<span>MB</span></h1>
+						<h1>
+						${info.monthTotalStream - info.gprsUsed}
+						<span>MB</span></h1>
 						<div class="weather-category twt-category">
 							<ul>
 								<li class="active">
-									<h5>总流量</h5>${info.detail.gprs }MB
+									<h5>总流量</h5>
+									${info.monthTotalStream}MB
 								</li>
 								<li>
-									<h5>已用流量</h5>${info.detail.gprsused }MB
+									<h5>已用流量</h5>${info.gprsUsed }MB
 								</li>
 							</ul>
 						</div>
@@ -56,11 +67,16 @@
 				</ul>
 
 				<!-- Tab panes -->
-				<div class="tab-content" style="margin-bottom: 93px;">
+				<div>
+								<h5> ${info.packageType }</h5>
+								<p> ${ p.remark}  </p>
+								<hr />
+				</div>
+				<%-- <div class="tab-content" style="margin-bottom: 93px;">
 					<div role="tabpanel" class="tab-pane active" id="home">
 						<c:forEach items = "${info.packageList }" var = "p" >
 						    <div>
-								<h3> ${ p.packageName } </h3>
+								<h3> ${info.packageType }</h3>
 								<p> ${ p.remark}  </p>
 								<hr />
 							</div>
@@ -75,11 +91,11 @@
 							</div>
 						</c:forEach>
 					</div>
-				</div>
+				</div> --%>
 			</div>
 			<div class="row dingwei" >
 				<p class="text-center">
-					<button type="button" class="btn btn-primary btn-lg  col-xs-6" onclick="window.location.href='${basePath}/card/xinfu_wechat_pay'">充值续费</button>
+					<button type="button" class="btn btn-primary btn-lg  col-xs-6" style="border: none;" onclick="window.location.href='${basePath}/card/xinfu_wechat_pay'">充值续费</button>
 				</p>
 				<p class="text-center">
 					<a href="${basePath}/card/search?imsi=${info.IMSI}">历史续费查询</a>

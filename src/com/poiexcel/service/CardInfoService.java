@@ -20,7 +20,7 @@ public class CardInfoService {
 	DataMoveDao  dao ;
 	
 	public InfoVo queryInfoByISMI(String iccid) {
-		String sql = "select * from cmtp where iccid = '" + iccid + "'";
+		String sql = "select * from cmtp where iccid = '" + iccid + "'  or imsi = '" + iccid + "'";
 		 List<InfoVo>  infoList =  dao.queryDataList(sql);
 		 if(infoList.size() > 0 ){
 			 InfoVo  info = infoList.get(0);

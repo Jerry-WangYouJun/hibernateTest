@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.poiexcel.util.DateUtils;
 import com.poiexcel.vo.CardDetail;
 import com.poiexcel.vo.History;
 import com.poiexcel.vo.InfoPackage;
@@ -127,6 +128,39 @@ public class DataMoveDao {
 				vo.setMonthTotalStream(rs.getString("monthTotalStream"));
 				vo.setRemark(rs.getString("remark"));
 				vo.setStatus(rs.getString("status"));
+				vo.setUpdateTime(rs.getString("updateTime"));
+				Long restDays = 0L;
+				String deadLine ;
+				if(vo.getUpdateTime() == null){
+					int nextYear = Integer.valueOf(DateUtils.formatDateYear("yyyy" ,vo.getOpenDate())) + 1;
+					int curMonth = Integer.valueOf(vo.getOpenDate().split("-")[1]) ;
+					int lastMonth = curMonth -1 ;
+					if(curMonth == 1 ){
+						lastMonth = 12 ;
+					}
+					if( lastMonth > 9 ){
+						deadLine = DateUtils.getEndDate(nextYear + lastMonth + "");
+					}else{
+						deadLine = DateUtils.getEndDate(nextYear + "0" + lastMonth );
+					}
+					restDays = 	DateUtils.betweenDays( DateUtils.formatDate("yyyyMMdd"), deadLine);
+					
+				}else{
+					int nextYear = Integer.valueOf(DateUtils.formatDateYear("yyyy" ,vo.getUpdateTime())) + 1;
+					int curMonth =  Integer.valueOf(vo.getUpdateTime().split("-")[1]) ;
+					int lastMonth = curMonth -1 ;
+					if(curMonth == 1 ){
+						lastMonth = 12 ;
+					}
+					if( lastMonth > 9 ){
+						deadLine = DateUtils.getEndDate(nextYear + lastMonth + "");
+					}else{
+						deadLine = DateUtils.getEndDate(nextYear + "0" + lastMonth );
+					}
+					restDays = 	DateUtils.betweenDays(DateUtils.formatDate("yyyyMMdd"),  deadLine );
+				}
+				vo.setDateEnd(deadLine.substring(0, 4) + "-" + deadLine.substring(4, 6) + "-" + deadLine.substring(6));
+				vo.setRestDay(restDays);
 				list.add(vo);
 				return null;
 			}

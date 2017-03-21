@@ -20,7 +20,7 @@
     <form method="post">
       <div data-role="fieldcontain">
         <label for="paymoney">支付金额：</label>
-        <input type="text" name="paymoney" id="paymoney" placeholder="请输入支付金额..">       
+        <input type="text" name="paymoney" id="paymoney" placeholder="请输入支付金额.." value = "36" disabled="disabled">       
         <p id="p1">你输入的金额为：</p>
         <p>微信支付需要加收1%手续费</p>
         <p id="p3">合计需要支付金额</p>

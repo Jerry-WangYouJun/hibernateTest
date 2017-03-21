@@ -1,6 +1,5 @@
 package com.poiexcel.vo;
 
-import java.util.Date;
 import java.util.List;
 
 public class InfoVo {
@@ -24,15 +23,23 @@ public class InfoVo {
 	private String withGPRSService ;
 	private String packageType ;
 	private String monthTotalStream;
-	private Date updateTime ;
+	private String updateTime ;
 	private String status ;
 	private String dateBegin;
 	private String dateEnd ;
 	private CardDetail  detail;
 	private List<InfoPackage> packageList; 
 	private List<History> history ;
+	private Long restDay ;
 	
 	
+	
+	public Long getRestDay() {
+		return restDay;
+	}
+	public void setRestDay(Long restDay) {
+		this.restDay = restDay;
+	}
 	public List<InfoPackage> getPackageList() {
 		return packageList;
 	}
@@ -162,10 +169,10 @@ public class InfoVo {
 	public void setMonthTotalStream(String monthTotalStream) {
 		this.monthTotalStream = monthTotalStream;
 	}
-	public Date getUpdateTime() {
+	public String getUpdateTime() {
 		return updateTime;
 	}
-	public void setUpdateTime(Date updateTime) {
+	public void setUpdateTime(String updateTime) {
 		this.updateTime = updateTime;
 	}
 	public String getStatus() {
