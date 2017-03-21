@@ -2,7 +2,6 @@ package com.poiexcel.service;
 
 import java.util.List;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,8 @@ public class CardInfoService {
 	@Autowired
 	DataMoveDao  dao ;
 	
-	public InfoVo queryInfoByISMI(String imsi) {
-		String sql = "select * from cmtp where imsi = '" + imsi + "'";
+	public InfoVo queryInfoByISMI(String iccid) {
+		String sql = "select * from cmtp where iccid = '" + iccid + "'";
 		 List<InfoVo>  infoList =  dao.queryDataList(sql);
 		 if(infoList.size() > 0 ){
 			 InfoVo  info = infoList.get(0);

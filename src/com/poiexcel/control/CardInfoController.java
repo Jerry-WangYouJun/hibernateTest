@@ -17,9 +17,9 @@ public class CardInfoController {
 	    CardInfoService service;
 	    
 	    @RequestMapping("/querySingle")
-	    public ModelAndView getCardInfo(String imsi){
+	    public ModelAndView getCardInfo(String iccid){
 	    	ModelAndView mv = new ModelAndView("index");
-	    	InfoVo  vo = service.queryInfoByISMI(imsi);
+	    	InfoVo  vo = service.queryInfoByISMI(iccid);
 	    	if(vo!=null){
 	    		mv.addObject("info", vo);
 	    	}else{
