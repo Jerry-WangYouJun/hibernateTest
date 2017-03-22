@@ -72,9 +72,18 @@ h6,
 	width: 100%;
 }
 
+.user-head span{
+	display: -webkit-inline-box; 
+	margin-top: 4px; 
+	margin-left: 20px; 
+	padding: .6em;
+	font-size: 14px;
+}
+
 .user-name {
 	display: inline-block;
 	margin-top: 20px;
+	width:100%;
 }
 
 .user-name h3 {

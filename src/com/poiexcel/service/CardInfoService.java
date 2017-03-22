@@ -1,5 +1,6 @@
 package com.poiexcel.service;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import net.sf.json.JSONObject;
@@ -44,15 +45,29 @@ public class CardInfoService {
 		    if(info.getCardStatus()!=null && !info.getCardStatus().equals(gprsStatus)){
 		    	info.setCardStatus(gprsStatus);
 		    }
-		    JSONObject  jsonUserStatus = getResultData(info,"0001000000009");
+		    /*JSONObject  jsonUserStatus = getResultData(info,"0001000000009");
 		    String userStatus = jsonUserStatus.getString("STATUS").toString();
 		    if(info.getUserStatus()!=null && !info.getUserStatus().equals(userStatus)){
 		    	info.setUserStatus(userStatus);
-		    }
+		    }*/
 		    JSONObject  jsonGprsUsed = getResultData(info,"0001000000012");
-		     	String  gprsUsed = jsonGprsUsed.getString("total_gprs").toString();
+		    //jsonGprsUsed.put("total_gprs", "1000");
+		    DecimalFormat df = new DecimalFormat("#.###");  
+		     	double  gprsUsed = Double.valueOf(jsonGprsUsed.getString("total_gprs").toString())/1024;
+		     	gprsUsed = Double.valueOf(df.format(gprsUsed));
 		    if(info.getGprsUsed()!=null && !info.getGprsUsed().equals(gprsUsed)){
-		    	info.setGprsUsed(gprsUsed);
+		    	info.setGprsUsed(gprsUsed + "");
+		    	if(gprsUsed == 0){
+		    		info.setUserStatus("待激活");
+		    		info.setRestDay(365L);
+		    	}else if(gprsUsed>0 && Double.valueOf(info.getMonthTotalStream())>  gprsUsed){
+		    		info.setUserStatus("正常");
+		    	}else{
+		    		info.setUserStatus("停机");
+		    	}
+		    }
+		    if(info.getRestDay() <= 0){
+		    	info.setUserStatus("停机");
 		    }
 	}
 

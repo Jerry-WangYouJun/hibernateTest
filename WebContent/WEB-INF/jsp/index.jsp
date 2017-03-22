@@ -19,19 +19,18 @@
 					<div class="inbox-avatar">
 						<img src="${basePath}/img/logo.png" alt="">
 					</div>
+					<c:choose>
+						<c:when test="${info.cardStatus == 01 }"><span class="label label-success">在线</span></c:when>
+						<c:otherwise><span class="label label-default">离线</span></c:otherwise>
+					</c:choose>
+					
+					<!--<span class="label label-default">离线</span>-->
 					<button type="button" class="btn btn-info pull-right" onclick="window.location.href='${basePath}/search.html'">切换</button>
 				</div>
 				<div class="container user-name">
-					<h3>${info.ICCID }<span>[<c:if test="${info.userStatus == '00'}">正常</c:if>
-					<c:if test="${info.userStatus == '01'}">单向停机</c:if>
-					<c:if test="${info.userStatus == '02'}">停机</c:if>
-					<c:if test="${info.userStatus == '03'}">预销号</c:if>
-					<c:if test="${info.userStatus == '04'}">销号</c:if>
-					<c:if test="${info.userStatus == '05'}">过户</c:if>
-					<c:if test="${info.userStatus == '06'}">休眠</c:if>
-					<c:if test="${info.userStatus == '07'}">代缴</c:if>
-					<c:if test="${info.userStatus == '99'}">号码不存在</c:if>]</span></h3>
-					<p>剩余时间${info.restDay }天<span>(到期时间  ${info.dateEnd} )</span></p>
+					<h3 style="float: left;">${info.ICCID }</h3>
+					<h3 style="float: right;">[${info.userStatus }]</h3>
+					<p style="float: left;">剩余时间${info.restDay }天<span>(到期时间  ${info.dateEnd} )</span></p>
 				</div>
 			</div>
 			<div class="row container">
