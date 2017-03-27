@@ -60,6 +60,7 @@ public class CardInfoService {
 		    	if(gprsUsed == 0){
 		    		info.setUserStatus("待激活");
 		    		info.setRestDay(365L);
+		    		info.setDateEnd("****-**-**");
 		    	}else if(gprsUsed>0 && Double.valueOf(info.getMonthTotalStream())>  gprsUsed){
 		    		info.setUserStatus("正常");
 		    	}else{
