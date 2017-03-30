@@ -5,9 +5,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.mobile-1.3.0.min.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/jquery.mobile-new.css" />
-   <link href="${basePath}/css/bootstrap.min.css" rel="stylesheet">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link href="${basePath}/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${basePath}/css/style.css" />
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 <script src="${basePath}/js/jquery-3.1.1.min.js"></script>
@@ -15,37 +14,24 @@
 <script src="${basePath}/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div data-role="page">
-  <div data-role="content">
-    <form method="post">
-      <div data-role="fieldcontain">
-        <label for="paymoney">支付金额：</label>
-        <input type="text" name="paymoney" id="paymoney" placeholder="请输入支付金额.." value = "36" disabled="disabled">       
-        <p id="p1">你输入的金额为：</p>
-      </div>
-    </form>
-  </div>
-</div>
 <div class="container-fluid">
-			<div class="row dingwei" >
+			
+			<div role="tabpanel" class="tab-pane active" style="margin-top: 10px;">
+				<div class="taocan">
+					<h3>30M（首年激活套餐）</h3>
+					<p>30M流量，流量不清零，一年有效，全国通用总流量用完即停机，可累加包年套餐。</p>
+				</div>
+			</div>
+
+			<div class="row dingwei">
 				<p class="text-center">
-					<button type="button" class="btn btn-primary btn-lg  col-xs-6" onclick="doWeixinPay();">充值</button>
+					<button style="border: none;" type="button" class="btn btn-primary btn-lg  col-xs-6" onclick="doWeixinPay();">提交订单</button>
 				</p>
 			</div>
 		</div>
-     <script type="text/javascript" src="${basePath}/static/js/jquery.js"></script>
-     <script type="text/javascript" src="${basePath}/static/js/jquery.mobile-1.3.0.min.js"></script>
-     <script>
-     </script>
 	 <script type="text/javascript">
 	    function doWeixinPay(){
-	    	var pay=$("#paymoney").val();
-	    	if(pay == null || pay == ""){
-	    		alert("请输入支付金额！");
-	    		return;
-	    	}else{
-	    		window.location.href="${pageContext.request.contextPath}/wx/userAuth?totalFee="+36;
-	    	}
+	    		window.location.href="${basePath}/wx/userAuth?totalFee="+ 36 + "&iccid=${iccid}";
 	    }
 	 </script>
 

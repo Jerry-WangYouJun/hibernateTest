@@ -266,3 +266,14 @@ ul, ol {
 .input:valid+.clear {
 	display: inline;
 }
+
+.taocan {
+	background: -webkit-linear-gradient(right top, #6a74ec, #00c7fe);
+	-webkit-border-radius: 10px 10px 10px 10px;
+	color: #FFFFFF;
+	padding: 5px 10px 5px 10px;
+}
+
+.taocan h3{
+	color: #FFFFFF;
+}

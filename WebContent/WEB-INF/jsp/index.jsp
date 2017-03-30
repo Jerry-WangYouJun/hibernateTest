@@ -10,7 +10,16 @@
 <link rel="stylesheet" href="${basePath}/css/style.css" />
 <script src="${basePath}/js/jquery-3.1.1.min.js"></script>
 <script src="${basePath}/js/bootstrap.min.js"></script>
-<title>中国移动</title>
+<script type="text/javascript">
+
+	    function getPrepay(){
+	    	if('${info.ICCID }' == ''){
+	    		  alert('无效的iccid，请点击【切换】按钮获得iccid');
+	    		  return false ;
+	    	}
+	    	window.location.href='${basePath}/card/xinfu_wechat_pay?iccid=${info.ICCID}';
+	    }
+</script>
 </head>
 <body>
 		<div class="container-fluid">
@@ -94,7 +103,7 @@
 			</div>
 			<div class="row dingwei" >
 				<p class="text-center">
-					<button type="button" class="btn btn-primary btn-lg  col-xs-6" style="border: none;" onclick="window.location.href='${basePath}/card/xinfu_wechat_pay'">充值续费</button>
+					<button type="button" class="btn btn-primary btn-lg  col-xs-6" style="border: none;" onclick=" getPrepay()">充值续费</button>
 				</p>
 				<p class="text-center">
 					<a href="${basePath}/card/search?imsi=${info.IMSI}">历史续费查询</a>
