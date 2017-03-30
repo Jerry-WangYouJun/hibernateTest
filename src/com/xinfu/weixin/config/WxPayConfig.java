@@ -24,7 +24,9 @@ public class WxPayConfig {
 	 */
 	public static String trade_type = "JSAPI";
 	
-	public static String signType = "MD5";
+	public static String signType = "MD5"; 
+	
+	
 	
 	 public static void main(String[] args) {
 		 System.out.println(partnerkey.length());

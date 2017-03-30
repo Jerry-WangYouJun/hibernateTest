@@ -6,7 +6,8 @@ import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import com.poiexcel.util.StringUtils;
+
 
 /**
  * 操作txt工具类
@@ -29,7 +30,7 @@ public class TxtUtil {
             long fileLength = randomFile.length();
             //将写文件指针移到文件尾。
             randomFile.seek(fileLength);
-            if(StringUtils.isNotBlank(content)){
+            if(StringUtils.isNotEmpty(content)){
             	String s = "";
             	s = content+"\r\n";
             	randomFile.writeBytes(s);

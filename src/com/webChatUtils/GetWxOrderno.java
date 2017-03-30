@@ -10,7 +10,8 @@ import java.util.Map;
 
 import net.sf.json.JSON;
 import net.sf.json.xml.XMLSerializer;
-import net.shopxx.plugin.weixin.utils.http.HttpClientConnectionManager;
+
+
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -21,6 +22,8 @@ import org.apache.http.util.EntityUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+
+import com.xinfu.weixin.util.http.HttpClientConnectionManager;
 
 
 

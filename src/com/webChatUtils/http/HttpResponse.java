@@ -2,6 +2,8 @@ package com.webChatUtils.http;
 
 
 
+import java.io.UnsupportedEncodingException;
+
 import org.apache.commons.httpclient.Header;
 
 

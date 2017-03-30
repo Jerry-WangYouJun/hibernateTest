@@ -1,11 +1,13 @@
 package com.xinfu.wechat.pay.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -16,11 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.poiexcel.util.StringUtils;
 import com.xinfu.wechat.pay.util.OrderUtils;
 import com.xinfu.wechat.pay.util.SignUtil;
 import com.xinfu.wechat.pay.util.TxtUtil;
@@ -42,6 +44,7 @@ import com.xinfu.weixin.util.WeixinPayUtil;
 public class WeixinPayController {
 	
 	private static String baseUrl = "http://www.pay-sf.com";
+	Map<String,String>  excuteResultMap = new HashMap<>();
 	
 	@RequestMapping("/token")
 	public void getToken(HttpServletResponse response, String signature,
@@ -69,9 +72,10 @@ public class WeixinPayController {
 	@RequestMapping("/userAuth")
 	public String userAuth(HttpServletRequest request, HttpServletResponse response){
 		try {
-			String orderId = OrderUtils.genOrderNo();
-			//String totalFee = request.getParameter("totalFee");
-			String totalFee = "0.01";
+			String iccid = request.getParameter("iccid");
+			String orderId = OrderUtils.genOrderNo(iccid);
+			String totalFee = request.getParameter("totalFee");
+			//String totalFee = "0.01";
 			System.out.println("in userAuth,orderId:" + orderId);
 			
 			//授权后要跳转的链接
@@ -102,7 +106,7 @@ public class WeixinPayController {
 			String totalFeeStr = request.getParameter("totalFee");
 			Float totalFee = 0.0f;
 			
-			if(StringUtils.isNotBlank(totalFeeStr)){
+			if(StringUtils.isNotEmpty(totalFeeStr)){
 				totalFee = new Float(totalFeeStr);
 			}
 
@@ -239,6 +243,9 @@ public class WeixinPayController {
 	 */
 	@RequestMapping("/notifyUrl")
 	public String weixinReceive(HttpServletRequest request,HttpServletResponse response, Model model){
+		String msg = "success";
+        response.setContentType("text/xml");     
+        String resXml = "";
 		System.out.println("==开始进入h5支付回调方法==");
 		String xml_review_result = WeixinPayUtil.getXmlRequest(request);
 		System.out.println("微信支付结果:"+xml_review_result);
@@ -261,21 +268,25 @@ public class WeixinPayController {
                     	//获得返回结果
                     	String return_code = (String)resultMap.get("return_code");
                     
-                    	if("SUCCESS".equals(return_code)){
-                    		String out_trade_no = (String)resultMap.get("out_trade_no");
-                    		System.out.println("weixin pay sucess,out_trade_no:"+out_trade_no);
-                    		//处理支付成功以后的逻辑，这里是写入相关信息到文本文件里面，如果有订单的处理订单
-                    		try{
-                    			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh24:mm:ss");
-                    			String content = out_trade_no+"        "+sdf.format(new Date());
-                    			String fileUrl = System.getProperty("user.dir") + File.separator+"WebContent" + File.separator + "data" + File.separator + "order.txt";
-                    			TxtUtil.writeToTxt(content, fileUrl);
-                    		}catch(Exception e){
-                    			e.printStackTrace();
+                    	String out_trade_no = (String)resultMap.get("out_trade_no");
+                    	if(!excuteResultMap.containsKey(out_trade_no)){
+                    		if("SUCCESS".equals(return_code) ){
+                    			 response.setContentType("text/xml");     
+                    			System.out.println("weixin pay sucess,out_trade_no:"+out_trade_no);
+                    			excuteResultMap.put(out_trade_no, "success");
+                    			//处理支付成功以后的逻辑，这里是写入相关信息到文本文件里面，如果有订单的处理订单
+                    			try{
+                    				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh24:mm:ss");
+                    				String content = out_trade_no+"        "+sdf.format(new Date());
+                    				String fileUrl = System.getProperty("user.dir") + File.separator+"WebContent" + File.separator + "data" + File.separator + "order.txt";
+                    				TxtUtil.writeToTxt(content, fileUrl);
+                    			}catch(Exception e){
+                    				e.printStackTrace();
+                    			}
+                    		}else{
+                    			model.addAttribute("payResult", "0");
+                    			model.addAttribute("err_code_des", "通信错误");
                     		}
-                    	}else{
-                    	    model.addAttribute("payResult", "0");
-                    	    model.addAttribute("err_code_des", "通信错误");
                     	}
                     }catch(Exception e){
                     	e.printStackTrace();
@@ -288,10 +299,19 @@ public class WeixinPayController {
                     WeixinPayUtil.getTradeOrder("http://weixin.xinfor.com/wx/notifyUrl", checkXml);
 				}
 			}
+			resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"
+					+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
+			BufferedOutputStream out = new BufferedOutputStream(
+					response.getOutputStream());
+			out.write(resXml.getBytes());
+			out.flush();
+			out.close();
+			
+			//response.getWriter().println(msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 	
@@ -300,7 +320,7 @@ public class WeixinPayController {
 	 * @param request
 	 * @param response
 	 * @param model
-	 * @return
+	 * @return 
 	 * @throws IOException
 	 */
 	@RequestMapping("/success")

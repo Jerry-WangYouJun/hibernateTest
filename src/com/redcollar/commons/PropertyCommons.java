@@ -3,6 +3,12 @@ package com.redcollar.commons;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
+
+/**
+ * 老接口方法
+ * @author Administrator
+ *
+ */
 public class PropertyCommons {
 	 
 	public String appid = "SODE1NH" ;

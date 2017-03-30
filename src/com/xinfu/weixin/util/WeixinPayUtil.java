@@ -3,6 +3,7 @@ package com.xinfu.weixin.util;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,7 +17,8 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
+import net.sf.json.JSONObject;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.params.ClientPNames;
@@ -28,6 +30,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import com.poiexcel.util.StringUtils;
+import com.redcollar.commons.ResponseURLDataUtil;
 import com.xinfu.weixin.config.WxPayConfig;
 import com.xinfu.weixin.dto.WeixinInfoDTO;
 import com.xinfu.weixin.util.http.HttpClientConnectionManager;
@@ -50,6 +54,7 @@ public class WeixinPayUtil {
 				.getSSLInstance(httpclient);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static String getPayNo(String url, String xmlParam) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		client.getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS,
@@ -61,13 +66,13 @@ public class WeixinPayUtil {
 			HttpResponse response = httpclient.execute(httpost);
 			String jsonStr = EntityUtils
 					.toString(response.getEntity(), "UTF-8");
-			Map<String, Object> dataMap = new HashMap<String, Object>();
+			//Map<String, Object> dataMap = new HashMap<String, Object>();
 
 			if (jsonStr.indexOf("FAIL") != -1) {
 				return prepay_id;
 			}
 			Map map = doXMLParse(jsonStr);
-			String return_code = (String) map.get("return_code");
+			//String return_code = (String) map.get("return_code");
 			prepay_id = (String) map.get("prepay_id");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -84,6 +89,7 @@ public class WeixinPayUtil {
 	 * @throws JDOMException
 	 * @throws IOException
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Map doXMLParse(String strxml) throws Exception {
 		if (null == strxml || "".equals(strxml)) {
 			return null;
@@ -122,6 +128,7 @@ public class WeixinPayUtil {
 	 * @param children
 	 * @return String
 	 */
+	@SuppressWarnings("rawtypes")
 	public static String getChildrenText(List children) {
 		StringBuffer sb = new StringBuffer();
 		if (!children.isEmpty()) {
@@ -175,11 +182,12 @@ public class WeixinPayUtil {
 	 * @param weixinInfoDTO
 	 * @return
 	 */
+	@SuppressWarnings("rawtypes")
 	public static String generateCodeUrl(WeixinInfoDTO weixinInfoDTO){
 		String codeUrl = "";
 		String submitXml = buildWeixinXml(weixinInfoDTO);
 		String resultStr = getTradeOrder(SUBMIT_URL,submitXml);
-		if(StringUtils.isNotBlank(resultStr)){
+		if(StringUtils.isNotEmpty(resultStr)){
 			try {
 				Map map = doXMLParse(resultStr);
 				codeUrl = (String)map.get("code_url");
@@ -194,6 +202,7 @@ public class WeixinPayUtil {
 	/**
 	 * 创建md5摘要,规则是:按参数名称a-z排序,遇到空值的参数不参加签名。
 	 */
+	@SuppressWarnings("rawtypes")
 	public static String createSign(SortedMap<String, String> packageParams) {
 		StringBuffer sb = new StringBuffer();
 		Set es = packageParams.entrySet();
@@ -207,12 +216,13 @@ public class WeixinPayUtil {
 				sb.append(k + "=" + v + "&");
 			}
 		}
-		sb.append("key=pxw20150801xrlaty15m01d01foralla");
+		sb.append("key=" + WxPayConfig.partnerkey);
 		String sign = MD5Util.MD5Encode(sb.toString(), "UTF-8").toUpperCase();
 		return sign;
 
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static String getSign(Map<String,String> paramMap,String key){
 		List list = new ArrayList(paramMap.keySet());
 		Object[] ary = list.toArray();
@@ -280,28 +290,30 @@ public class WeixinPayUtil {
 	 * @return
 	 * @throws Exception 
 	 */
+	@SuppressWarnings("rawtypes")
 	public static Map checkWxOrderPay(String orderId) throws Exception{
 		String nonce_str = UUID.randomUUID().toString().replaceAll("-", "");
-		Boolean payFlag = false;
+		//Boolean payFlag = false;
 		String sign = "";
 		SortedMap<String, String> storeMap = new TreeMap<String, String>();
 		storeMap.put("out_trade_no", orderId); // 商户 后台的贸易单号
 		storeMap.put("appid", WxPayConfig.appid); // appid
 		storeMap.put("mch_id", WxPayConfig.partner); // 商户号
 		storeMap.put("nonce_str", nonce_str); // 随机数
+		System.out.println("nonce_str" + nonce_str );
 		sign = createSign(storeMap);
-		
-		String xml = "<xml><appid>wx5e45586116813f60</appid><mch_id>1251135401</mch_id>"+
+		System.out.println(sign);
+		String xml = "<xml><appid>" + WxPayConfig.appid + "</appid><mch_id>" + WxPayConfig.partner + "</mch_id>"+
 					"<nonce_str>" + nonce_str + "</nonce_str>"+
                     "<out_trade_no>"+orderId+"</out_trade_no>"+
                     "<sign>"+sign+"</sign></xml>";
 		String resultMsg = getTradeOrder("https://api.mch.weixin.qq.com/pay/orderquery", xml);
 	    System.out.println("orderquery,result:" + resultMsg);
-		if(StringUtils.isNotBlank(resultMsg)){
+		if(StringUtils.isNotEmpty(resultMsg)){
 	    	Map resultMap = WeixinPayUtil.doXMLParse(resultMsg);
 	    	if(resultMap != null && resultMap.size() > 0){
 	    		/*String result = (String)resultMap.get("trade_state");
-	    		if(StringUtils.isNotBlank(result)){
+	    		if(StringUtils.isNotEmpty(result)){
 	    			if(result.equals("SUCCESS") || result.equals("success")){
 	    				payFlag = true;
 	    			}
@@ -312,8 +324,45 @@ public class WeixinPayUtil {
 	    return null;
 	}
 
-	public static void main(String[] args) {
+	public static String getTicket() {
+        String ticket = null;
+        try {
+        	String access_token = WeixinPayUtil.getAccessToken(); //有效期为7200秒
+        	String url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+ access_token +"&type=jsapi";
+        	System.setProperty("sun.net.client.defaultConnectTimeout", "30000");// 连接超时30秒
+        	System.setProperty("sun.net.client.defaultReadTimeout", "30000"); // 读取超时30秒
+        	String jsonString =	ResponseURLDataUtil.getReturnData(url) ;
+   		 	JSONObject jsonObject = JSONObject.fromObject(jsonString);  
+            ticket = jsonObject.getString("ticket");
+            System.out.println(ticket);
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
+         
+        return ticket;
+    }
+	
+    public static String getAccessToken() throws UnsupportedEncodingException{
 
+        String appid=  WxPayConfig.appid;//应用ID
+
+        String appSecret= WxPayConfig.appsecret;//(应用密钥)
+
+        String url ="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+appSecret+"";
+
+        String jsonString =	ResponseURLDataUtil.getReturnData(url) ;
+	 	JSONObject jsonObject = JSONObject.fromObject(jsonString);  
+ 	    String accessToken  = jsonObject.getString("access_token");
+        System.out.println(accessToken);
+
+
+        return accessToken;
+
+ }
+
+	public static void main(String[] args) {
+System.out.println("fn898602B611177066799903290126".length());
+	 //etTicket();
 //		String sign = "";
 //		SortedMap<String, String> storeMap = new TreeMap<String, String>();
 //		storeMap.put("trade_type", "NATIVE"); // 交易类型
@@ -366,22 +415,22 @@ public class WeixinPayUtil {
 //				"https://api.mch.weixin.qq.com/pay/unifiedorder", xml);
 //		System.out.println(resultMsg);
 		
-		String sign = "";
-		SortedMap<String, String> storeMap = new TreeMap<String, String>();
-		storeMap.put("out_trade_no", "px20150904041703250"); // 商户 后台的贸易单号
-		storeMap.put("appid", "wx5e45586116813f60"); // appid
-		storeMap.put("mch_id", "1251135401"); // 商户号
-		storeMap.put("nonce_str", "1add1a30ac87aa2db72f57a2375d8fec"); // 随机数
-		sign = createSign(storeMap);
-		
-		String xml = "<xml><appid>wx5e45586116813f60</appid><mch_id>1251135401</mch_id>"+
-					"<nonce_str>1add1a30ac87aa2db72f57a2375d8fec</nonce_str>"+
-                    "<out_trade_no>px20150904041703250</out_trade_no>"+
-                    "<sign>"+sign+"</sign></xml>";
-		String resultMsg = getTradeOrder(
-				"https://api.mch.weixin.qq.com/pay/orderquery", xml);
-		System.out.println(resultMsg);
-		
+//		String sign = "";
+//		SortedMap<String, String> storeMap = new TreeMap<String, String>();
+//		storeMap.put("out_trade_no", "px20150904041703250"); // 商户 后台的贸易单号
+//		storeMap.put("appid", "wx5e45586116813f60"); // appid
+//		storeMap.put("mch_id", "1251135401"); // 商户号
+//		storeMap.put("nonce_str", "1add1a30ac87aa2db72f57a2375d8fec"); // 随机数
+//		sign = createSign(storeMap);
+//		
+//		String xml = "<xml><appid>wx5e45586116813f60</appid><mch_id>1251135401</mch_id>"+
+//					"<nonce_str>1add1a30ac87aa2db72f57a2375d8fec</nonce_str>"+
+//                    "<out_trade_no>px20150904041703250</out_trade_no>"+
+//                    "<sign>"+sign+"</sign></xml>";
+//		String resultMsg = getTradeOrder(
+//				"https://api.mch.weixin.qq.com/pay/orderquery", xml);
+//		System.out.println(resultMsg);
+//		
 //		try {
 //			Map map = doXMLParse(resultMsg);
 //			String codeUrl = (String)map.get("code_url");

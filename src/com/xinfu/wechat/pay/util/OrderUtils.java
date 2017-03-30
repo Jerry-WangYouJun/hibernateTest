@@ -10,11 +10,11 @@ import java.util.Date;
  */
 public class OrderUtils {
 	
-	public static String genOrderNo(){
-		String orderNo = "xf";
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmssSSS");
+	public static String genOrderNo(String iccid){
+		String orderNo = "fn" + iccid + "";
+		SimpleDateFormat sdf=new SimpleDateFormat("MMddhhmm");
 		String nowTime = sdf.format(new Date());
-		orderNo+=nowTime;
+		orderNo+= nowTime;
 		return orderNo;
 	}
 
