@@ -231,4 +231,17 @@ public class DataMoveDao {
 	}
 
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public int queryTotal(String selectSql) {
+		final Integer[] total = new  Integer[1];
+		jdbcTemplate.query(selectSql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+				total[0] = new Integer(rs.getInt("total"));
+				return rs.getInt("total");
+			}
+		});
+		return total[0];
+	}
+
+
 }

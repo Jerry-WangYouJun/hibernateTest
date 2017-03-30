@@ -97,7 +97,7 @@
 				<li>
 					<form action="${basePath}/ExportExcel/ajaxExport.do" method="post" id="form2">
 						<label for="inputEmail3"
-						class="control-label col-md-12 col-sm-12" style="float:left">下载模板:</label> &nbsp;&nbsp;&nbsp;&nbsp;<button
+						class="control-label col-md-12 col-sm-12" style="float:left">下载模板:</label> &nbsp;<button
 						id="exportExcel" style="cursor: pointer;" style="float:left;position: relative;">点击下载</button>文件以模板的方式导出
 					</form>
 				</li>

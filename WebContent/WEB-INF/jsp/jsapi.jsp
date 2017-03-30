@@ -56,6 +56,7 @@ System.out.println("in jsapi.jsp");
 						<!-- /input-group -->
 						<button type="button" class="btn btn-primary btn-lg btn-block" style="border: none;" onclick="pay();" >确认支付</button>
 					</div>
+
 				<!-- /.col-lg-6 -->
 			</div>
 			<!-- /.row -->

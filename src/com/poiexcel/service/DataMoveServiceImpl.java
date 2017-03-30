@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.poiexcel.dao.DataMoveDao;
+import com.poiexcel.util.Dialect;
 import com.poiexcel.util.StringUtils;
 import com.poiexcel.vo.InfoVo;
+import com.poiexcel.vo.Pagination;
 
 /**
  * @author lx g
@@ -80,7 +82,7 @@ public class DataMoveServiceImpl implements DataMoveService {
 
 
 	@Override
-	public List<InfoVo> queryDataList(String dateBegin, String dateEnd, String status) {
+	public List<InfoVo> queryDataList(String dateBegin, String dateEnd, String status , Pagination pagination) {
 		String wheresql = "" ; 
 		if(StringUtils.isNotEmpty(dateBegin)){
 			 wheresql += " and updateTime > " + dateBegin ;
@@ -96,7 +98,28 @@ public class DataMoveServiceImpl implements DataMoveService {
 			 }
 		}
 		String selectSql = "select * from cmtp where 1=1 " + wheresql ; 
-		return  dataMoveDao.queryDataList(selectSql );
+		String finalSql = Dialect.getLimitString(selectSql, pagination.getPageNo(), pagination.getPageSize(), "MYSQL");
+		return  dataMoveDao.queryDataList(finalSql );
+	}
+	
+	@Override
+	public int queryDataSize(String dateBegin, String dateEnd, String status) {
+		String wheresql = "" ; 
+		if(StringUtils.isNotEmpty(dateBegin)){
+			 wheresql += " and updateTime > " + dateBegin ;
+		}
+		if(StringUtils.isNotEmpty(dateEnd)){
+			 wheresql += " and  updateTime > " + dateEnd ;
+		}
+		if(StringUtils.isNotEmpty(status)){
+			 if("1".equals(status)){
+				 wheresql += " and status is not null "  ;
+			 }else{
+				 wheresql += " and  status is null "  ;
+			 }
+		}
+		String selectSql = "select count(1) total from cmtp where 1=1 " + wheresql ; 
+		return  dataMoveDao.queryTotal(selectSql );
 	}
 
 	@Override
@@ -105,7 +128,5 @@ public class DataMoveServiceImpl implements DataMoveService {
 				+ " WHERE id = " + id  ;
 		dataMoveDao.updateTables(updateDataSql);
 	}
-	
-	
 	
 }

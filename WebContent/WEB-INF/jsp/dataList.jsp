@@ -17,6 +17,26 @@
 <script type="text/javascript"
 	src="${basePath}/js/bootstrap-colorpalette.js" charset="utf-8"></script>
 <title>My JSP 'index.jsp' starting page</title>
+<style>
+.list-bottom{
+	position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #428bca;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    font-size: 12px;
+    }
+.list-bottom input,.list-bottom select{
+	border:1px;
+	padding:0 !important;
+	height:17px;
+}
+</style>
 <script type="text/javascript">
 	$(function() {
 		$("tr:odd").css("background", "#bbffff");
@@ -119,7 +139,7 @@
 </script>
 </head>
 
-<body class="innerbody">
+<body >
 	<form class="form-signin" role="form" method="POST"
 		enctype="multipart/form-data" id="form1"
 		action="uploadExcel/upload.do">
@@ -136,7 +156,7 @@
 					<input class="btd" type="button" value="清除" onclick="clearData()" />
 					<input class="btd" type="button" value="新建" onclick="exportInit()">
 			</p>
-			<div class="main-list">
+			 <div class="main-list">
 				<div class="main-list-top">
 					<table width="100%" cellspacing="0" cellpadding="0">
 						<thead>
@@ -217,8 +237,26 @@
 						</tbody>
 					</table>
 				</div>
-			</div>
+			</div> 
+		<div >
+			<nav>
+				<ul class="pagination pagination-sm " style="width: 100%">
+					<li ><a href="###" onclick = "query(1)">首页</a></li>
+					<li ><a href="###" onclick = "queryLast()"><<</a></li>
+					<li class="list-bottom" >第<input type="text" style="width: 24px ;text-align:center;margin:0 3px;" id="pageNo"
+						name="pageNo" onchange="query(this.value)" value="${pagination.pageNo}" />页
+					</li>
+					<li ><a href="###" onclick = "queryNext()">>></a></li>
+					<li ><a href="###" onclick = "query(${pagination.pageIndex})">尾页</a></li>
+					<li class="list-bottom">共 ${pagination.pageIndex}  页
+					</li>
+					<li class="list-bottom">共 ${pagination.total} 条</li>
+				</ul>
+				
+			</nav>
 		</div>
+		</div>
+		
 	</form>
 <!-- 模态框（Modal） -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"

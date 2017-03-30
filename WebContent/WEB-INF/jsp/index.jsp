@@ -106,7 +106,7 @@
 					<button type="button" class="btn btn-primary btn-lg  col-xs-6" style="border: none;" onclick=" getPrepay()">充值续费</button>
 				</p>
 				<p class="text-center">
-					<a href="${basePath}/card/search?imsi=${info.IMSI}">历史续费查询</a>
+					<a href="${basePath}/card/search?iccid=${info.ICCID}">历史续费查询</a>
 				</p>
 				
 			</div>

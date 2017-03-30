@@ -3,6 +3,7 @@ package com.poiexcel.service;
 import java.util.List;
 
 import com.poiexcel.vo.InfoVo;
+import com.poiexcel.vo.Pagination;
 
 public interface DataMoveService {
 	
@@ -14,9 +15,11 @@ public interface DataMoveService {
 
 	public void updateExistData();
 
-	public List<InfoVo> queryDataList(String dateBegin, String dateEnd, String status);
+	public List<InfoVo> queryDataList(String dateBegin, String dateEnd, String status , Pagination pagination);
 
 	public void updateDataStatus(String id, String color);
+
+	public int queryDataSize(String dateBegin, String dateEnd, String status);
 
 	
 	

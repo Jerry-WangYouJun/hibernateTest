@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.poiexcel.service.DataMoveService;
 import com.poiexcel.util.ImportExcelUtil;
 import com.poiexcel.vo.InfoVo;
+import com.poiexcel.vo.Pagination;
 
 @Controller
 @RequestMapping("/uploadExcel/*")
@@ -85,8 +86,14 @@ public class UploadExcelControl {
 			RequestMethod.POST })
 	public ModelAndView dataList(HttpServletRequest request,
 			HttpServletResponse response, Model model  , @RequestParam("dateBegin") String dateBegin ,
-			@RequestParam("dateEnd") String dateEnd , @RequestParam("status") String status) {
-		List<InfoVo> list = moveDataServices.queryDataList(dateBegin,dateEnd,status);
+			@RequestParam("dateEnd") String dateEnd , @RequestParam("status") String status ,Pagination pagination ) {
+		if(pagination.getTotal() == 0 ){
+			pagination.setTotal(moveDataServices.queryDataSize(dateBegin,dateEnd,status));
+		}
+		if(pagination.getPageIndex() == 0 ){
+			pagination.setPageIndex( pagination.getTotal() / pagination.getPageSize() + (pagination.getTotal() % pagination.getPageSize() > 0 ? 1 :0 ) );
+		}
+		List<InfoVo> list = moveDataServices.queryDataList(dateBegin,dateEnd,status , pagination);
 		model.addAttribute("list", list);
 		ModelAndView mv = new ModelAndView("dataList");
 		return mv;
