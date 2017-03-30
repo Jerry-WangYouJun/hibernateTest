@@ -6,6 +6,7 @@ import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.Map;
 
+<<<<<<< HEAD
 import com.poiexcel.util.StringUtils;
 
 
@@ -31,6 +32,32 @@ public class TxtUtil {
             //将写文件指针移到文件尾。
             randomFile.seek(fileLength);
             if(StringUtils.isNotEmpty(content)){
+=======
+import org.apache.commons.lang3.StringUtils;
+
+/**
+ * 操作txt工具类
+ * @author Jeff Xu
+ * @since 2016-08-11
+ */
+public class TxtUtil {
+	
+	/**
+	 * 将数据写入到相关的文件地址里面
+	 * @param dataSet
+	 * @param file
+	 */
+	public static void writeToTxt(String content,String fileUrl){
+		
+		try {
+            // 打开一个随机访问文件流，按读写方式
+            RandomAccessFile randomFile = new RandomAccessFile(fileUrl, "rw");
+            // 文件长度，字节数
+            long fileLength = randomFile.length();
+            //将写文件指针移到文件尾。
+            randomFile.seek(fileLength);
+            if(StringUtils.isNotBlank(content)){
+>>>>>>> branch 'master' of https://github.com/Jerry-WangYouJun/hibernateTest.git
             	String s = "";
             	s = content+"\r\n";
             	randomFile.writeBytes(s);

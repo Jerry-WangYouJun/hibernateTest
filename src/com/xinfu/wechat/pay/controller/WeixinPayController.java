@@ -1,6 +1,5 @@
 package com.xinfu.wechat.pay.controller;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -234,6 +233,7 @@ public class WeixinPayController {
 		return null;
 	}
 	
+	
 	/**
 	 * 微信异步回调，不会跳转页面
 	 * @param request
@@ -243,9 +243,6 @@ public class WeixinPayController {
 	 */
 	@RequestMapping("/notifyUrl")
 	public String weixinReceive(HttpServletRequest request,HttpServletResponse response, Model model){
-		String msg = "success";
-        response.setContentType("text/xml");     
-        String resXml = "";
 		System.out.println("==开始进入h5支付回调方法==");
 		String xml_review_result = WeixinPayUtil.getXmlRequest(request);
 		System.out.println("微信支付结果:"+xml_review_result);
@@ -268,25 +265,21 @@ public class WeixinPayController {
                     	//获得返回结果
                     	String return_code = (String)resultMap.get("return_code");
                     
-                    	String out_trade_no = (String)resultMap.get("out_trade_no");
-                    	if(!excuteResultMap.containsKey(out_trade_no)){
-                    		if("SUCCESS".equals(return_code) ){
-                    			 response.setContentType("text/xml");     
-                    			System.out.println("weixin pay sucess,out_trade_no:"+out_trade_no);
-                    			excuteResultMap.put(out_trade_no, "success");
-                    			//处理支付成功以后的逻辑，这里是写入相关信息到文本文件里面，如果有订单的处理订单
-                    			try{
-                    				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh24:mm:ss");
-                    				String content = out_trade_no+"        "+sdf.format(new Date());
-                    				String fileUrl = System.getProperty("user.dir") + File.separator+"WebContent" + File.separator + "data" + File.separator + "order.txt";
-                    				TxtUtil.writeToTxt(content, fileUrl);
-                    			}catch(Exception e){
-                    				e.printStackTrace();
-                    			}
-                    		}else{
-                    			model.addAttribute("payResult", "0");
-                    			model.addAttribute("err_code_des", "通信错误");
+                    	if("SUCCESS".equals(return_code)){
+                    		String out_trade_no = (String)resultMap.get("out_trade_no");
+                    		System.out.println("weixin pay sucess,out_trade_no:"+out_trade_no);
+                    		//处理支付成功以后的逻辑，这里是写入相关信息到文本文件里面，如果有订单的处理订单
+                    		try{
+                    			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh24:mm:ss");
+                    			String content = out_trade_no+"        "+sdf.format(new Date());
+                    			String fileUrl = System.getProperty("user.dir") + File.separator+"WebContent" + File.separator + "data" + File.separator + "order.txt";
+                    			TxtUtil.writeToTxt(content, fileUrl);
+                    		}catch(Exception e){
+                    			e.printStackTrace();
                     		}
+                    	}else{
+                    	    model.addAttribute("payResult", "0");
+                    	    model.addAttribute("err_code_des", "通信错误");
                     	}
                     }catch(Exception e){
                     	e.printStackTrace();
@@ -299,19 +292,10 @@ public class WeixinPayController {
                     WeixinPayUtil.getTradeOrder("http://weixin.xinfor.com/wx/notifyUrl", checkXml);
 				}
 			}
-			resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"
-					+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
-			BufferedOutputStream out = new BufferedOutputStream(
-					response.getOutputStream());
-			out.write(resXml.getBytes());
-			out.flush();
-			out.close();
-			
-			//response.getWriter().println(msg);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		return null;
 	}
 	
@@ -320,7 +304,7 @@ public class WeixinPayController {
 	 * @param request
 	 * @param response
 	 * @param model
-	 * @return 
+	 * @return
 	 * @throws IOException
 	 */
 	@RequestMapping("/success")

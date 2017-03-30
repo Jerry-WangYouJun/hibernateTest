@@ -431,14 +431,6 @@ System.out.println("fn898602B611177066799903290126".length());
 //				"https://api.mch.weixin.qq.com/pay/orderquery", xml);
 //		System.out.println(resultMsg);
 //		
-//		try {
-//			Map map = doXMLParse(resultMsg);
-//			String codeUrl = (String)map.get("code_url");
-//			System.out.println(codeUrl);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-	}
 
+}
 }
