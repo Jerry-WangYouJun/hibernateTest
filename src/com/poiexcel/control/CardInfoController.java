@@ -1,8 +1,12 @@
 package com.poiexcel.control;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.poiexcel.service.CardInfoService;
@@ -47,8 +51,13 @@ public class CardInfoController {
 	    }
 	    
 	    @RequestMapping("/xinfu_wechat_pay")
-	    public String getPay(){
-	    	return "xfpay";
+	    public ModelAndView getPay(@RequestParam("iccid") String iccid , HttpServletRequest request){
+	    	if(iccid==null){
+	    		iccid = request.getParameter("iccid");
+	    	}
+	    	ModelAndView mv = new ModelAndView("xfpay");
+	    	mv.addObject("iccid", iccid);
+	    	return mv;
 	    }
 	    
 }
