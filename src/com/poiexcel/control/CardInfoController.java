@@ -1,8 +1,5 @@
 package com.poiexcel.control;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.poiexcel.service.CardInfoService;
-import com.poiexcel.util.DateUtils;
-import com.poiexcel.vo.History;
 import com.poiexcel.vo.InfoVo;
 
 
@@ -44,14 +39,7 @@ public class CardInfoController {
 	    	ModelAndView mv = new ModelAndView("history");
 	    	InfoVo  vo = service.queryInfoByICCID(iccid);
 	    	if(vo!=null){
-	    		List<History>  historyList = new ArrayList<History>() ;
-	    		History h = new History();
-	    		h.setMoney(36);
-	    		h.setPname(("10M/月（包年）"));
-	    		h.setUpdateDate(DateUtils.formatDate("yyyy-MM-dd"));
-	    		h.setPremark("10M/月（包年）");
-	    		historyList.add(h);
-	    		vo.setHistory(historyList);
+	    		service.queryHistoryList(vo);
 	    		mv.addObject("info", vo);
 	    	}else{
 	    		InfoVo   wrongInfo = new InfoVo();

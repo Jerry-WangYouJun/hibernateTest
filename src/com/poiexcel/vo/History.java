@@ -7,9 +7,15 @@ public class History {
 	 private  double money ;
 	 private String pname ;
 	 private String premark;
+	 private String iccid ; 
 	 
 	 
-	 
+	public String getIccid() {
+		return iccid;
+	}
+	public void setIccid(String iccid) {
+		this.iccid = iccid;
+	}
 	public String getPremark() {
 		return premark;
 	}

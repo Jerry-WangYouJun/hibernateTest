@@ -17,11 +17,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.httpclient.util.DateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.poiexcel.service.CardInfoService;
 import com.poiexcel.util.StringUtils;
+import com.poiexcel.vo.History;
 import com.xinfu.wechat.pay.util.OrderUtils;
 import com.xinfu.wechat.pay.util.SignUtil;
 import com.xinfu.wechat.pay.util.TxtUtil;
@@ -41,6 +45,9 @@ import com.xinfu.weixin.util.WeixinPayUtil;
 @RequestMapping("/wx")
 @SuppressWarnings("rawtypes")
 public class WeixinPayController {
+	
+	@Autowired
+	CardInfoService service ; 
 	
 	private static String baseUrl = "http://www.pay-sf.com";
 	Map<String,String>  excuteResultMap = new HashMap<>();
@@ -226,6 +233,7 @@ public class WeixinPayController {
 			model.addAttribute("bizOrderId", orderId);
 			model.addAttribute("orderId", orderId);
 			model.addAttribute("payPrice", total_fee);
+			model.addAttribute("iccid", orderId.substring(2, orderId.length()- 8));
 			return "/jsapi";
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -241,6 +249,7 @@ public class WeixinPayController {
 	 * @param model
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/notifyUrl")
 	public String weixinReceive(HttpServletRequest request,HttpServletResponse response, Model model){
 		System.out.println("==开始进入h5支付回调方法==");
@@ -311,6 +320,10 @@ public class WeixinPayController {
 	public String toWXPaySuccess(HttpServletRequest request,
 			HttpServletResponse response, Model model) throws IOException{
 		String id = request.getParameter("orderId");
+		String iccid = "";
+		if(StringUtils.isNotEmpty(id)){
+			iccid =  id.substring(2, id.length()- 8) ;
+		}
 		System.out.println("toWXPaySuccess, orderId: " + id);
 		try {
 			Map resultMap = WeixinPayUtil.checkWxOrderPay(id);
@@ -326,11 +339,16 @@ public class WeixinPayController {
         			String err_code = (String)resultMap.get("err_code");
             	    String err_code_des = (String)resultMap.get("err_code_des");
             	    System.out.println("weixin resultCode:"+result_code+",err_code:"+err_code+",err_code_des:"+err_code_des);
-
             	    model.addAttribute("err_code", err_code);
             	    model.addAttribute("err_code_des", err_code_des);
         			model.addAttribute("payResult", "0");
         		}
+        		History  history = new History();
+        		history.setIccid(iccid);
+        		history.setMoney(WxPayConfig.money);
+        		history.setUpdateDate(DateUtil.formatDate(new Date(), "yyyy-MM-dd"));
+        		history.setPackageId(WxPayConfig.packageId);
+        		service.insertHistory(history);
         	}else{
         	    model.addAttribute("payResult", "0");
         	    model.addAttribute("err_code_des", "通信错误");
@@ -338,9 +356,8 @@ public class WeixinPayController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		String url = "http://www.pay-sf.com/card/querySingle?iccid=" +  id.substring(2, id.length()- 8) ;
+		String url = "http://www.pay-sf.com/card/querySingle?iccid=" +  iccid ;
 		response.sendRedirect(url);
 		return null;
 	}
-
 }

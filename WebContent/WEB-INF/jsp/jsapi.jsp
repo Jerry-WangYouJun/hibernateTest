@@ -48,18 +48,26 @@ System.out.println("in jsapi.jsp");
 	    <title>订单-支付</title>
 	</head>
 <body>
-    	<div class="container-fluid">
-			<div class="row">
-				<!-- Tab panes -->
-				<br/><br/><br/><br/>
-					<div class="col-lg-12">
-						<!-- /input-group -->
-						<button type="button" class="btn btn-primary btn-lg btn-block" style="border: none;" onclick="pay();" >确认支付</button>
-					</div>
 
-				<!-- /.col-lg-6 -->
+		<div class="container-fluid">
+			<div class="container user-name" style="border: 1px solid #00C7FE; padding: 20px; -webkit-border-radius: 10px 10px 10px 10px;">
+				<h3 style="text-align: center;">ICCID号</h3>
+				<h3 style="text-align: center; margin-top: 20px;">${iccid }</h3>
+				<p style="text-align: center; margin-top: 10px; color: #fd4a4a;">请仔细核对ICCID号，支付后将无法撤回</p>
 			</div>
-			<!-- /.row -->
+			<div role="tabpanel" class="tab-pane active" style="margin-top: 10px;">
+				<div class="container">
+					<h3>120M 12个月（每个月10M）</h3>
+					<p>每月10M全国流量，流量月底清零，流量超出停机，可随时累加套餐包。</p>
+					<h3 style="float: left;">支付金额：￥18</h3>
+				</div>
+			</div>
+
+			<div class="row dingwei">
+				<p class="text-center">
+					<button style="border: none;" type="button" class="btn btn-primary btn-lg  col-xs-6" onclick="pay();">确认支付</button>
+				</p>
+			</div>
 		</div>
 </body>
 

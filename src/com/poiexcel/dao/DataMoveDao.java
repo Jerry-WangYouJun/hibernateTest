@@ -212,7 +212,7 @@ public class DataMoveDao {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void queryHistory(InfoVo info) {
-		String sql = "select  h.imsi ,  p.package_name pname ,  h.update_date utime  , money  ,p.remark  premark  from history  h,  package p    where h.package_id= p.id and h.imsi = '" + info.getIMSI() + "'" ;
+		String sql = "select  h.imsi ,  p.package_name pname ,  h.update_date utime  , money  ,p.remark  premark  from history  h,  package p    where h.package_id= p.id and h.iccid = '" + info.getICCID() + "'" ;
 		final List<History> list = new ArrayList<History>();
 		//Map<String, String> map = new HashMap<String, String>();
 		jdbcTemplate.query(sql, new RowMapper() {

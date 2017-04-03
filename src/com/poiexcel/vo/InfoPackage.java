@@ -7,8 +7,15 @@ public class InfoPackage {
 	private String remark;
 	private String status;
 	private String pname ;
-
+	private String iccid ;
 	
+	public String getIccid() {
+		return iccid;
+	}
+	public void setIccid(String iccid) {
+		this.iccid = iccid;
+	}
+
 	public String getPname() {
 		return pname;
 	}

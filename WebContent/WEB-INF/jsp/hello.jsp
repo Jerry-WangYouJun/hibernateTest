@@ -8,6 +8,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-      <%response.sendRedirect(request.getContextPath()+"/uploadExcel/dataList.do?dateBegin=&dateEnd=&status=");%>
+      <%response.sendRedirect(request.getContextPath()+"/uploadExcel/dataList.do?dateBegin=&dateEnd=&datastatus=");%>
 </body>
 </html>

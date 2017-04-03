@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.poiexcel.dao.DataMoveDao;
+import com.poiexcel.vo.History;
 import com.poiexcel.vo.InfoVo;
 import com.redcollar.commons.ResponseURLDataUtil;
 import com.redcollar.commons.WlkAPIUtil;
@@ -19,6 +20,7 @@ public class CardInfoService {
 	
 	@Autowired
 	DataMoveDao  dao ;
+	
 	
 	public InfoVo queryInfoByICCID(String iccid) {
 		String sql = "select * from cmtp where iccid = '" + iccid + "'  or imsi = '" + iccid + "'";
@@ -80,5 +82,15 @@ public class CardInfoService {
 			 throw new Exception(jsonObject.get("message").toString());
 		 }
 		 return jsonObject.getJSONArray("result").getJSONObject(0);
+	}
+
+	public void insertHistory(History history) {
+		String  insertHistorySql = "insert history (iccid , package_id , money , update_date) values "
+				+ "('" + history.getIccid() + "','" + history.getPackageId() + "','" + history.getMoney() + "','" + history.getUpdateDate() + "')";
+		dao.updateTables(insertHistorySql);
+	}
+
+	public void queryHistoryList(InfoVo   info){
+		dao.queryHistory(info);
 	}
 }

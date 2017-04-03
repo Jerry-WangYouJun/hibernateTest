@@ -109,23 +109,21 @@
 		//$('#selected-color_2666'  ).css('background-color', '#FFFF00');
 	});
 	
-	function query(){
+	function query(pageNo){
 		var status = "" ; 
 		 $(":radio").each(function(){
 			  if(this.checked){
 				    status = this.value;
 			  }
 		 });
-		 
-		 window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=" + 
-				 $("#dateBegin").val() + "&dateEnd=" +  $("#dateEnd").val() + "&status=" + status ;
+		 $("#pageNo").val(pageNo);
+		/*  window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=" + 
+				 $("#dateBegin").val() + "&dateEnd=" +  $("#dateEnd").val() + "&datastatus=" + status 
+				 + "&pagination.pageNo = " + pageNo + "&pagination.pageIndex = " + ; */
+				 $("#form1").submit();
+		
 	}
 	
-	function editbtn(){
-		 $("#myModalLabel").html("新增设备");
-         $("#iframeDialog").attr("src", "${basePath}/DeviceServlet?action=addOrEidtJsp&motion=" + motion
-             + "&pageNo=" + $("#pageNo").val() + "&pageSize=" + $("#pageSize").val());
-	}
 	function exportInit(){
 		 $("#myModalLabel").html("导入模板");
          $("#iframeDialog").attr("src", "${basePath}/uploadExcel/uploadInit");
@@ -136,24 +134,45 @@
     function closeModal() {
         $("#myModal").modal('hide');
     }
+	   
+	function queryLast(){
+		 var pageNo = $("#pageNo").val();
+		 if (pageNo != undefined) {
+				$("#pageNo").val(pageNo);
+			}
+		 if(parseInt(pageNo) > 1 ){
+			 query(parseInt(pageNo) - 1);
+		 }
+	}
+	
+	function queryNext(){
+		 var pageNo = $("#pageNo").val();
+		 if (pageNo != undefined) {
+				$("#pageNo").val(pageNo);
+			}
+		 if(parseInt(pageNo) < parseInt( "${pagination.pageIndex}")){
+			 query(parseInt(pageNo) + 1);
+		 }
+	}
+	
 </script>
 </head>
 
 <body >
 	<form class="form-signin" role="form" method="POST"
 		enctype="multipart/form-data" id="form1"
-		action="uploadExcel/upload.do">
+		action="${basePath}/uploadExcel/dataList.do">
 		<div class="content">
 			<p class="content-top">
 				<span>查询日期</span>
-				 <input class="top-data" type="date" id="dateBegin"value="${dateBegin}" />
-				  - <input type="date" id="dateEnd" value="${dateEnd}" />
+				 <input class="top-data" type="date" name="dateBegin" id="dateBegin" value="${dateBegin}" />
+				  - <input type="date" id="dateEnd" name="dateEnd" value="${dateEnd}" />
 					<span>是否充值</span> 
-					<input class="top-data" type="radio" name="dataStatus" value="1" style="height: 15px; width: 20px"/>是 
-					<input class="top-data" type="radio" name="dataStatus" value="0" style="height: 15px; width: 20px"/>否
+					 <input class="top-data" type="radio" name="datastatus" value="1" style="height: 15px; width: 20px"/>是 
+					<input class="top-data" type="radio" name="datastatus" value="0" style="height: 15px; width: 20px"/>否 
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input class="bta" type="button" value="查询" onclick="query()" />
-					<input class="btd" type="button" value="清除" onclick="clearData()" />
+					<input class="btd" type="reset" value="清除"  />
 					<input class="btd" type="button" value="新建" onclick="exportInit()">
 			</p>
 			 <div class="main-list">

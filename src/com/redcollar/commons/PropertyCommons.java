@@ -14,22 +14,25 @@ public class PropertyCommons {
 	public String appid = "SODE1NH" ;
 	public String httpClientPwd = "7FNMY2";
 	public String ebid = "0001000000008";
-	String transid = appid + "20170228121212" + "00000001"   ;
-	String token = Encrypt.SHA256(appid + httpClientPwd + ebid);
-	String BASE_URL = "http://183.230.96.66:8087/v2/";
+	String transid = appid + "201700401154344" + "00000002"   ;
+	String token = Encrypt.getSHA256Str(appid + httpClientPwd + transid , "");
+	String BASE_URL = "http://183.230.96.66:8087/v2";
 	 public static void main(String[] args) {
 		// PropertyCommons p = new PropertyCommons();
 		 try {
-			 String u = "http://www.057110086.cn/api/WlkAPI.ashx?msisdn=1064861395216&transid=898602B6111600035004&ebid=0001000000035&appid=20170320213458465&token=20170320213458465";
+			// String u = "http://www.057110086.cn/api/WlkAPI.ashx?msisdn=1064861395216&transid=898602B6111600035004&ebid=0001000000035&appid=20170320213458465&token=20170320213458465";
 			//ResponseURLDataUtil.getReturnData(p.gprsUsedInfoSingle());
-			 ResponseURLDataUtil.getReturnData(u);
+			 PropertyCommons common = new PropertyCommons();
+			 String u=  common.smsStatusReset();
+			 System.out.println( ResponseURLDataUtil.getReturnData(u));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 	}
 	 
 	 public String  getUrl( String ebid){
-		 return   "?appid=" + appid + "&transid=" + transid + "&ebid=" + ebid + "&token=" + token ;
+		 
+		 return   "?appid=" + appid + "&transid=" + transid + "&ebid=" + ebid + "&token=" + token  ;
 	 }
 	 /**
 	  * 用户当月 GPRSGPRS 查
@@ -40,8 +43,8 @@ public class PropertyCommons {
 	  * 
 	  * 
 	  */
-	 public String gprsUsedInfoSingle(){
-		  String url = BASE_URL + "/gprsusedinfosingle" +  getUrl( "0001000000012") + "&msisdn=460040411808795"  ;
+	 public  String gprsUsedInfoSingle(){
+		  String url = BASE_URL + "/gprsusedinfosingle" +  getUrl( "0001000000012") + "&msisdn=1064862980499"  ;
 		  System.out.println(url);
 		  return url ;
 	 }
@@ -62,7 +65,7 @@ public class PropertyCommons {
 	public String  batchSmsusedSyDate(){
 		String url = BASE_URL + "/batchsmsusedbydate?appid=" + appid + 
 				"&ebid=" + "0001000000026" + "&transid=" + transid + "&token=" + token +
-				"&query_date=" + "20170309" + "&msisdns=460040411808795"  ;
+				"&query_date=" + "20170309" + "&msisdns=1064862980499"  ;
 		System.out.println(url);
 		return url;
 	}
@@ -83,7 +86,7 @@ public class PropertyCommons {
 	  */
 	 public String batchGprsUsedByDate(){
 		 String url = BASE_URL + "/batchgprsusedbydate" +  getUrl( "0001000000027") + 
-				 "&query_date=" + "20170309" + "&msisdns=460040411808795"  ;
+				 "&query_date=" + "20170309" + "&msisdns=1064862980499"  ;
 	      return url;	 
 	 }
 	 
@@ -97,7 +100,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String balanceRealSingle(){
-		  String url = BASE_URL + "/balancerealsingle" +  getUrl( "0001000000035") + "&msisdn=460040411808795"  ;
+		  String url = BASE_URL + "/balancerealsingle" +  getUrl( "0001000000035") + "&msisdn=1064862980499"  ;
 				 
 		  return url;
 	 }
@@ -112,7 +115,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String smsUsedInfoSingle(){
-		 String url = BASE_URL + "/smsusedinfosingle" +  getUrl( "0001000000036") + "&msisdn=460040411808795"  ;
+		 String url = BASE_URL + "/smsusedinfosingle" +  getUrl( "0001000000036") + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
 	 
@@ -125,7 +128,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String groupUserInfo(){
-		 String url = BASE_URL + "/groupuserinfo" +  getUrl( "0001000000039") + "&query_date=" + "20170309" + "&msisdn=460040411808795"  ;
+		 String url = BASE_URL + "/groupuserinfo" +  getUrl( "0001000000039") + "&query_date=" + "20170309" + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
 	 
@@ -141,7 +144,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String smsUsedByDate(){
-		 String url = BASE_URL + "/smsusedbydate" +  getUrl( "0001000000040") + "&query_date=" + "20170309" + "&msisdn=460040411808795"  ;
+		 String url = BASE_URL + "/smsusedbydate" +  getUrl( "0001000000040") + "&query_date=" + "20170309" + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
 	 
@@ -161,7 +164,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String gprsRealTimeInfo(){
-		 String url = BASE_URL + "/gprsrealtimeinfo" +  getUrl( "0001000000083") + "&msisdn=460040411808795"  ;
+		 String url = BASE_URL + "/gprsrealtimeinfo" +  getUrl( "0001000000083") + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
 	 
@@ -178,7 +181,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String gprsRealSingle(){
-		 String url = BASE_URL + "/gprsrealsingle" +  getUrl( "0001000000008") + "&msisdn=460040411808795"  ;
+		 String url = BASE_URL + "/gprsrealsingle" +  getUrl( "0001000000008") + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
 	 
@@ -192,7 +195,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String userStatusRealSingle(){
-		 String url = BASE_URL + "/userstatusrealsingle" +  getUrl( "0001000000009") + "&msisdn=460040411808795"  ;
+		 String url = BASE_URL + "/userstatusrealsingle" +  getUrl( "0001000000009") + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
 	 
@@ -212,7 +215,7 @@ public class PropertyCommons {
 	  */
 	 public String cardInfo(){
 		String url = BASE_URL + "/cardinfo?appid=" + appid + 
-				"&transid=" + transid + "&ebid=" + 0001000000010 + "&token=" + token + "&card_info=460040411808795&type=msisdn"  ;
+				"&transid=" + transid + "&ebid=" + 0001000000010 + "&token=" + token + "&card_info=1064862980499&type=msisdn"  ;
 		System.out.println(url);
 		return url ;
 	}
@@ -228,7 +231,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String onAndOffRealSingle(){
-		 String url = BASE_URL + "/onandoffrealsingle" +  getUrl( "0001000000025") + "&msisdn=460040411808795"  ;
+		 String url = BASE_URL + "/onandoffrealsingle" +  getUrl( "0001000000025") + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
 	 
@@ -248,7 +251,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String multiAPNInfo(){
-		 String url = BASE_URL + "/multiapninfo" +  getUrl( "0001000000139") + "&msisdn=460040411808795"  ;
+		 String url = BASE_URL + "/multiapninfo" +  getUrl( "0001000000139") + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
 	 
@@ -262,7 +265,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String smsStatusReset(){
-		 String url = BASE_URL + "/smsstatusreset" +  getUrl( "0001000000034") + "&msisdn=460040411808795"  ;
+		 String url = BASE_URL + "/smsstatusreset" +  getUrl( "0001000000034") + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
 	

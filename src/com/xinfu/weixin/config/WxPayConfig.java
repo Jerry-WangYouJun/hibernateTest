@@ -26,9 +26,15 @@ public class WxPayConfig {
 	
 	public static String signType = "MD5"; 
 	
+	/**
+	 * 固定套餐金额
+	 * @param args
+	 */
+	public static  Integer money = 18 ;
 	
-	
-	 public static void main(String[] args) {
-		 System.out.println(partnerkey.length());
-	}
+	/**
+	 * 固定套餐包id
+	 * @param args
+	 */
+	public  static  int packageId = 1 ;
 }
