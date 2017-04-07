@@ -80,8 +80,8 @@ public class WeixinPayController {
 		try {
 			String iccid = request.getParameter("iccid");
 			String orderId = OrderUtils.genOrderNo(iccid);
-			//String totalFee = request.getParameter("totalFee");
-			String totalFee = "0.01";
+			String totalFee = request.getParameter("totalFee");
+			//String totalFee = "0.01";
 			System.out.println("in userAuth,orderId:" + orderId);
 			
 			//授权后要跳转的链接

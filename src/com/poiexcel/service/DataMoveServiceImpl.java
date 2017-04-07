@@ -56,14 +56,16 @@ public class DataMoveServiceImpl implements DataMoveService {
 
 	@Override
 	public void updateExistData(String apiCode) {
-		String updateDataSql = "UPDATE cmtp c, cmtp_temp t SET c.cardcode = t.cardcode, c.remark=t.remark, "
-				+ "c.IMSI=t.IMSI, c.ICCID=t.ICCID, c.cardStatus=t.cardStatus, "
-				+ "c.gprsUsed=t.gprsUsed, c.messageUsed=t.messageUsed, c.openDate=t.openDate, "
-				+ "c.withMessageService=t.withMessageService, c.withGPRSService=t.withGPRSService,"
-				+ " c.packageType=t.packageType, c.monthTotalStream=t.monthTotalStream ,c.updateTime = t.updateTime "
-				+ " ,c.apiCode = '" + apiCode + "'"
-				+ " WHERE	t.ICCID = c.iccid" ;
-		dataMoveDao.updateTables(updateDataSql);
+		String updateSql = "select t.* from cmtp c , cmtp_temp t where c.iccid = t.iccid and  "
+				+ "  ( c.cardcode != t.cardcode or  c.remark !=t.remark or  "
+				+ "  c.IMSI !=t.IMSI or c.ICCID !=t.ICCID or  c.cardStatus !=t.cardStatus or "
+				+ "	 c.gprsUsed !=t.gprsUsed or  c.messageUsed !=t.messageUsed or "
+				+ "	 c.openDate !=t.openDate or c.withMessageService !=t.withMessageService or "
+				+ "  c.withGPRSService !=t.withGPRSService or  c.packageType !=t.packageType OR "
+				+ "  c.monthTotalStream !=t.monthTotalStream  or c.updateTime != t.updateTime  ) ";
+		System.out.println(updateSql);
+		List<InfoVo>  list =  dataMoveDao.queryDataList(updateSql);
+		dataMoveDao.updateTables(list);
 	}
 
 
@@ -73,10 +75,10 @@ public class DataMoveServiceImpl implements DataMoveService {
 	 */
 	public void dataMoveSql2Oracle(String apiCode) {
 		try {
-			String insertNewDataSql = "INSERT INTO cmtp ( " + columuns + " ) 	SELECT	distinct " 
-		+ columuns + " from	cmtp_temp t  where iccid not in (select iccid  from cmtp )" ;
+			String insertNewDataSql = "select *  from cmtp_temp where  iccid not in (select iccid from cmtp ) " ;
 			System.out.println(insertNewDataSql);
-			dataMoveDao.updateTables(insertNewDataSql);
+			List<InfoVo>  list =  dataMoveDao.queryDataList(insertNewDataSql);
+			dataMoveDao.insertTables(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -128,7 +130,7 @@ public class DataMoveServiceImpl implements DataMoveService {
 	public void updateDataStatus(String id , String color) {
 		String updateDataSql = "UPDATE cmtp SET status =  '" + color + "'"
 				+ " WHERE id = " + id  ;
-		dataMoveDao.updateTables(updateDataSql);
+		dataMoveDao.update(updateDataSql);
 	}
 	
 }
