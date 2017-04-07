@@ -29,7 +29,7 @@
 						<img src="${basePath}/img/logo.png" alt="">
 					</div>
 					<c:choose>
-						<c:when test="${info.cardStatus == 01 }"><span class="label label-success">在线</span></c:when>
+						<c:when test="${info.cardStatus == '01' }"><span class="label label-success">在线</span></c:when>
 						<c:otherwise><span class="label label-default">离线</span></c:otherwise>
 					</c:choose>
 					

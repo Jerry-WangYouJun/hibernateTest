@@ -51,7 +51,7 @@ public class UploadExcelControl {
 	 * @param request
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "upload", method = { RequestMethod.GET,
+	/*@RequestMapping(value = "upload", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	public ModelAndView uploadExcel(HttpServletRequest request , Model model)
 			throws Exception {
@@ -80,7 +80,7 @@ public class UploadExcelControl {
 		model.addAttribute("list", listob);
 		ModelAndView mv = new ModelAndView("main");
 		return mv;
-	}
+	}*/
 
 	@RequestMapping(value = "dataList.do", method = { RequestMethod.GET,
 			RequestMethod.POST })
@@ -119,9 +119,9 @@ public class UploadExcelControl {
 	@RequestMapping(value = "ajaxUpload.do", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	public void ajaxUploadExcel(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+			HttpServletResponse response , String apiCode) throws Exception {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		System.out.println("ͨ通过传统方式form表单提交方式导入excel文件！");
+		System.out.println("通过Ajax方式form表单提交方式导入excel文件！");
 		InputStream in = null;
 		List<List<Object>> listob = null;
 		MultipartFile file = multipartRequest.getFile("upfile");
@@ -129,18 +129,18 @@ public class UploadExcelControl {
 			throw new Exception("");
 		}
 		in = file.getInputStream();
-		System.out.println("读取表插入开始：" + System.currentTimeMillis());
+		System.out.println("导入表数据开始：" + System.currentTimeMillis());
 		listob = new ImportExcelUtil().getBankListByExcel(in,
 				file.getOriginalFilename());
 		in.close();
 		System.out.println("删除表插入开始：" + System.currentTimeMillis());
 		moveDataServices.deleteDataTemp();
 		System.out.println("临时表插入开始：" + System.currentTimeMillis());
-		moveDataServices.insertDataToTemp(listob);
+		moveDataServices.insertDataToTemp(listob, apiCode);
 		System.out.println("覆盖数据开始    ：" + System.currentTimeMillis());
-		moveDataServices.updateExistData();
+		moveDataServices.updateExistData(apiCode);
 		System.out.println("插入新数据开始：" + System.currentTimeMillis());
-		moveDataServices.dataMoveSql2Oracle();
+		moveDataServices.dataMoveSql2Oracle(apiCode);
 		System.out.println("执行结束            ：" + System.currentTimeMillis());
 		PrintWriter out = null;
 		response.setCharacterEncoding("utf-8");

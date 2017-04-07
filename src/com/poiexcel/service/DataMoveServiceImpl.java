@@ -25,7 +25,7 @@ import com.poiexcel.vo.Pagination;
 public class DataMoveServiceImpl implements DataMoveService {
 	
 	String columuns = "cardcode,	remark,	IMSI,	ICCID,	userStatus,	cardStatus,	gprsUsed,	messageUsed,"
-			+ "  openDate,	withMessageService,	withGPRSService,	packageType,	monthTotalStream , updateTime ";
+			+ "  openDate,	withMessageService,	withGPRSService,	packageType,	monthTotalStream , updateTime , apiCode ";
 
 	public Properties pro = new Properties();
 	@Autowired
@@ -50,17 +50,18 @@ public class DataMoveServiceImpl implements DataMoveService {
 	}
 	
 	@Override
-	public void insertDataToTemp(List<List<Object>> listob) {
-		dataMoveDao.insertDataTemp(listob);
+	public void insertDataToTemp(List<List<Object>> listob , String apiCode) {
+		dataMoveDao.insertDataTemp(listob , apiCode);
 	}
 
 	@Override
-	public void updateExistData() {
+	public void updateExistData(String apiCode) {
 		String updateDataSql = "UPDATE cmtp c, cmtp_temp t SET c.cardcode = t.cardcode, c.remark=t.remark, "
-				+ "c.IMSI=t.IMSI, c.ICCID=t.ICCID, c.userStatus=t.userStatus, c.cardStatus=t.cardStatus, "
+				+ "c.IMSI=t.IMSI, c.ICCID=t.ICCID, c.cardStatus=t.cardStatus, "
 				+ "c.gprsUsed=t.gprsUsed, c.messageUsed=t.messageUsed, c.openDate=t.openDate, "
 				+ "c.withMessageService=t.withMessageService, c.withGPRSService=t.withGPRSService,"
-				+ " c.packageType=t.packageType, c.monthTotalStream=t.monthTotalStream ,c.updateTime = t.updateTime  "
+				+ " c.packageType=t.packageType, c.monthTotalStream=t.monthTotalStream ,c.updateTime = t.updateTime "
+				+ " ,c.apiCode = '" + apiCode + "'"
 				+ " WHERE	t.ICCID = c.iccid" ;
 		dataMoveDao.updateTables(updateDataSql);
 	}
@@ -70,10 +71,11 @@ public class DataMoveServiceImpl implements DataMoveService {
 	 * @param tableName
 	 *            需要进行转移而表名
 	 */
-	public void dataMoveSql2Oracle() {
+	public void dataMoveSql2Oracle(String apiCode) {
 		try {
 			String insertNewDataSql = "INSERT INTO cmtp ( " + columuns + " ) 	SELECT	distinct " 
 		+ columuns + " from	cmtp_temp t  where iccid not in (select iccid  from cmtp )" ;
+			System.out.println(insertNewDataSql);
 			dataMoveDao.updateTables(insertNewDataSql);
 		} catch (Exception e) {
 			e.printStackTrace();

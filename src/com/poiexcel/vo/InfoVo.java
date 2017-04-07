@@ -31,6 +31,7 @@ public class InfoVo {
 	private List<InfoPackage> packageList; 
 	private List<History> history ;
 	private Long restDay ;
+	private String apiCode;
 	
 	
 	
@@ -192,6 +193,12 @@ public class InfoVo {
 	}
 	public void setDateEnd(String dateEnd) {
 		this.dateEnd = dateEnd;
+	}
+	public String getApiCode() {
+		return apiCode;
+	}
+	public void setApiCode(String apiCode) {
+		this.apiCode = apiCode;
 	}
 	
 }

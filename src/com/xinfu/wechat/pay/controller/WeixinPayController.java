@@ -80,8 +80,8 @@ public class WeixinPayController {
 		try {
 			String iccid = request.getParameter("iccid");
 			String orderId = OrderUtils.genOrderNo(iccid);
-			String totalFee = request.getParameter("totalFee");
-			//String totalFee = "0.01";
+			//String totalFee = request.getParameter("totalFee");
+			String totalFee = "0.01";
 			System.out.println("in userAuth,orderId:" + orderId);
 			
 			//授权后要跳转的链接
@@ -120,7 +120,9 @@ public class WeixinPayController {
 			//String userId = request.getParameter("userId"); 	
 			String code = request.getParameter("code");
 			System.out.println("code:"+code);
-			
+			if(code == null){
+				  return null ;
+			}
 			//获取统一下单需要的openid
 			String openId ="";
 			String URL = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
@@ -349,6 +351,8 @@ public class WeixinPayController {
         		history.setUpdateDate(DateUtil.formatDate(new Date(), "yyyy-MM-dd"));
         		history.setPackageId(WxPayConfig.packageId);
         		service.insertHistory(history);
+        		
+        		service.updateCardStatus(iccid);
         	}else{
         	    model.addAttribute("payResult", "0");
         	    model.addAttribute("err_code_des", "通信错误");

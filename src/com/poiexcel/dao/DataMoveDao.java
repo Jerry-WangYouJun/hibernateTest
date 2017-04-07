@@ -35,14 +35,16 @@ public class DataMoveDao {
 	String INSERTSQL = "";
 	StringBuffer mailMessage = new StringBuffer("");
 	String columuns = "cardcode,	remark,	IMSI,	ICCID,	userStatus,	cardStatus,	gprsUsed,"
-			+ "	messageUsed,	openDate,	withMessageService,	withGPRSService,	packageType,  updateTime ";
-
+			+ "	messageUsed,	openDate,	withMessageService,	withGPRSService,	packageType , apiCode ";
+	String  updateColumns = "cardcode,	remark,	IMSI,	ICCID,	cardStatus,	gprsUsed,"
+			+ "	messageUsed,	openDate,	withMessageService,	withGPRSService,	packageType , apiCode ";
 	public void updateTables(String sql) {
 		
 		try {
-			jdbcTemplate
-					.update(sql);
+			System.out.println(jdbcTemplate
+					.update(sql));
 		} catch (Exception e) {
+			e.printStackTrace();
 			mailMessage.append("执行中出错：" + e.getMessage());
 		}
 
@@ -59,9 +61,9 @@ public class DataMoveDao {
 		}
 	}
 	
-	public int insertDataTemp(List<List<Object>> listob) {
+	public int insertDataTemp(List<List<Object>> listob, String apiCode) {
 		 String insertsqlTemp = "INSERT INTO cmtp_temp ( " + columuns + ") "
-		 		+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?  )";
+		 		+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , '" + apiCode + "' )";
 		 objectList = listob ;
 		// batchUpdate可以高效进行批量插入操作
 		try {
@@ -69,7 +71,7 @@ public class DataMoveDao {
 					new BatchPreparedStatementSetter() {
 						public void setValues(PreparedStatement ps, int i) {
 							try {
-								Format format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+								Format format = new SimpleDateFormat("yyyy-MM-dd");
 								// 并根据数据类型对Statement 中的占位符进行赋值
 									List<Object> valueList = objectList.get(i);
 									ps.setString(1, String.valueOf(valueList.get(0)));
@@ -85,7 +87,7 @@ public class DataMoveDao {
 									ps.setString(11, String.valueOf(valueList.get(10)));
 									ps.setString(12, String.valueOf(valueList.get(11)));
 									//ps.setString(13, String.valueOf(valueList.get(12)));
-									ps.setString(13,format.format(new Date(System.currentTimeMillis())));
+									//ps.setString(13,format.format(new Date(System.currentTimeMillis())));
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -129,6 +131,7 @@ public class DataMoveDao {
 				vo.setRemark(rs.getString("remark"));
 				vo.setStatus(rs.getString("status"));
 				vo.setUpdateTime(rs.getString("updateTime"));
+				vo.setApiCode(rs.getString("apicode"));
 				Long restDays = 0L;
 				String deadLine ;
 				if(vo.getUpdateTime() == null){

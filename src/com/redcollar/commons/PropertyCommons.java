@@ -2,6 +2,9 @@ package com.redcollar.commons;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.Date;
+
+import org.apache.commons.httpclient.util.DateUtil;
 
 
 /**
@@ -11,42 +14,123 @@ import java.net.URL;
  */
 public class PropertyCommons {
 	 
-	public String appid = "SODE1NH" ;
-	public String httpClientPwd = "7FNMY2";
-	public String ebid = "0001000000008";
-	String transid = appid + "201700401154344" + "00000002"   ;
-	String token = Encrypt.getSHA256Str(appid + httpClientPwd + transid , "");
-	String BASE_URL = "http://183.230.96.66:8087/v2";
-	 public static void main(String[] args) {
+	public static String appid = "SODE1NH" ;
+	public static String httpClientPwd = "7FNMY2";
+	private static String BASE_URL = "http://183.230.96.66:8087/v2";
+	public static void main(String[] args) {
 		// PropertyCommons p = new PropertyCommons();
 		 try {
 			// String u = "http://www.057110086.cn/api/WlkAPI.ashx?msisdn=1064861395216&transid=898602B6111600035004&ebid=0001000000035&appid=20170320213458465&token=20170320213458465";
 			//ResponseURLDataUtil.getReturnData(p.gprsUsedInfoSingle());
-			 PropertyCommons common = new PropertyCommons();
-			 String u=  common.smsStatusReset();
+			 String u=  PropertyCommons.getUrl("0001000000008","1064862510962");
 			 System.out.println( ResponseURLDataUtil.getReturnData(u));
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 	}
 	 
-	 public String  getUrl( String ebid){
-		 
-		 return   "?appid=" + appid + "&transid=" + transid + "&ebid=" + ebid + "&token=" + token  ;
+	public static String getToken(){
+		return Encrypt.getSHA256Str(appid + httpClientPwd + getTransid() , "");
+	}
+	
+	 public static String getTransid(){
+		 return appid + DateUtil.formatDate( new Date()  , "yyyyMMddhhmmss") + "00000002" ;
 	 }
+	 public static String  getUrl( String ebid){
+		 
+		 return   "?appid=" + appid + "&transid=" + getTransid() + "&ebid=" + ebid + "&token=" + getToken()  ;
+	 }
+	 public static String getUrl(String ebid , String msisdn ){
+		 String url = "";
+		 switch(ebid){
+		 	case StringCommons.API_ZHONGYI_GPRSUSEDINFOSINGLE :
+		 		url =  gprsUsedInfoSingle(ebid , msisdn);
+		 		break ;
+		 	case StringCommons.API_ZHONGYI_GPRSREALSINGLE :
+		 		url =  gprsRealSingle(ebid , msisdn);
+		 		break ;
+		 }
+		 return url ;
+	 }
+	 
+	 /**
+	  * gprsrealsingle  API2001－在线信息实时查询
+	  * 
+	  * 示例：http://183.230.96.66:8087/v2/gprsrealsingle?appid=xxx&transid=xxx&ebid=xxx&token=xxx&msisdn=xxx
+	  *	返回参数说明：
+			参数			 是否必须	 默认值	 含义
+			GPRSSTATUS 	是 		无 		GPRS 在线状态： 00-离线 01-在线
+			IP			是		 无 		用户 IP 地址
+			APN 		是 		无 		用户接入的 APN
+			RAT 		是		 无		1（返回 1 指 3G） 2（返回 2 指 2G） 6（返回 6 指 4G 及其他）
+	 * @param msisdn 
+	 * @param ebid 
+	  * @return
+	  */
+	 public static String gprsRealSingle(String ebid, String msisdn){
+		 String url = BASE_URL + "/gprsrealsingle" +  getUrl( ebid) + "&msisdn=" +  msisdn ;
+		  return url;
+	 }
+	 
+	 
+	 /**
+	  * CMIOT_API2002－用户状态信息实时查询   userstatusrealsingle
+	  * 
+	  * 示例：http://183.230.96.66:8087/v2/userstatusrealsingle?appid=xxx&transid=xxx&ebid=xxx&token=xxx&msisdn=xxx
+	  *	返回参数说明：
+			参数			 是否必须	 默认值	 含义
+			STATUS 		是		 否		00-正常；01-单向停机；02-停机；03-预销号；04-销号；05-过户；06-休眠；07-待激；99-号码不存在
+	  * @return
+	  */
+	 public String userStatusRealSingle(){
+		 String url = BASE_URL + "/userstatusrealsingle" +  getUrl( "0001000000009") + "&msisdn=1064862980499"  ;
+		  return url;
+	 }
+	 
 	 /**
 	  * 用户当月 GPRSGPRS 查
 	  * http://183.230.96.66:8087/v2/gprsusedinfosingle?appid=xxx&transid=xxx&ebid=xxx&token=xxx&msisdn=xxx
 	  * 返回参数说明：
 			参数                         是否必须   默认值      含义
 			total_gprs 是               无             用户当月使用的总的 GPRS 流量（单位：KB）
+	 * @param msisdn 
+	 * @param ebid 
 	  * 
 	  * 
 	  */
-	 public  String gprsUsedInfoSingle(){
-		  String url = BASE_URL + "/gprsusedinfosingle" +  getUrl( "0001000000012") + "&msisdn=1064862980499"  ;
+	 public static String gprsUsedInfoSingle(String ebid, String msisdn){
+		  String url = BASE_URL + "/gprsusedinfosingle" +  getUrl( ebid) + "&msisdn=" + msisdn  ;
 		  System.out.println(url);
 		  return url ;
+	 }
+
+	 /**
+	  * CMIOT_API2008－开关机信息实时查询  onandoffrealsingle
+	  *	提供单个 MSISDN 号卡的开关机状态实时查询功能
+	  * 
+	  * 示例：http://183.230.96.66:8087/v2/onandoffrealsingle?appid=xxx&transid=xxx&ebid=xxx&token=xxx&msisdn=xxx
+	  *	返回参数说明：
+			参数			 是否必须	 默认值	 含义
+			STATUS 		是		 否		0-关机 1-开机
+	  * @return
+	  */
+	 public String onAndOffRealSingle(){
+		 String url = BASE_URL + "/onandoffrealsingle" +  getUrl( "0001000000025") + "&msisdn=1064862980499"  ;
+		  return url;
+	 }
+	 
+	 /**
+	  * balancerealsingle－用户余额信息实时查询
+	  * http://183.230.96.66:8087/v2/balancerealsingle?appid=xxxx&ebid=xxxxxxxxxx&transid=xxxxxxxx&token=xxxxxxxxx&msisdn=xxxxxxxx
+	  * 返回参数说明：
+			参数		 是否必须	 默认值	 含义
+			balance 是 		无		 用户余额（单位：元)
+	  * @return
+	  */
+	 public String balanceRealSingle(){
+		  String url = BASE_URL + "/balancerealsingle" +  getUrl( "0001000000035") + "&msisdn=1064862980499"  ;
+				 
+		  return url;
 	 }
 	 
 	 /**
@@ -64,8 +148,8 @@ public class PropertyCommons {
 	  */
 	public String  batchSmsusedSyDate(){
 		String url = BASE_URL + "/batchsmsusedbydate?appid=" + appid + 
-				"&ebid=" + "0001000000026" + "&transid=" + transid + "&token=" + token +
-				"&query_date=" + "20170309" + "&msisdns=1064862980499"  ;
+				"&ebid=" + "0001000000026" + "&transid=" + getTransid() + "&token=" + getToken() +
+				"&query_date=" + "20170405" + "&msisdns=1064862980499"  ;
 		System.out.println(url);
 		return url;
 	}
@@ -86,24 +170,11 @@ public class PropertyCommons {
 	  */
 	 public String batchGprsUsedByDate(){
 		 String url = BASE_URL + "/batchgprsusedbydate" +  getUrl( "0001000000027") + 
-				 "&query_date=" + "20170309" + "&msisdns=1064862980499"  ;
+				 "&query_date=" + "20170405" + "&msisdns=1064862980499"  ;
 	      return url;	 
 	 }
 	 
-	 
-	 /**
-	  * balancerealsingle－用户余额信息实时查询
-	  * http://183.230.96.66:8087/v2/balancerealsingle?appid=xxxx&ebid=xxxxxxxxxx&transid=xxxxxxxx&token=xxxxxxxxx&msisdn=xxxxxxxx
-	  * 返回参数说明：
-			参数		 是否必须	 默认值	 含义
-			balance 是 		无		 用户余额（单位：元)
-	  * @return
-	  */
-	 public String balanceRealSingle(){
-		  String url = BASE_URL + "/balancerealsingle" +  getUrl( "0001000000035") + "&msisdn=1064862980499"  ;
-				 
-		  return url;
-	 }
+
 	 
 	 /**
 	  * smsusedinfosingle－用户当月短信查询
@@ -128,7 +199,7 @@ public class PropertyCommons {
 	  * @return
 	  */
 	 public String groupUserInfo(){
-		 String url = BASE_URL + "/groupuserinfo" +  getUrl( "0001000000039") + "&query_date=" + "20170309" + "&msisdn=1064862980499"  ;
+		 String url = BASE_URL + "/groupuserinfo" +  getUrl( "0001000000039") + "&query_date=" + "20170405" + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
 	 
@@ -167,38 +238,7 @@ public class PropertyCommons {
 		 String url = BASE_URL + "/gprsrealtimeinfo" +  getUrl( "0001000000083") + "&msisdn=1064862980499"  ;
 		  return url;
 	 }
-	 
-	 /**
-	  * gprsrealsingle  API2001－在线信息实时查询
-	  * 
-	  * 示例：http://183.230.96.66:8087/v2/gprsrealsingle?appid=xxx&transid=xxx&ebid=xxx&token=xxx&msisdn=xxx
-	  *	返回参数说明：
-			参数			 是否必须	 默认值	 含义
-			GPRSSTATUS 	是 		无 		GPRS 在线状态： 00-离线 01-在线
-			IP			是		 无 		用户 IP 地址
-			APN 		是 		无 		用户接入的 APN
-			RAT 		是		 无		1（返回 1 指 3G） 2（返回 2 指 2G） 6（返回 6 指 4G 及其他）
-	  * @return
-	  */
-	 public String gprsRealSingle(){
-		 String url = BASE_URL + "/gprsrealsingle" +  getUrl( "0001000000008") + "&msisdn=1064862980499"  ;
-		  return url;
-	 }
-	 
-	 /**
-	  * CMIOT_API2002－用户状态信息实时查询   userstatusrealsingle
-	  * 
-	  * 示例：http://183.230.96.66:8087/v2/userstatusrealsingle?appid=xxx&transid=xxx&ebid=xxx&token=xxx&msisdn=xxx
-	  *	返回参数说明：
-			参数			 是否必须	 默认值	 含义
-			STATUS 		是		 否		00-正常；01-单向停机；02-停机；03-预销号；04-销号；05-过户；06-休眠；07-待激；99-号码不存在
-	  * @return
-	  */
-	 public String userStatusRealSingle(){
-		 String url = BASE_URL + "/userstatusrealsingle" +  getUrl( "0001000000009") + "&msisdn=1064862980499"  ;
-		  return url;
-	 }
-	 
+	
 	 /**
 	  * CMIOT_API2003－码号信息查询  cardinfo  
 			根据 ICCID、IMSI、MSISDN 任意 1 个查询剩余 2 个的能力
@@ -215,26 +255,11 @@ public class PropertyCommons {
 	  */
 	 public String cardInfo(){
 		String url = BASE_URL + "/cardinfo?appid=" + appid + 
-				"&transid=" + transid + "&ebid=" + 0001000000010 + "&token=" + token + "&card_info=1064862980499&type=msisdn"  ;
+				"&transid=" + getTransid() + "&ebid=" + "0001000000010" + "&token=" + getToken() + "&card_info=1064862980499&type=0"  ;
 		System.out.println(url);
 		return url ;
 	}
 	
-	 /**
-	  * CMIOT_API2008－开关机信息实时查询  onandoffrealsingle
-	  *	提供单个 MSISDN 号卡的开关机状态实时查询功能
-	  * 
-	  * 示例：http://183.230.96.66:8087/v2/onandoffrealsingle?appid=xxx&transid=xxx&ebid=xxx&token=xxx&msisdn=xxx
-	  *	返回参数说明：
-			参数			 是否必须	 默认值	 含义
-			STATUS 		是		 否		0-关机 1-开机
-	  * @return
-	  */
-	 public String onAndOffRealSingle(){
-		 String url = BASE_URL + "/onandoffrealsingle" +  getUrl( "0001000000025") + "&msisdn=1064862980499"  ;
-		  return url;
-	 }
-	 
 	 /**
 	  * CMIOT_API2029－物联卡多 APN 信息实时查询/multiapninfo
 		 为集团客户提供查询某卡号的多 APN 信息实时查询

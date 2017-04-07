@@ -6,7 +6,8 @@
 <link>
 <link href="${basePath}/css/bootstrap.min.css" type="text/css"
 	rel="stylesheet" />
-<link href="${basePath}/css/styles.css" type="text/css" rel="stylesheet" />
+	<link href="${basePath}/css/style.css" type="text/css"
+	rel="stylesheet" />
 <script type="text/javascript" src="${basePath}/js/jquery-3.1.1.min.js"></script>
 <script type="text/JavaScript" src="${basePath}/js/jquery.form.js"></script>
 <script type="text/javascript" src="${basePath}/js/bootstrap.min.js"></script>
@@ -77,36 +78,57 @@
 	        form.append(input1);
 	        form.submit();//表单提交             
 	                            } */
+	                            
+           $('input[id=lefile]').change(function() {  
+           	$('#photoCover').val($(this).val());  
+           	});                         
 </script>
 </head>
 
 <body class="innerbody">
-	
-		<div id="base" class="box">
-			<ul class="cont-list">
-				<li>
 					<form class="form-signin" role="form" method="POST"
 						enctype="multipart/form-data" id="form1"
 						action="${basePath}/uploadExcel/upload.do">
-						<label for="inputEmail3"
-							class="control-label col-md-12 col-sm-12" style="float:left">上传文件:</label> <input style="float:left"
-							id="upfile" type="file" name="upfile"
-							class="control-label col-md-12" required>
+						<div class="row " style="padding-left: 100px;padding-top: 40px">
+							  <div class="col-xs-3"  >
+									<label  class="control-label col-md-12 col-sm-12" style="float:left">上传文件</label>
+							   </div>
+							   <div class="col-xs-4" style="padding-left: 0px">
+									 <input style="float:left"
+									id="upfile" type="file" name="upfile"
+									class="col-md-12" required>
+								</div>
+						</div>
+						<div class="row " style="padding-left: 100px;padding-top: 20px">
+						  <div class="col-xs-3 ">
+						    <label for="name"  class="control-label col-md-12 col-sm-12">选择列表</label>
+						  </div>
+						  <div class="col-xs-4 " style="height: 20px">
+						    <select name="apiCode" >
+						      <option value="0">--选择--</option>
+						      <option value="1">接口1</option>
+						      <option value="2">接口2</option>
+						    </select>
+						  </div>
+						</div>
 					</form>
-				</li>
-				<li>
 					<form action="${basePath}/ExportExcel/ajaxExport.do" method="post" id="form2">
-						<label for="inputEmail3"
-						class="control-label col-md-12 col-sm-12" style="float:left">下载模板:</label> &nbsp;<button
-						id="exportExcel" style="cursor: pointer;" style="float:left;position: relative;">点击下载</button>文件以模板的方式导出
+						<div class="row" style="padding-left: 100px;padding-top: 20px">
+							  <div class="col-xs-3 ">
+									<label  class="control-label col-md-12 col-sm-12" style="float:left">下载模板</label> 
+							  </div>
+						     <div class="col-xs-4 ">
+						        <a  id="exportExcel" style="cursor: pointer;" style="float:left;position: relative;">点击下载模板</a>
+						     </div>
+						  </div>
 					</form>
-				</li>
-			</ul>
-			<div class="box-b">
-				<input class="bta" type="button" id="btn" value="上传" />
-				<input class="btd" type="button" onclick="parent.closeModal()"
-					value="取消" />
+			<div class="box-b" style="padding-left: 100px;padding-top: 20px">
+				<div class="col-xs-3">
+					<button type="button" class="btn btn-primary btn-sm btn-block" id="btn"  >上传</button>
+				</div>
+				<div class="col-xs-3">
+					<button type="button" class="btn btn-primary btn-sm btn-block" onclick="parent.closeModal()">取消</button>
+				</div>
 			</div>
-		</div>
 </body>
 </html>

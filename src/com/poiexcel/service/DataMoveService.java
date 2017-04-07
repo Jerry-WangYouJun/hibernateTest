@@ -9,11 +9,11 @@ public interface DataMoveService {
 	
 	public void deleteDataTemp();
 
-	public void dataMoveSql2Oracle();
+	public void dataMoveSql2Oracle(String apiCode);
 	
-	public void insertDataToTemp(List<List<Object>> listob);
+	public void insertDataToTemp(List<List<Object>> listob, String apiCode);
 
-	public void updateExistData();
+	public void updateExistData(String apiCode);
 
 	public List<InfoVo> queryDataList(String dateBegin, String dateEnd, String status , Pagination pagination);
 

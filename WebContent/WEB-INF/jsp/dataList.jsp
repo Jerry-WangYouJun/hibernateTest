@@ -173,7 +173,7 @@
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input class="bta" type="button" value="查询" onclick="query()" />
 					<input class="btd" type="reset" value="清除"  />
-					<input class="btd" type="button" value="新建" onclick="exportInit()">
+					<input class="btd" type="button" value="导入数据" onclick="exportInit()">
 			</p>
 			 <div class="main-list">
 				<div class="main-list-top">
@@ -263,13 +263,13 @@
 					<li ><a href="###" onclick = "query(1)">首页</a></li>
 					<li ><a href="###" onclick = "queryLast()"><<</a></li>
 					<li class="list-bottom" >第<input type="text" style="width: 24px ;text-align:center;margin:0 3px;" id="pageNo"
-						name="pageNo" onchange="query(this.value)" value="${pagination.pageNo}" />页
+						name="pagination.pageNo" onchange="query(this.value)" value="${pagination.pageNo}" />页
 					</li>
 					<li ><a href="###" onclick = "queryNext()">>></a></li>
 					<li ><a href="###" onclick = "query(${pagination.pageIndex})">尾页</a></li>
 					<li class="list-bottom">共 ${pagination.pageIndex}  页
 					</li>
-					<li class="list-bottom">共 ${pagination.total} 条</li>
+					<li class="list-bottom"><input type="hidden" name = "pagination.total" value=" ${pagination.total}">共 ${pagination.total} 条</li>
 				</ul>
 				
 			</nav>
