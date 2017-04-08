@@ -122,11 +122,17 @@ public class UploadExcelControl {
 			HttpServletResponse response , String apiCode) throws Exception {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		System.out.println("通过Ajax方式form表单提交方式导入excel文件！");
+		PrintWriter out = null;
+		response.setCharacterEncoding("utf-8");
+		out = response.getWriter();
 		InputStream in = null;
 		List<List<Object>> listob = null;
 		MultipartFile file = multipartRequest.getFile("upfile");
-		if (file.isEmpty()) {
-			throw new Exception("");
+		if (file == null  || file.isEmpty()) {
+			out.print("未添加上传文件或者文件中内容为空！");
+			out.flush();
+			out.close();
+			return ;
 		}
 		in = file.getInputStream();
 		System.out.println("导入表数据开始：" + System.currentTimeMillis());
@@ -138,14 +144,11 @@ public class UploadExcelControl {
 		System.out.println("临时表插入开始：" + System.currentTimeMillis());
 		moveDataServices.insertDataToTemp(listob, apiCode);
 		System.out.println("覆盖数据开始    ：" + System.currentTimeMillis());
-		moveDataServices.updateExistData(apiCode);
+		int updateNum = moveDataServices.updateExistData(apiCode);
 		System.out.println("插入新数据开始：" + System.currentTimeMillis());
-		moveDataServices.dataMoveSql2Oracle(apiCode);
+		int insertNum = moveDataServices.dataMoveSql2Oracle(apiCode);
 		System.out.println("执行结束            ：" + System.currentTimeMillis());
-		PrintWriter out = null;
-		response.setCharacterEncoding("utf-8");
-		out = response.getWriter();
-		out.print("更新数据" + listob.size() + "条");
+		out.print("更新数据" + updateNum + "条 ; 新增数据" + insertNum  + "条");
 		out.flush();
 		out.close();
 	}

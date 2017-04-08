@@ -16,6 +16,10 @@
 	//ajax 方式上传文件操作
 	$(document).ready(function() {
 		$('#btn').click(function() {
+			if(("#upfile").val = ""){
+				  alert("请选择要上传的文件");
+				  return false ;
+			}
 			//if (checkData()) {
 				$('#form1').ajaxSubmit({
 					url : '${basePath}/uploadExcel/ajaxUpload.do',

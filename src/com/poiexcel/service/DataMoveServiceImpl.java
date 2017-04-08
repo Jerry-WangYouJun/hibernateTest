@@ -55,7 +55,7 @@ public class DataMoveServiceImpl implements DataMoveService {
 	}
 
 	@Override
-	public void updateExistData(String apiCode) {
+	public int updateExistData(String apiCode) {
 		String updateSql = "select t.* from cmtp c , cmtp_temp t where c.iccid = t.iccid and  "
 				+ "  ( c.cardcode != t.cardcode or  c.remark !=t.remark or  "
 				+ "  c.IMSI !=t.IMSI or c.ICCID !=t.ICCID or  c.cardStatus !=t.cardStatus or "
@@ -65,7 +65,7 @@ public class DataMoveServiceImpl implements DataMoveService {
 				+ "  c.monthTotalStream !=t.monthTotalStream  or c.updateTime != t.updateTime  ) ";
 		System.out.println(updateSql);
 		List<InfoVo>  list =  dataMoveDao.queryDataList(updateSql);
-		dataMoveDao.updateTables(list);
+		return dataMoveDao.updateTables(list);
 	}
 
 
@@ -73,15 +73,17 @@ public class DataMoveServiceImpl implements DataMoveService {
 	 * @param tableName
 	 *            需要进行转移而表名
 	 */
-	public void dataMoveSql2Oracle(String apiCode) {
+	public int dataMoveSql2Oracle(String apiCode) {
+		int num = 0 ;
 		try {
 			String insertNewDataSql = "select *  from cmtp_temp where  iccid not in (select iccid from cmtp ) " ;
 			System.out.println(insertNewDataSql);
 			List<InfoVo>  list =  dataMoveDao.queryDataList(insertNewDataSql);
-			dataMoveDao.insertTables(list);
+			num = dataMoveDao.insertTables(list);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return  num ;
 	}
 
 

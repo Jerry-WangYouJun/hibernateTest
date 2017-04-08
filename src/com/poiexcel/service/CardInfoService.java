@@ -84,7 +84,8 @@ public class CardInfoService {
 
 	private void updateUserStatus(String userStatus, String iccid) {
 		String  sql = "update cmtp set userstatus = '" +userStatus + "' where  iccid = '" + iccid + "'" ; ;
-		dao.updateTables(sql);
+		//dao.updateTables(sql);
+		dao.update(sql);
 		
 	}
 
@@ -111,7 +112,7 @@ public class CardInfoService {
 	public void insertHistory(History history) {
 		String  insertHistorySql = "insert history (iccid , package_id , money , update_date) values "
 				+ "('" + history.getIccid() + "','" + history.getPackageId() + "','" + history.getMoney() + "','" + history.getUpdateDate() + "')";
-		dao.updateTables(insertHistorySql);
+		dao.update(insertHistorySql);
 	}
 
 	public void queryHistoryList(InfoVo   info){
@@ -120,7 +121,7 @@ public class CardInfoService {
 
 	public void updateCardStatus(String iccid) {
 		String  sql = "update cmtp set userstatus = '正常' ,  updateTime = '" + DateUtils.formatDate("yyyy-MM-dd") + "' where  iccid = '" + iccid + "'" ; ;
-		dao.updateTables(sql);
+		dao.update(sql);
 		
 	}
 }

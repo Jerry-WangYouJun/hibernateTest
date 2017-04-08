@@ -50,7 +50,7 @@ public class DataMoveDao {
 		}
 	}
 	
-	public void insertTables(List<InfoVo> list) {
+	public int insertTables(List<InfoVo> list) {
 		String insertsqlTemp = "INSERT INTO cmtp ( " + columuns + "  ) "
 		 		+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? )";
 		voList = list ;
@@ -80,13 +80,14 @@ public class DataMoveDao {
 				}
 				
 				public int getBatchSize() {
-					return objectList.size();
+					return voList.size();
 				}
 			});
-			System.out.println("插入数据：" +  objectList.size() + "条");
+			System.out.println("插入数据：" +  voList.size() + "条");
 		}
+		return voList.size() ;
 	}
-	public void updateTables(List<InfoVo> list) {
+	public int updateTables(List<InfoVo> list) {
 		String updatesqlTemp = "update cmtp set cardcode = ? , remark = ? ,IMSI = ? ,ICCID =? , cardStatus = ? ,gprsUsed=? ,"
 				+ " messageUsed=? ,openDate = ? ,withMessageService=? ,withGPRSService =? , packageType = ? , apiCode = ?  where iccid = ? ";
 		voList = list ; 
@@ -117,11 +118,12 @@ public class DataMoveDao {
 				}
 				
 				public int getBatchSize() {
-					return objectList.size();
+					return voList.size();
 				}
 			});
-			System.out.println("更新数据：" +  objectList.size() + "条");
+			System.out.println("更新数据：" +  voList.size() + "条");
 		}
+		return voList.size() ;
 	}
 	public int insertDataTemp(List<List<Object>> listob, String apiCode) {
 		 String insertsqlTemp = "INSERT INTO cmtp_temp ( " + columuns + ") "
