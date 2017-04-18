@@ -44,11 +44,11 @@ public class CardInfoService {
 	}
 	
 	public void getDetail(InfoVo  info) throws Exception{
-			/*JSONObject  jsonCardInfo = getResultData(info,StringCommons.API_YONGSI_GPRSSTAUTS);
+			JSONObject  jsonCardInfo = getResultData(info,StringCommons.API_YONGSI_GPRSSTAUTS);
 		    String gprsStatus = jsonCardInfo.get("GPRSSTATUS").toString();
 		    if(info.getCardStatus()!=null && !info.getCardStatus().equals(gprsStatus)){
 		    	info.setCardStatus(gprsStatus);
-		    }*/
+		    }
 		    /*JSONObject  jsonUserStatus = getResultData(info,"0001000000009");
 		    String userStatus = jsonUserStatus.getString("STATUS").toString();
 		    if(info.getUserStatus()!=null && !info.getUserStatus().equals(userStatus)){
@@ -63,7 +63,7 @@ public class CardInfoService {
 		    if(info.getGprsUsed()!=null && Double.valueOf(info.getGprsUsed()) != gprsUsed){
 		    	info.setGprsUsed(gprsUsed + "");
 		    }
-		    gprsUsed = 0.1 ;
+		    //gprsUsed = 0.1 ;
 		    	if(gprsUsed == 0 && info.getRestDay()>0){
 		    		info.setUserStatus("待激活");
 		    		info.setRestDay(365L);

@@ -27,7 +27,7 @@ public class StringCommons {
 	 */
 	public  static final String API_YONGSI_OPENSTATUS = "0001000000025";
 	/** 
-	 * 中移物联网接口
+	 * 丰宁物联网接口 
 	 */
 	public static final  String  API_ZHONGYI = "2";
 	/**

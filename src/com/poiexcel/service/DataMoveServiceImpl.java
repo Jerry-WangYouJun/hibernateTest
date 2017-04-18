@@ -88,13 +88,16 @@ public class DataMoveServiceImpl implements DataMoveService {
 
 
 	@Override
-	public List<InfoVo> queryDataList(String dateBegin, String dateEnd, String status , Pagination pagination) {
+	public List<InfoVo> queryDataList(String dateBegin, String dateEnd, String status , Pagination pagination  , String iccid ) {
 		String wheresql = "" ; 
 		if(StringUtils.isNotEmpty(dateBegin)){
-			 wheresql += " and updateTime > " + dateBegin ;
+			 wheresql += " and openDate >= '" + dateBegin + "' " ;
 		}
 		if(StringUtils.isNotEmpty(dateEnd)){
-			 wheresql += " and  updateTime > " + dateEnd ;
+			 wheresql += " and  openDate <= '" + dateEnd + "' " ;
+		}
+		if(StringUtils.isNotEmpty(iccid)){
+			 wheresql += " and  iccid  like  '%" + iccid + "%' " ;
 		}
 		if(StringUtils.isNotEmpty(status)){
 			 if("1".equals(status)){
@@ -109,13 +112,16 @@ public class DataMoveServiceImpl implements DataMoveService {
 	}
 	
 	@Override
-	public int queryDataSize(String dateBegin, String dateEnd, String status) {
+	public int queryDataSize(String dateBegin, String dateEnd, String status ,String iccid ) {
 		String wheresql = "" ; 
 		if(StringUtils.isNotEmpty(dateBegin)){
-			 wheresql += " and updateTime > " + dateBegin ;
+			 wheresql += " and openDate >= '" + dateBegin  + "' ";
 		}
 		if(StringUtils.isNotEmpty(dateEnd)){
-			 wheresql += " and  updateTime > " + dateEnd ;
+			 wheresql += " and  openDate <= '" + dateEnd  + "' ";
+		}
+		if(StringUtils.isNotEmpty(iccid)){
+			 wheresql += " and  iccid  like  '%" + iccid + "%' " ;
 		}
 		if(StringUtils.isNotEmpty(status)){
 			 if("1".equals(status)){

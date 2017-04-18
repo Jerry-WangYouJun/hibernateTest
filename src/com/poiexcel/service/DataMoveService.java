@@ -15,11 +15,11 @@ public interface DataMoveService {
 
 	public int updateExistData(String apiCode);
 
-	public List<InfoVo> queryDataList(String dateBegin, String dateEnd, String status , Pagination pagination);
+	public List<InfoVo> queryDataList(String dateBegin, String dateEnd, String status , Pagination pagination  , String iccid );
 
 	public void updateDataStatus(String id, String color);
 
-	public int queryDataSize(String dateBegin, String dateEnd, String status);
+	public int queryDataSize(String dateBegin, String dateEnd, String status  , String iccid );
 
 	
 	
