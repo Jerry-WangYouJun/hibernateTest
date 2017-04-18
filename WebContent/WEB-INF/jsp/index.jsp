@@ -34,7 +34,7 @@
 					</c:choose>
 					
 					<!--<span class="label label-default">离线</span>-->
-					<button type="button" class="btn btn-info pull-right" onclick="window.location.href='${basePath}/search.html'">切换</button>
+					<button type="button" class="btn btn-info pull-right" onclick="window.location.href='${basePath}/card/searchInit'">切换</button>
 				</div>
 				<div class="container user-name">
 					<h3 style="float: left;">${info.ICCID }</h3>

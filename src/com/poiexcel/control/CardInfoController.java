@@ -1,5 +1,7 @@
 package com.poiexcel.control;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.poiexcel.service.CardInfoService;
 import com.poiexcel.vo.InfoVo;
+import com.xinfu.weixin.util.JsSignUtil;
 
 
 @Controller
@@ -49,6 +52,15 @@ public class CardInfoController {
 	    	return mv ;
 	    	
 	    }
+	    
+	    @RequestMapping("/searchInit")
+	    public ModelAndView getSearchInit(){
+	    	ModelAndView mv = new ModelAndView("search");
+	    	Map<String, String> ret = JsSignUtil.sign("http://www.pay-sf.com/card/searchInit");
+	    	mv.addObject("ret", ret);
+	    	return mv ;
+	    }
+	    
 	    
 	    @RequestMapping("/xinfu_wechat_pay")
 	    public ModelAndView getPay(@RequestParam("iccid") String iccid , HttpServletRequest request){

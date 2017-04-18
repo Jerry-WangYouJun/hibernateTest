@@ -16,8 +16,8 @@
 	//ajax 方式上传文件操作
 	$(document).ready(function() {
 		$('#btn').click(function() {
-			if(("#upfile").val = ""){
-				  alert("请选择要上传的文件");
+			if($("#apiCode").val() == "0"){
+				  alert("请选择数据接口");
 				  return false ;
 			}
 			//if (checkData()) {
@@ -67,21 +67,6 @@
 			}
 		});
 	});
-	
-	/* function download(){
-	       var form=$("<form>");//定义一个form表单
-	       form.attr("style","display:none");
-	       form.attr("target","$");
-	       form.attr("method","post");
-	       form.attr("action","");//请求url
-	       var input1=$("<input>");
-	       input1.attr("type","hidden");
-	       input1.attr("name","rows");//设置属性的名字
-	        input1.attr("value","test");//设置属性的值
-	        $("body").append(form);//将表单放置在web中
-	        form.append(input1);
-	        form.submit();//表单提交             
-	                            } */
 	                            
            $('input[id=lefile]').change(function() {  
            	$('#photoCover').val($(this).val());  
@@ -105,27 +90,27 @@
 						</div>
 						<div class="row " style="padding-left: 100px;padding-top: 20px">
 						  <div class="col-xs-3 ">
-						    <label for="name"  class="control-label col-md-12 col-sm-12">选择列表</label>
+						    <label for="name"  class="control-label col-md-12 col-sm-12">选择接口</label>
 						  </div>
 						  <div class="col-xs-4 " style="height: 20px">
-						    <select name="apiCode" >
+						    <select name="apiCode" id = "apiCode">
 						      <option value="0">--选择--</option>
-						      <option value="1">接口1</option>
-						      <option value="2">接口2</option>
+						      <option value="1">永思接口数据</option>
+						      <option value="2">丰宁接口数据</option>
 						    </select>
 						  </div>
 						</div>
 					</form>
-					<form action="${basePath}/ExportExcel/ajaxExport.do" method="post" id="form2">
+					<%-- <form action="${basePath}/ExportExcel/ajaxExport.do" method="post" id="form2">
 						<div class="row" style="padding-left: 100px;padding-top: 20px">
 							  <div class="col-xs-3 ">
 									<label  class="control-label col-md-12 col-sm-12" style="float:left">下载模板</label> 
 							  </div>
 						     <div class="col-xs-4 ">
-						        <a  id="exportExcel" style="cursor: pointer;" style="float:left;position: relative;">点击下载模板</a>
+						        <a  id="exportFile" style="cursor: pointer;" style="float:left;position: relative;" >点击下载模板</a>
 						     </div>
 						  </div>
-					</form>
+					</form> --%>
 			<div class="box-b" style="padding-left: 100px;padding-top: 20px">
 				<div class="col-xs-3">
 					<button type="button" class="btn btn-primary btn-sm btn-block" id="btn"  >上传</button>

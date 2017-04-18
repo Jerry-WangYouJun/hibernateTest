@@ -334,7 +334,7 @@ public class WeixinPayUtil {
         	String jsonString =	ResponseURLDataUtil.getReturnData(url) ;
    		 	JSONObject jsonObject = JSONObject.fromObject(jsonString);  
             ticket = jsonObject.getString("ticket");
-            System.out.println(ticket);
+            System.out.println("ticket:" + ticket);
         } catch (Exception e) {
                 e.printStackTrace();
         }
@@ -353,7 +353,7 @@ public class WeixinPayUtil {
         String jsonString =	ResponseURLDataUtil.getReturnData(url) ;
 	 	JSONObject jsonObject = JSONObject.fromObject(jsonString);  
  	    String accessToken  = jsonObject.getString("access_token");
-        System.out.println(accessToken);
+        System.out.println("access_token:" + accessToken);
 
 
         return accessToken;
@@ -361,7 +361,12 @@ public class WeixinPayUtil {
  }
 
 	public static void main(String[] args) {
-System.out.println("fn898602B611177066799903290126".length());
+		try {
+			getTicket();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	 //etTicket();
 //		String sign = "";
 //		SortedMap<String, String> storeMap = new TreeMap<String, String>();

@@ -86,16 +86,19 @@ public class UploadExcelControl {
 			RequestMethod.POST })
 	public ModelAndView dataList(HttpServletRequest request,
 			HttpServletResponse response, Model model  , @RequestParam("dateBegin") String dateBegin ,
-			@RequestParam("dateEnd") String dateEnd , String datastatus ,Pagination pagination ) {
+			@RequestParam("dateEnd") String dateEnd , String datastatus ,String iccid,Pagination pagination ) {
 		if(pagination.getTotal() == 0 ){
-			pagination.setTotal(moveDataServices.queryDataSize(dateBegin,dateEnd,datastatus));
+			pagination.setTotal(moveDataServices.queryDataSize(dateBegin,dateEnd,datastatus , iccid));
 		}
 		if(pagination.getPageIndex() == 0 ){
 			pagination.setPageIndex( pagination.getTotal() / pagination.getPageSize() + (pagination.getTotal() % pagination.getPageSize() > 0 ? 1 :0 ) );
 		}
-		List<InfoVo> list = moveDataServices.queryDataList(dateBegin,dateEnd,datastatus , pagination);
+		List<InfoVo> list = moveDataServices.queryDataList(dateBegin,dateEnd,datastatus , pagination , iccid);
 		model.addAttribute("list", list);
 		model.addAttribute("pagination", pagination);
+		model.addAttribute("dateBegin", dateBegin);
+		model.addAttribute("dateEnd", dateEnd);
+		model.addAttribute("iccid", iccid);
 		ModelAndView mv = new ModelAndView("dataList");
 		return mv;
 	}

@@ -164,12 +164,13 @@
 		action="${basePath}/uploadExcel/dataList.do">
 		<div class="content">
 			<p class="content-top">
-				<span>查询日期</span>
+				<span>开户日期</span>
 				 <input class="top-data" type="date" name="dateBegin" id="dateBegin" value="${dateBegin}" />
 				  - <input type="date" id="dateEnd" name="dateEnd" value="${dateEnd}" />
 					<span>是否充值</span> 
 					 <input class="top-data" type="radio" name="datastatus" value="1" style="height: 15px; width: 20px"/>是 
 					<input class="top-data" type="radio" name="datastatus" value="0" style="height: 15px; width: 20px"/>否 
+					<span>ICCID</span> <input class="top-data" type="text" name="iccid" id="iccid" value="${iccid}" />
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input class="bta" type="button" value="查询" onclick="query()" />
 					<input class="btd" type="reset" value="清除"  />
@@ -211,7 +212,7 @@
 											</div>
 											<ul class="dropdown-menu" style="width: 293px;">
 												<li style="display: inline-block;">
-													<div>&nbsp;background color</div>
+													<div>&nbsp;</div>
 													<div id="colorpalette_${order.id}"></div>
 												</li>
 											</ul>
