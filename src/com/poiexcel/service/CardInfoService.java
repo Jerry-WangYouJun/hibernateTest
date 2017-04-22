@@ -94,7 +94,7 @@ public class CardInfoService {
 		 if(StringCommons.API_YONGSI.equals(info.getApiCode())){
 			   url = WlkAPIUtil.getUrl(info,ebid) ;
 		 }else{
-			  url =  PropertyCommons.getUrl(ebid , info.getCardCode()) ;
+			  url =  PropertyCommons.getUrl(ebid , info.getCardCode().trim()) ;
 		 }
 		 String jsonString =	ResponseURLDataUtil.getReturnData(url) ;
 		 JSONObject jsonObject ;

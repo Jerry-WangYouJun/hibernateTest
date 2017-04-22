@@ -45,7 +45,7 @@ public class ImportExcelUtil {
 			if(sheet==null){continue;}
 			
 			//������ǰsheet�е�������
-			for (int j = sheet.getFirstRowNum(); j < sheet.getLastRowNum(); j++) {
+			for (int j = sheet.getFirstRowNum(); j <= sheet.getLastRowNum(); j++) {
 				row = sheet.getRow(j);
 				if(row==null||row.getFirstCellNum()==j){continue;}
 				
