@@ -98,6 +98,9 @@ public class DataMoveDao {
 					try {
 						// 并根据数据类型对Statement 中的占位符进行赋值
 						InfoVo  info = voList.get(i);
+						if(i == 19990){
+							 System.out.println("1111111111");
+						}
 						ps.setString(1, String.valueOf(info.getCardCode()));
 						ps.setString(2, String.valueOf(info.getRemark()));
 						ps.setString(3, String.valueOf(info.getIMSI()));
@@ -114,7 +117,8 @@ public class DataMoveDao {
 						ps.setString(13, String.valueOf(info.getICCID()));
 						ps.setString(14, String.valueOf(info.getMonthTotalStream()));
 					} catch (Exception e) {
-						e.printStackTrace();
+						System.out.println("问题行是：" + i);
+						//e.printStackTrace();
 					}
 				}
 				
@@ -139,23 +143,25 @@ public class DataMoveDao {
 								try {
 									// 并根据数据类型对Statement 中的占位符进行赋值
 										List<Object> valueList = objectList.get(i);
-										ps.setString(1, String.valueOf(valueList.get(0)).trim());
-										ps.setString(2, String.valueOf(valueList.get(1)));
-										ps.setString(3, String.valueOf(valueList.get(2)));
-										ps.setString(4, String.valueOf(valueList.get(3)));
-										ps.setString(5, String.valueOf(valueList.get(4)));
-										ps.setString(6, String.valueOf(valueList.get(5)));
-										ps.setString(7, String.valueOf(valueList.get(6)));
-										ps.setString(8, String.valueOf(valueList.get(7)));
-										ps.setString(9, String.valueOf(valueList.get(8)));
-										ps.setString(10, String.valueOf(valueList.get(9)));
-										ps.setString(11, String.valueOf(valueList.get(10)));
-										ps.setString(12, String.valueOf(valueList.get(11)));
+										if(valueList.size() > 11){
+											ps.setString(1, String.valueOf(valueList.get(0)).trim());
+											ps.setString(2, String.valueOf(valueList.get(1)));
+											ps.setString(3, String.valueOf(valueList.get(2)));
+											ps.setString(4, String.valueOf(valueList.get(3)));
+											ps.setString(5, String.valueOf(valueList.get(4)));
+											ps.setString(6, String.valueOf(valueList.get(5)));
+											ps.setString(7, String.valueOf(valueList.get(6)));
+											ps.setString(8, String.valueOf(valueList.get(7)));
+											ps.setString(9, String.valueOf(valueList.get(8)));
+											ps.setString(10, String.valueOf(valueList.get(9)));
+											ps.setString(11, String.valueOf(valueList.get(10)));
+											ps.setString(12, String.valueOf(valueList.get(11)));
+										}
 										//ps.setString(13, String.valueOf(valueList.get(12)));
 										//ps.setString(13,format.format(new Date(System.currentTimeMillis())));
 								} catch (Exception e) {
 									e.printStackTrace();
-									System.out.println("出错的" + objectList.get(i).get(3));
+									System.out.println("出错的" + i);
 								}
 							}
 	
