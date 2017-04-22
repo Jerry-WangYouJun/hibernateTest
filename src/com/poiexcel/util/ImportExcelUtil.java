@@ -17,11 +17,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ImportExcelUtil {
 	
-	private final static String excel2003L =".xls";    //2003- °æ±¾µÄexcel
-	private final static String excel2007U =".xlsx";   //2007+ °æ±¾µÄexcel
+	private final static String excel2003L =".xls";    //2003- ï¿½æ±¾ï¿½ï¿½excel
+	private final static String excel2007U =".xlsx";   //2007+ ï¿½æ±¾ï¿½ï¿½excel
 	
 	/**
-	 * ÃèÊö£º»ñÈ¡IOÁ÷ÖÐµÄÊý¾Ý£¬×é×°³ÉList<List<Object>>¶ÔÏó
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¡IOï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½×°ï¿½ï¿½List<List<Object>>ï¿½ï¿½ï¿½ï¿½
 	 * @param in,fileName
 	 * @return
 	 * @throws IOException 
@@ -29,27 +29,27 @@ public class ImportExcelUtil {
 	public  List<List<Object>> getBankListByExcel(InputStream in,String fileName) throws Exception{
 		List<List<Object>> list = null;
 		
-		//´´½¨Excel¹¤×÷±¡
+		//ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Workbook work = this.getWorkbook(in,fileName);
 		if(null == work){
-			throw new Exception("´´½¨Excel¹¤×÷±¡Îª¿Õ£¡");
+			throw new Exception("ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½Õ£ï¿½");
 		}
 		Sheet sheet = null;
 		Row row = null;
 		Cell cell = null;
 		
 		list = new ArrayList<List<Object>>();
-		//±éÀúExcelÖÐËùÓÐµÄsheet
+		//ï¿½ï¿½ï¿½ï¿½Excelï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½sheet
 		for (int i = 0; i < work.getNumberOfSheets(); i++) {
 			sheet = work.getSheetAt(i);
 			if(sheet==null){continue;}
 			
-			//±éÀúµ±Ç°sheetÖÐµÄËùÓÐÐÐ
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°sheetï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 			for (int j = sheet.getFirstRowNum(); j < sheet.getLastRowNum(); j++) {
 				row = sheet.getRow(j);
 				if(row==null||row.getFirstCellNum()==j){continue;}
 				
-				//±éÀúËùÓÐµÄÁÐ
+				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½
 				List<Object> li = new ArrayList<Object>();
 				for (int y = row.getFirstCellNum(); y < row.getLastCellNum(); y++) {
 					cell = row.getCell(y);
@@ -63,7 +63,7 @@ public class ImportExcelUtil {
 	}
 	
 	/**
-	 * ÃèÊö£º¸ù¾ÝÎÄ¼þºó×º£¬×ÔÊÊÓ¦ÉÏ´«ÎÄ¼þµÄ°æ±¾ 
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½×ºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ï´ï¿½ï¿½Ä¼ï¿½ï¿½Ä°æ±¾ 
 	 * @param inStr,fileName
 	 * @return
 	 * @throws Exception
@@ -76,22 +76,24 @@ public class ImportExcelUtil {
 		}else if(excel2007U.equals(fileType)){
 			wb = new XSSFWorkbook(inStr);  //2007+
 		}else{
-			throw new Exception("½âÎöµÄÎÄ¼þ¸ñÊ½ÓÐÎó£¡");
+			throw new Exception("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½");
 		}
 		return wb;
 	}
 
 	/**
-	 * ÃèÊö£º¶Ô±í¸ñÖÐÊýÖµ½øÐÐ¸ñÊ½»¯
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Ð¸ï¿½Ê½ï¿½ï¿½
 	 * @param cell
 	 * @return
 	 */
 	public  Object getCellValue(Cell cell){
 		Object value = null;
-		DecimalFormat df = new DecimalFormat("0");  //¸ñÊ½»¯number String×Ö·û
-		SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");  //ÈÕÆÚ¸ñÊ½»¯
-		DecimalFormat df2 = new DecimalFormat("0.00");  //¸ñÊ½»¯Êý×Ö
-		
+		DecimalFormat df = new DecimalFormat("0");  //ï¿½ï¿½Ê½ï¿½ï¿½number Stringï¿½Ö·ï¿½
+		SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");  //ï¿½ï¿½ï¿½Ú¸ï¿½Ê½ï¿½ï¿½
+		DecimalFormat df2 = new DecimalFormat("0.00");  //ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		if(cell == null){
+			  return "";
+		}
 		switch (cell.getCellType()) {
 		case Cell.CELL_TYPE_STRING:
 			value = cell.getRichStringCellValue().getString();

@@ -26,3 +26,4 @@ public class JobForWXAccessTokenListener implements ApplicationListener<ContextR
 			service.scheduleAtFixedRate(runnable, 1, 7000, TimeUnit.SECONDS);
 		}
 	}
+}

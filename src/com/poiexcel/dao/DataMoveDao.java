@@ -154,6 +154,7 @@ public class DataMoveDao {
 										//ps.setString(13,format.format(new Date(System.currentTimeMillis())));
 								} catch (Exception e) {
 									e.printStackTrace();
+									System.out.println("出错的" + objectList.get(i).get(3));
 								}
 							}
 	
