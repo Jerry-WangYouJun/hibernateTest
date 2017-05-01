@@ -25,14 +25,21 @@ public class CardInfoController {
 	    @RequestMapping("/querySingle")
 	    public ModelAndView getCardInfo(String iccid){
 	    	ModelAndView mv = new ModelAndView("index");
-	    	InfoVo  vo = service.queryInfoByICCID(iccid);
-	    	if(vo!=null){
-	    		mv.addObject("info", vo);
-	    	}else{
-	    		InfoVo   wrongInfo = new InfoVo();
-	    		wrongInfo.setUserStatus("卡号信息异常");
-	    		mv.addObject("info", wrongInfo);
-	    	}
+	    	InfoVo vo;
+			try {
+				vo = service.queryInfoByICCID(iccid);
+		    	if(vo!=null){
+		    		mv.addObject("info", vo);
+		    	}else{
+		    		InfoVo   wrongInfo = new InfoVo();
+		    		wrongInfo.setUserStatus("卡号信息异常");
+		    		mv.addObject("info", wrongInfo);
+		    	}
+			} catch (Exception e) {
+				InfoVo   wrongInfo = new InfoVo();
+				wrongInfo.setUserStatus("卡号信息异常:" + e.getMessage());
+				mv.addObject("info", wrongInfo);
+			}
 	    	return mv ;
 	    	
 	    }
@@ -40,15 +47,22 @@ public class CardInfoController {
 	    @RequestMapping("/search")
 	    public ModelAndView searchHistory(String iccid){
 	    	ModelAndView mv = new ModelAndView("history");
-	    	InfoVo  vo = service.queryInfoByICCID(iccid);
-	    	if(vo!=null){
-	    		service.queryHistoryList(vo);
-	    		mv.addObject("info", vo);
-	    	}else{
-	    		InfoVo   wrongInfo = new InfoVo();
-	    		wrongInfo.setUserStatus("卡号信息异常");
-	    		mv.addObject("info", wrongInfo);
-	    	}
+	    	InfoVo vo;
+			try {
+				vo = service.queryInfoByICCID(iccid);
+				if(vo!=null){
+					service.queryHistoryList(vo);
+					mv.addObject("info", vo);
+				}else{
+					InfoVo   wrongInfo = new InfoVo();
+					wrongInfo.setUserStatus("卡号信息异常");
+					mv.addObject("info", wrongInfo);
+				}
+			} catch (Exception e) {
+				InfoVo   wrongInfo = new InfoVo();
+				wrongInfo.setUserStatus("卡号信息异常:" + e.getMessage());
+				mv.addObject("info", wrongInfo);
+			}
 	    	return mv ;
 	    	
 	    }

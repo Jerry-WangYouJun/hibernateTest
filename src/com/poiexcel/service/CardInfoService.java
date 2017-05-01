@@ -25,7 +25,7 @@ public class CardInfoService {
 	DataMoveDao  dao ;
 	
 	
-	public InfoVo queryInfoByICCID(String iccid) {
+	public InfoVo queryInfoByICCID(String iccid) throws Exception {
 		String sql = "select * from cmtp where iccid = '" + iccid + "'  or imsi = '" + iccid + "'";
 		 List<InfoVo>  infoList =  dao.queryDataList(sql);
 		 if(infoList.size() > 0 ){
@@ -37,6 +37,7 @@ public class CardInfoService {
 					 getDetail(info);
 			} catch (Exception e) {
 				System.out.println("Iccid:" + iccid + ",信息错误:" + e.getMessage());
+				throw new Exception("Iccid:" + iccid + ",信息错误:" + e.getMessage());
 			}
 			   return info;
 		 }
@@ -70,6 +71,7 @@ public class CardInfoService {
 		    		info.setDateEnd("****-**-**");
 		    		//int curMonth = Integer.valueOf(info.getOpenDate().split("-")[1]) ;
 		    	}else if(gprsUsed>0 && Double.valueOf(info.getMonthTotalStream())>  gprsUsed && info.getRestDay()>0){
+		    		updateGprsUsed(gprsUsed , info.getICCID());
 		    		if(!"正常".equals(info.getUserStatus())){
 		    			updateUserStatus("正常",info.getICCID());
 		    			info.setUserStatus("正常");
@@ -82,8 +84,14 @@ public class CardInfoService {
 		    	}
 	}
 
+	private void updateGprsUsed(double gprsUsed, String iccid) {
+		
+		String  sql = "update cmtp set gprsused = " +gprsUsed + " where  iccid = '" + iccid + "'" ; 
+		dao.update(sql);
+	}
+
 	private void updateUserStatus(String userStatus, String iccid) {
-		String  sql = "update cmtp set userstatus = '" +userStatus + "' where  iccid = '" + iccid + "'" ; ;
+		String  sql = "update cmtp set userstatus = '" +userStatus + "' where  iccid = '" + iccid + "'" ; 
 		//dao.updateTables(sql);
 		dao.update(sql);
 		
