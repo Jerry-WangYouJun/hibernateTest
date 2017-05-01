@@ -138,35 +138,6 @@ function initDictionarySelect(dicNo,target,selected){
 	}); 
 }
 /**
- * 根据字典类型id 和字典项编码获取字典值
- * @param dicNo  字典类型id
- * @param dicCode 字典项编码
- *//*
-function findDicValue(dicNo,dicCode){
-	var url =  getProjectUrl() + "admin/DictionarySerlvet?flag=findDictionaryValue";
-	var dicValue = "";
-	$.ajax({
-		url : url,
-		type:'post',  
-		data: {
-			dicNo:dicNo,
-			dicCode:dicCode
-		},
-		dataType: 'json',
-		success: function(data){
-			if(data.success == true) {
-				dicValue = data.result.DICVALUE;
-				alert("dicValue" + dicValue);
-				return dicValue;
-			}
-		},
-		error: function(transport) { 
-			//$.messager.alert('提示',"系统产生错误,请联系管理员!","error");
-		} 
-	}); 
-}
-*/
-/**
  * 求和 
  * @param target  目标元素id
  * @param colName 要求和的列名

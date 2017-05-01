@@ -1,14 +1,14 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@include file="/common.jsp"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>库存后台管理首页</title>
+    <title>丰宁信息后台管理首页</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<jsp:include page="common.jsp"></jsp:include>
 	<script type="text/javascript">
 		function loginOut(){
 			$.ajax({
@@ -29,17 +29,21 @@
 			var treeData = [{
 				text:"用户管理",	
 				children:[{
+					text:"代理商管理",
+					attributes:{
+						url:"${basePath}/agent/agent_query"
+					}
+				},{
 					text:"用户管理",
 					attributes:{
-						url:"${basePath}/report/month_input"
+						url:"${basePath}/user_query"
 					}
 				}]
 			}];
 			$("#fixedtree").tree({
 				data:treeData,
 				lines:true,
-				onClick:function(node){
-					console.info(node);
+				onClick:function(node ){
 					if(node.attributes){
 						openTab(node.text,node.attributes.url);
 					}
@@ -61,13 +65,6 @@
 			function openTab(text,url){
 				if($("#tabs").tabs('exists',text)){
 					$("#tabs").tabs('select',text);
-					//$("#tabs").tabs('getSelected').panel('refresh',url);
-					
-					/* $("#tabs").tabs('update',{
-						tab:$("#tabs").tabs('getSelected'),
-						closable:true,
-						options 
-					}); */
 				}else{
 					var content="<iframe frameborder='0' scrolling='auto' style='width:100%;height:100%' src="+url+"></iframe>";
 					$("#tabs").tabs('add',{
@@ -116,11 +113,11 @@
 	
 	<div region="center" class="easyui-tabs" fit="true" border="false" id="tabs">
 		<div title="首页" >
-			<div align="center" style="padding-top: 100px;"><font color="red" size="10">欢迎使用库存管理系统</font></div>		
+			<div align="center" style="padding-top: 100px;"><font color="red" size="10">欢迎使用丰宁物联网管理系统</font></div>		
 		</div>
 	</div>
 	<div region="south" style="height:25px;background-color:#13A7D5;" align="center"  >
-		<font color="#ffffff"> 版权所有:yangjx@121ugrow.com&copy;英谷教育</font>
+		<font color="#ffffff"> 版权所有:wang_yjun@163.com&copy;丰宁物联网公司</font>
 	</div>
 </body>
 </html>
