@@ -82,7 +82,7 @@ public class AgentController {
 			service.update(agent);
 		}else{
 			agent.setCreater(session.getAttribute("user").toString());
-			agent.setCode(session.getAttribute("agentId").toString());
+			agent.setCode(session.getAttribute("agentcode").toString());
 			service.insert(agent );
 		}
 		response.setContentType("text/text;charset=UTF-8");

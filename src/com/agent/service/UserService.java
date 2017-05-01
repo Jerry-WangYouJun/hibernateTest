@@ -14,7 +14,7 @@ public class UserService {
 	@Autowired
 	UserDao  dao ;
 
-	public int checkUser(User user) {
+	public String checkUser(User user) {
 		
 		return dao.checkUser(user);
 	}

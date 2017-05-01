@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.agent.common.CodeUtil;
 import com.agent.model.Agent;
 import com.agent.model.QueryData;
 
@@ -65,7 +66,7 @@ public class AgentDao {
               
                     @Override  
                     public void setValues(PreparedStatement ps) throws SQLException {  
-                        ps.setString(1,  agent.getCode());  
+                        ps.setString(1,  getMaxCode(agent.getCode()));  
                         ps.setString(2, agent.getName()); 
                         ps.setDouble(3, agent.getCost());
                         ps.setDouble(4 , agent.getRenew());
@@ -77,18 +78,34 @@ public class AgentDao {
 
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Long getChildCode(String createrCode){
-		String sql = "select max(code) maxval from a_agent  where code  = (select code from a_user ) '" + createrCode + "%'" ;
-		final Long[] max = new Long[1];
+	public String getMaxCode(String createrCode){
+		String sql = "select code  from a_agent  where code   like   '" + createrCode + "%'" ;
+		final List<String> list = new ArrayList<>();
 		jdbcTemplate.query(sql, new RowMapper() {
 				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-					 max[0] = rs.getLong("maxval");
+					list.add(rs.getString("code"));
 					 return null ;
 				}
-			});
-		return max[0];
+		});
+		String codeTemp = list.get(0);
+		int temp = 0;
+		if(list.size()==1 && createrCode.equals(codeTemp)){
+			 return codeTemp + "-01"  ;  
+		} 
+		 for(int i = 1   ;  i < list.size() ; i ++){
+			 String a = list.get(i).replaceFirst( createrCode + "-" , "");
+			  int t = Integer.valueOf(a);
+			  if(t > temp){
+				    temp = t ;
+			  }
+		 }
+		return createrCode + CodeUtil.getFixCode(temp);
 	}
-
+	
+	public static void main(String[] args) {
+		String a = "aaabvvv";
+		 System.out.println(a.replaceFirst("a", ""));
+	}
 	public void update(final Agent agent) {
 		jdbcTemplate.update("update a_agent set  name=? , cost=?, renew = ? , type = ?  where id = ? ",   
                 new PreparedStatementSetter(){  

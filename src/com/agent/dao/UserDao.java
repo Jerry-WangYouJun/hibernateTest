@@ -23,14 +23,14 @@ public class UserDao {
 	private JdbcTemplate jdbcTemplate;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public int checkUser(User user) {
-		String sql = " select * from a_user where userNo = '" + user.getUserNo()
-				+ "' and pwd = '" + user.getPwd() + "' ";
-		final Integer[] total = {-1};
+	public String checkUser(User user) {
+		String sql = "select a.code from a_user u , a_agent a where u.agentid = a.id"
+				+ "  and  u.userNo = '" + user.getUserNo() + "' and u.pwd = '" + user.getPwd() + "' " ;
+		final String[] total = {null};
 		jdbcTemplate.query(sql, new RowMapper() {
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-				total[0] = new Integer(rs.getInt("agentid"));
-				return rs.getInt("agentid");
+				total[0] = rs.getString("code");
+				return rs.getString("code");
 			}
 		});
 		return total[0];

@@ -28,11 +28,10 @@ public class UserController {
 	
 	@RequestMapping("/checkUser")
 	public String checkUser(User user , HttpServletRequest request , HttpSession session){
-		int num = 0 ;
-		num = service.checkUser(user);
+		String agentcode = service.checkUser(user);
 		
-		if(num >= 0 ){
-			session.setAttribute("agentId", num);
+		if(agentcode != null ){
+			session.setAttribute("agentcode", agentcode);
 			session.setAttribute("user", user.getUserNo());
 			return "/agent/index" ;
 		}else{
