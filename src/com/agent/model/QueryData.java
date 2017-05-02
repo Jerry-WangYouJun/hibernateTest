@@ -12,6 +12,8 @@ public class QueryData {
 	  private  String agentid;
 	  //代理商名称
 	  private String agentName ;
+	  //代理商编号
+	  private String agentCode;
 	  //用户名
 	  private String userNo ; 
 	  //用户名称
@@ -72,5 +74,12 @@ public class QueryData {
 	}
 	public void setAgentName(String agentName) {
 		this.agentName = agentName;
+	}
+	public String getAgentCode() {
+		return agentCode;
+	}
+	public void setAgentCode(String agentCode) {
+		this.agentCode = agentCode;
 	} 
+	
 }

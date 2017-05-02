@@ -14,6 +14,7 @@ public class Agent {
 	  private String creater ; 
 	  private String createdate ;
 	  private String iccid;
+	  private Integer parengId ;
 	public Integer getId() {
 		return id;
 	}
@@ -68,4 +69,11 @@ public class Agent {
 	public void setIccid(String iccid) {
 		this.iccid = iccid;
 	}
+	public Integer getParengId() {
+		return parengId;
+	}
+	public void setParengId(Integer parengId) {
+		this.parengId = parengId;
+	}
+	
 }

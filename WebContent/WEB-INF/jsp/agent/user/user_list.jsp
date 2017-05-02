@@ -146,7 +146,7 @@
 						<th data-options="field:'id'"></th>
 						<th data-options="field:'agentName'">代理商</th>
 						<th data-options="field:'userName'">用户名称</th>
-						<th data-options="field:'userName'">用户名</th>
+						<th data-options="field:'userNo'">登陆账号</th>
 						<th data-options="field:'roleId'">角色</th>
 					</tr>
 				</thead>
@@ -156,7 +156,7 @@
 							<td><input type="checkbox" name="id" value="${user.id}" /></td>
 							<td>${user.agentName}</td>
 							<td>${user.userName}</td>
-							<td>${user.userName}</td>
+							<td>${user.userNo}</td>
 							<td>${user.roleId}</td>
 						</tr>
 					</c:forEach>

@@ -20,6 +20,7 @@ public class AgentService {
 	}
 
 	public void insert(Agent agent ) {
+		 dao.queryPrentIdByCode(agent.getCode());
 		 dao.insert(agent );
 	}
 

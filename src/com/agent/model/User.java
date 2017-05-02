@@ -7,6 +7,7 @@ public class User {
 	  private String pwd ;
 	  private Integer agentId ;
 	  private String  agentName;
+	  private String  agentCode;
 	  private String roleId ;
 	public Integer getId() {
 		return id;
@@ -49,6 +50,12 @@ public class User {
 	}
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
+	}
+	public String getAgentCode() {
+		return agentCode;
+	}
+	public void setAgentCode(String agentCode) {
+		this.agentCode = agentCode;
 	} 
 	  
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.agent.dao.AgentDao;
 import com.agent.dao.UserDao;
 import com.agent.model.User;
 
@@ -13,8 +14,10 @@ public class UserService {
 	
 	@Autowired
 	UserDao  dao ;
+	@Autowired
+	AgentDao  agentDao ;
 
-	public String checkUser(User user) {
+	public User checkUser(User user) {
 		
 		return dao.checkUser(user);
 	}

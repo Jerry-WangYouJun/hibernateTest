@@ -39,6 +39,10 @@ public class AgentDao {
 		if(StringUtils.isNotEmpty(qo.getAgentName())){
 			sql += " and   name =  '" + qo.getAgentName() + "' ";
 		}
+		if(StringUtils.isNotEmpty(qo.getAgentCode())){
+			sql += " and   code  like   '" + qo.getAgentCode() + "%' ";
+			
+		}
 		if(StringUtils.isNotEmpty(qo.getAgentid())){
 			sql += " and   id =  '" + qo.getAgentid() + "' ";
 		}
@@ -61,25 +65,27 @@ public class AgentDao {
 	}
 
 	public void insert(final Agent agent) {
-		jdbcTemplate.update("insert into a_agent (code,name,cost,renew,type,creater) values(?,?,?,?,?,?)",   
+		jdbcTemplate.update("insert into a_agent (code,name,cost,renew,type,creater,parentid) values(?,?,?,?,?,?,?)",   
                 new PreparedStatementSetter(){  
               
                     @Override  
-                    public void setValues(PreparedStatement ps) throws SQLException {  
-                        ps.setString(1,  getMaxCode(agent.getCode()));  
+                    public void setValues(PreparedStatement ps) throws SQLException { 
+                    	int parentId = queryPrentIdByCode(agent.getCode()) ;
+                        ps.setString(1,  getMaxCode(agent.getCode(),parentId));  
                         ps.setString(2, agent.getName()); 
                         ps.setDouble(3, agent.getCost());
                         ps.setDouble(4 , agent.getRenew());
                         ps.setString(5, agent.getType());
                         ps.setString(6, agent.getCreater());
+                        ps.setInt(7, parentId);
                     }  
         });  
 	}
 
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String getMaxCode(String createrCode){
-		String sql = "select code  from a_agent  where code   like   '" + createrCode + "%'" ;
+	public String getMaxCode(String createrCode , int parentId){
+		String sql = "select code  from a_agent  where code   like   '" + createrCode + "%' and parentid =  " + parentId ;
 		final List<String> list = new ArrayList<>();
 		jdbcTemplate.query(sql, new RowMapper() {
 				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -87,25 +93,24 @@ public class AgentDao {
 					 return null ;
 				}
 		});
-		String codeTemp = list.get(0);
 		int temp = 0;
-		if(list.size()==1 && createrCode.equals(codeTemp)){
-			 return codeTemp + "-01"  ;  
+		if(list.size()==0){
+			 return createrCode + "-01"  ;  
 		} 
-		 for(int i = 1   ;  i < list.size() ; i ++){
+		 for(int i = 0   ;  i < list.size() ; i ++){
 			 String a = list.get(i).replaceFirst( createrCode + "-" , "");
 			  int t = Integer.valueOf(a);
 			  if(t > temp){
 				    temp = t ;
 			  }
 		 }
-		return createrCode + CodeUtil.getFixCode(temp);
+		return createrCode + CodeUtil.getFixCode(temp+1);
 	}
 	
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		String a = "aaabvvv";
 		 System.out.println(a.replaceFirst("a", ""));
-	}
+	}*/
 	public void update(final Agent agent) {
 		jdbcTemplate.update("update a_agent set  name=? , cost=?, renew = ? , type = ?  where id = ? ",   
                 new PreparedStatementSetter(){  
@@ -126,5 +131,22 @@ public class AgentDao {
 	                "delete from a_agent where id = ?",   
 	                new Object[]{id},   
 	                new int[]{java.sql.Types.INTEGER});  
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Integer queryPrentIdByCode(String code) {
+		String sql = "select id  from a_agent  where code = '" + code + "'" ;
+		final  List<Integer> list = new ArrayList<>();
+		jdbcTemplate.query(sql, new RowMapper() {
+				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+					list.add(rs.getInt("id"));
+					 return null ;
+				}
+		});
+		if(list.size()>0){
+			  return  list.get(0);
+		}else{
+			return 0 ;
+		}
 	}
 }

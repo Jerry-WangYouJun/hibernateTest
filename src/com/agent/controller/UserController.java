@@ -28,11 +28,11 @@ public class UserController {
 	
 	@RequestMapping("/checkUser")
 	public String checkUser(User user , HttpServletRequest request , HttpSession session){
-		String agentcode = service.checkUser(user);
-		
-		if(agentcode != null ){
-			session.setAttribute("agentcode", agentcode);
-			session.setAttribute("user", user.getUserNo());
+		user = service.checkUser(user);
+		if(user.getAgentCode() != null ){
+			session.setAttribute("agentcode", user.getAgentCode());
+			session.setAttribute("user", user.getUserName());
+			session.setAttribute("agentId", user.getAgentId());
 			return "/agent/index" ;
 		}else{
 			request.setAttribute("msg", "用户名或者密码错误");
@@ -44,10 +44,18 @@ public class UserController {
 	public String login(){
 		return "/agent/login";
 	}
+	@RequestMapping("/loginOut")
+	public String logout(HttpSession session){
+		session.removeAttribute("agentcode");
+		session.removeAttribute("user");
+		return "/agent/login";
+	}
 	
 	@RequestMapping("/user_query")
-	public ModelAndView quetyList(User user){
+	public ModelAndView quetyList(User user , HttpSession session){
 		  ModelAndView mv = new ModelAndView("/agent/user/user_list");
+		  String agentCode = session.getAttribute("agentcode").toString();
+		  user.setAgentCode(agentCode);
 		  List<User> list = service.queryList(user);
 		  mv.addObject("list", list);
 		  return  mv ;
@@ -67,6 +75,7 @@ public class UserController {
 		if(user.getId()!=null && user.getId() >0){
 			service.update(user);
 		}else{
+			//user.setAgentId(agentId);
 			service.insert(user);
 		}
 		response.setContentType("text/text;charset=UTF-8");

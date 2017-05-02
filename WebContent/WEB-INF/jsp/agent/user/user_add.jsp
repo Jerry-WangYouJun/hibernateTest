@@ -122,13 +122,13 @@
 		  			<form:input id="pwd2" path="pwd" onchange="checkPwd();" />
 		  		</td>
 		  	</tr>
-		  	<tr>
+		   <tr>
 		  		<td>所属代理商：</td>
 		  		<td style="padding: 20px">
-		  			<form:hidden id="agentId" path="agentId" />
+		  			<form:hidden id="agentId" path="agentId"  />
 		  			<form:input id="agentName" path="agentName"  onchange="checkAgent();" />
 		  		</td>
-		  	</tr>
+		  	</tr> 
 		  </table>
 	</form:form>
 </body>

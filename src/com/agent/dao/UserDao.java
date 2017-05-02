@@ -23,17 +23,21 @@ public class UserDao {
 	private JdbcTemplate jdbcTemplate;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String checkUser(User user) {
-		String sql = "select a.code from a_user u , a_agent a where u.agentid = a.id"
+	public User checkUser(final User user) {
+		String sql = "select u.* , a.code from a_user u , a_agent a where u.agentid = a.id"
 				+ "  and  u.userNo = '" + user.getUserNo() + "' and u.pwd = '" + user.getPwd() + "' " ;
-		final String[] total = {null};
 		jdbcTemplate.query(sql, new RowMapper() {
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-				total[0] = rs.getString("code");
-				return rs.getString("code");
+					user.setId(rs.getInt("id"));
+					user.setUserNo(rs.getString("userno"));
+					user.setUserName(rs.getString("username"));
+					user.setRoleId(rs.getString("roleid"));
+					user.setAgentId(rs.getInt("agentid"));
+					user.setAgentCode(rs.getString("code"));
+				 return null ;
 			}
 		});
-		return total[0];
+		return user;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -55,6 +59,9 @@ public class UserDao {
 		if(user.getId()!=null && StringUtils.isNotEmpty(user.getId()+"")){
 			sql += " and   u.id =  '" + user.getId() + "' ";
 		}
+		if(StringUtils.isNotEmpty(user.getAgentCode())){
+			sql += " and   code  like   '" + user.getAgentCode() + "%' ";
+		}
          final  List<User> list =   new ArrayList<>();
          jdbcTemplate.query(sql, new RowMapper() {
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -73,7 +80,7 @@ public class UserDao {
 	}
 
 	public void insert(final User user) {
-		jdbcTemplate.update("insert into a_user (userno ,username , pwd , roleid , agentid ) values(?,?,?,?,?)",   
+		jdbcTemplate.update("insert into a_user (userno ,username , pwd , roleid , agentid  ) values(?,?,?,?,?)",   
                 new PreparedStatementSetter(){  
               
                     @Override  

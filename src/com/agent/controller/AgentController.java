@@ -34,18 +34,21 @@ public class AgentController {
 //	}
 	
 	@RequestMapping("/agent_query")
-	public ModelAndView  agentList(QueryData  qo ){
+	public ModelAndView  agentList(QueryData  qo , HttpSession session ){
 		ModelAndView  mv = new ModelAndView("/agent/agent/agent_query");
 		List<Agent> list =  new ArrayList<>();
+		String agentCode = session.getAttribute("agentcode").toString();
+		qo.setAgentCode(agentCode);
 		list = service.queryList(qo);
 		mv.addObject("list", list);
 		return mv ;
 	}
 	
 	@RequestMapping("/checkAgent")
-	public void  checkAgent(String agentName , HttpServletResponse response ){
+	public void  checkAgent(String agentName , HttpServletResponse response ,HttpSession session   ){
 		QueryData qo = new QueryData();
 		qo.setAgentName(agentName);
+		qo.setAgentCode(session.getAttribute("agentcode").toString());
 		List<Agent> list =  service.queryList(qo);
 		response.setContentType("text/text;charset=UTF-8");
 		PrintWriter out;
