@@ -11,16 +11,7 @@
 	<meta http-equiv="description" content="This is my page">
 	<script type="text/javascript">
 		function loginOut(){
-			$.ajax({
-				url : "${basePath}/user/loginOut",
-				type : 'post',
-				success:function(data){
-					window.location.href = "${basePath}/login.jsp" ;
-				},
-				error : function(transport) {
-					$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");
-				}
-			});
+					window.location.href = "${basePath}/loginOut" ;
 		}
 		
 		
@@ -90,7 +81,7 @@
 			<tr>
 				<td align="right">
 					<font color="white" size="2">当前用户： </font>
-					<font color="red" size="4">${sessionScope.userName }</font>
+					<font color="red" size="4">${sessionScope.user }</font>
 					<a href="javascript:loginOut();" style="text-decoration: none;font-size: 12px; color:black;">
 						<img alt="" src="${basePath}/images/login_out.png"> 退出
 					</a>

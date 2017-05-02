@@ -35,7 +35,6 @@
 	        	} 
 	       	});
 		}
-		parent.doSearch();
 	}
 	function checkInfo(){
 		if($("#name").val() == ""){

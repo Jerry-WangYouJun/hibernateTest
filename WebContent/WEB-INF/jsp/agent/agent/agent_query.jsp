@@ -163,6 +163,7 @@
 					<tr>
 						<th data-options="field:'id'"></th>
 						<th data-options="field:'name'">代理商</th>
+						<th data-options="field:'code'">代理商代码</th>
 						<th data-options="field:'cost'">成本价</th>
 						<th data-options="field:'renew'">续费价</th>
 						<th data-options="field:'type'">套餐类型</th>
@@ -174,6 +175,7 @@
 						<tr>
 							<td><input type="checkbox" name="id" value="${agent.id}" /></td>
 							<td>${agent.name}</td>
+							<td>${agent.code}</td>
 							<td>${agent.cost}</td>
 							<td>${agent.renew}</td>
 							<td>${agent.type}</td>

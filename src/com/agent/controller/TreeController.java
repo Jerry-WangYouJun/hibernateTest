@@ -29,7 +29,7 @@ public class TreeController {
 	    		list.add(treeNode);
 	    		List<TreeNode> listChild = new ArrayList<>();
 	    		TreeNode  childNode = new TreeNode();
-	    		childNode.setId("6666");
+	    		//childNode.setId("6666");
 	    		childNode.setText("测试12");
 	    		childNode.getAttributes().setPriUrl("${basePath}/inventory/list");
 	    		listChild.add(childNode);
