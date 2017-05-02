@@ -40,15 +40,29 @@
 					}
 				}
 			});
-			$("#changetree").tree({
+			$("#cardtree").tree({
 				url:"${basePath}/treeindex/tree", 
 				loadFilter: function(data){	
 							 return data;	
 					},
 				lines:true,
-				onClick:function(node){
+				onClick:function( node){
 					if(node.attributes.priUrl != ""){
-						openTab(node.text,node.attributes.priUrl);
+						openTab("卡信息-"+node.text,node.attributes.priUrl);
+						return false;
+					}
+				}
+			});
+			$("#kickbacktree").tree({
+				url:"${basePath}/treeindex/kickback", 
+				loadFilter: function(data){	
+							 return data;	
+					},
+				lines:true,
+				onClick:function( node){
+					if(node.attributes.priUrl != ""){
+						openTab("返佣"+node.text,node.attributes.priUrl);
+						return false;
 					}
 				}
 			});
@@ -97,7 +111,10 @@
 		<ul id="fixedtree">
 		
 		</ul>
-		<ul id="changetree">
+		<ul id="cardtree">
+		
+		</ul>
+		<ul id="kickbacktree">
 		
 		</ul>
 	</div>

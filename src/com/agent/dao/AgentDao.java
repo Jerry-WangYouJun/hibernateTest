@@ -56,6 +56,7 @@ public class AgentDao {
 					vo.setType(rs.getString("type"));
 					vo.setCost(rs.getDouble("cost"));
 					vo.setRenew(rs.getDouble("renew"));
+					vo.setParengId(rs.getInt("parentid"));
 					vo.setCreater(rs.getString("creater"));
 					list.add(vo);
 				 return null ;
@@ -148,5 +149,27 @@ public class AgentDao {
 		}else{
 			return 0 ;
 		}
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Agent> queryTreeData() {
+		String sql = "select a.id pid , a.name pname , b.id sid ,  b.name sname  "
+				+ " from a_agent a LEFT JOIN  a_agent b on  a.id  = b.parentId " ;
+		final  List<Agent> list =   new ArrayList<>();
+        jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+					Agent  vo = new Agent(); 
+					vo.setId(rs.getInt("id"));
+					vo.setCode(rs.getString("code"));
+					vo.setName(rs.getString("name"));
+					vo.setType(rs.getString("type"));
+					vo.setCost(rs.getDouble("cost"));
+					vo.setRenew(rs.getDouble("renew"));
+					vo.setCreater(rs.getString("creater"));
+					list.add(vo);
+				 return null ;
+			}
+		});
+		return list;
 	}
 }
