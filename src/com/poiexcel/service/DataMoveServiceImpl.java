@@ -140,5 +140,17 @@ public class DataMoveServiceImpl implements DataMoveService {
 				+ " WHERE id = " + id  ;
 		dataMoveDao.update(updateDataSql);
 	}
+
+	@Override
+	public void insertAgentCard() {
+		try {
+			String insertNewDataSql = "select  iccid from cmtp_temp where  iccid not in (select iccid from cmtp ) " ;
+			System.out.println(insertNewDataSql);
+			List<String>  list =  dataMoveDao.queryIccidList(insertNewDataSql);
+			dataMoveDao.insertAgentCard(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }

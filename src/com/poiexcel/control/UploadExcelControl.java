@@ -148,6 +148,8 @@ public class UploadExcelControl {
 		moveDataServices.insertDataToTemp(listob, apiCode);
 		System.out.println("覆盖数据开始    ：" + System.currentTimeMillis());
 		int updateNum = moveDataServices.updateExistData(apiCode);
+		System.out.println("插入代理商卡数据开始：" + System.currentTimeMillis());
+		moveDataServices.insertAgentCard();
 		System.out.println("插入新数据开始：" + System.currentTimeMillis());
 		int insertNum = moveDataServices.dataMoveSql2Oracle(apiCode);
 		System.out.println("执行结束            ：" + System.currentTimeMillis());
