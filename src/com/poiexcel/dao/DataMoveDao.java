@@ -428,11 +428,7 @@ public class DataMoveDao {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<Map<String, String>> queryKickbackList(Integer id) {
-		String sql = "select h.iccid , h.money , c.packageType , h.update_date , h.money - u.cost  kickback "
-				+ "from history h , cmtp c , card_agent a , a_agent u "
-				+ " where h.iccid = c.iccid and c.iccid = a.iccid "
-				+ " and  u.id = a.agentid  and  u.id = " + id  ;
+	public List<Map<String, String>> queryKickbackList(String sql) {
 		final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		// Map<String, String> map = new HashMap<String, String>();
 		jdbcTemplate.query(sql, new RowMapper() {

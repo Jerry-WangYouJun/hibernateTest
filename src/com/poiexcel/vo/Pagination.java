@@ -26,6 +26,7 @@ public class Pagination {
 		this.pageSize = pageSize;
 	}
 	public int getPageIndex() {
+		
 		return pageIndex;
 	}
 	public void setPageIndex(int pageIndex) {

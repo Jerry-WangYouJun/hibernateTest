@@ -16,6 +16,8 @@ import org.springframework.stereotype.Repository;
 import com.agent.common.CodeUtil;
 import com.agent.model.Agent;
 import com.agent.model.QueryData;
+import com.poiexcel.util.Dialect;
+import com.poiexcel.vo.Pagination;
 
 
 @Repository
@@ -25,7 +27,7 @@ public class AgentDao {
 	private JdbcTemplate jdbcTemplate;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<Agent> queryList(QueryData qo) {
+	public List<Agent> queryList(QueryData qo, Pagination page) {
 		String sql = "select * from a_agent where 1=1 " ;
 		if(StringUtils.isNotEmpty(qo.getType())){
 			sql += " and   type =  '" + qo.getType() + "' ";
@@ -46,8 +48,9 @@ public class AgentDao {
 		if(StringUtils.isNotEmpty(qo.getAgentid())){
 			sql += " and   id =  '" + qo.getAgentid() + "' ";
 		}
+		String finalSql = Dialect.getLimitString(sql, page.getPageNo(), page.getPageSize(), "MYSQL");
          final  List<Agent> list =   new ArrayList<>();
-         jdbcTemplate.query(sql, new RowMapper() {
+         jdbcTemplate.query(finalSql, new RowMapper() {
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
 					Agent  vo = new Agent(); 
 					vo.setId(rs.getInt("id"));

@@ -35,8 +35,9 @@
                 pageNumber: "${page.pageNo}",  
                 pageList: [3 , 10, 30, 50],  
                 beforePageText: '第',//页数文本框前显示的汉字   
-                afterPageText: '页    共 {pages} 页',  
-                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',  
+                afterPageText: '页    共 ${page.pageIndex} 页',  
+                displayMsg: '  共 ${page.total} 条记录',  
+                showRefresh:false ,
            });
 			
 			
@@ -47,6 +48,18 @@
 			 });
 			 $(".pagination-page-list").change(function(){
 				 doSearch();  
+			 });
+			 $(".pagination-first").click(function(){
+				 doSearch("1");  
+			 });
+			 $(".pagination-prev").click(function(){
+				 doSearch("prev");  
+			 });
+			 $(".pagination-next").click(function(){
+				 doSearch("next");  
+			 });
+			 $(".pagination-last").click(function(){
+				 doSearch("last");  
 			 });
 			 
 			$('#dlg-frame').dialog( {
@@ -77,11 +90,22 @@
 			
 		});
 		
-		function doSearch(){
+		function doSearch(index){
 			var userNo = $("#search-userNo").val();
 			var pageNo = $(".pagination-num").val(); 
 			var pageSize = $(".pagination-page-list").val();
-			window.location.href = "${basePath}/user_query?userNo=" + userNo + "&pageNo=" + pageNo + "&pageSize=" + pageSize ;
+			var pageTotal = ${page.pageIndex};
+			if(index == "1"){
+				pageNo = 1 ;
+			}else if(index == "prev" && pageNo != 1 ){
+				 pageNo  -= 1 ;
+			}else if(index == "next" && pageNo != pageTotal){
+				pageNo  = parseInt(pageNo)+parseInt(1); 
+			}else if(index == "last" ){
+				pageNo  = pageTotal; 
+			}
+			window.location.href = "${basePath}/user_query?userNo=" + userNo +
+					"&pageNo=" + pageNo + "&pageSize=" + pageSize ;
 		}
 		function doClear(){
 			$("#search-userNo").val("");

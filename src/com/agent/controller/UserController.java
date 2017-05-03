@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.agent.common.CodeUtil;
 import com.agent.model.User;
 import com.agent.service.UserService;
 import com.poiexcel.vo.Pagination;
@@ -58,8 +59,11 @@ public class UserController {
 		  String agentCode = session.getAttribute("agentcode").toString();
 		  user.setAgentCode(agentCode);
 		  Pagination page = new Pagination();
+		  List<User> totalList = service.queryList(user , page );
 		  page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
 		  page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
+		  page.setTotal(totalList.size());
+		  CodeUtil.initPagination(page);
 		  List<User> list = service.queryList(user , page);
 		  mv.addObject("list", list);
 		  mv.addObject("page", page);

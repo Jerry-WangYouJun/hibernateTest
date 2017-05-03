@@ -42,8 +42,9 @@
             pageNumber: "${page.pageNo}",  
             pageList: [3 , 10, 30, 50],  
             beforePageText: '第',//页数文本框前显示的汉字   
-            afterPageText: '页    共 {pages} 页',  
-            displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',  
+            afterPageText: '页    共 ${page.pageIndex} 页',  
+            displayMsg: '  共 ${page.total} 条记录',  
+            showRefresh:false ,
        });
 		
 		 $(".pagination-num").val("${page.pageNo}");
@@ -53,6 +54,18 @@
 		 });
 		 $(".pagination-page-list").change(function(){
 			 doSearch();  
+		 });
+		 $(".pagination-first").click(function(){
+			 doSearch("1");  
+		 });
+		 $(".pagination-prev").click(function(){
+			 doSearch("prev");  
+		 });
+		 $(".pagination-next").click(function(){
+			 doSearch("next");  
+		 });
+		 $(".pagination-last").click(function(){
+			 doSearch("last");  
 		 });
 
 		$('#dlg-frame').dialog({
@@ -82,13 +95,27 @@
 		});
 	});
 
-	function doSearch() {
+	function doSearch(index) {
 		var type = $("#search-type").val();
 		var iccidStart = $("#search-iccidStart").val();
 		var iccidEnd = $("#search-iccidEnd").val();
+		var pageNo = $(".pagination-num").val(); 
+		var pageSize = $(".pagination-page-list").val();
+		var pageTotal = ${page.pageIndex};
+		if(index == "1"){
+			pageNo = 1 ;
+		}else if(index == "prev" && pageNo != 1 ){
+			 pageNo  -= 1 ;
+		}else if(index == "next" && pageNo != pageTotal){
+			pageNo  = parseInt(pageNo)+parseInt(1); 
+		}else if(index == "last" ){
+			pageNo  = pageTotal; 
+		}
 		window.location.href = "${basePath}/agent/agent_query?type=" + type +
-				"&iccidStart="+iccidStart + "&iccidEnd" + iccidEnd;
+				"&iccidStart="+iccidStart + "&iccidEnd" + iccidEnd +
+				"&pageNo=" + pageNo + "&pageSize=" + pageSize ;
 	}
+	
 	function doClear() {
 		$("#search-type").val("");
 		$("#search-iccidStart").val("");
@@ -176,7 +203,7 @@
 		<form:form id="dataForm" action="${basePath}/user/user_delete"
 			modelAttribute="user" method="post">
 			<input type="hidden" name="_method" value="DELETE" />
-			<table class="easyui-datagrid" id="data-table">
+			<table class="easyui-datagrid" id="data-table"  title="数据列表" width="86%" >
 				<thead>
 					<tr>
 						<th data-options="field:'id'"></th>

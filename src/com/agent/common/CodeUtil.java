@@ -1,5 +1,8 @@
 package com.agent.common;
 
+import com.poiexcel.vo.Pagination;
+
+
 public class CodeUtil {
 	  
 	   public static String  getFixCode(int  max){
@@ -9,4 +12,13 @@ public class CodeUtil {
 		    	return  "-" + max ;
 		    }
 	   }
+	   
+		public static void initPagination(Pagination pagination ) {
+			if ((pagination.getTotal() % pagination.getPageSize()) == 0) {
+				pagination.setPageIndex(pagination.getTotal() / pagination.getPageSize());
+			} else {
+				pagination.setPageIndex(pagination.getTotal() / pagination.getPageSize() + 1);
+			}
+
+		}
 }

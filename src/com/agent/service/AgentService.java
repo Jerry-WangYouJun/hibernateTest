@@ -14,6 +14,7 @@ import com.agent.dao.AgentDao;
 import com.agent.model.Agent;
 import com.agent.model.QueryData;
 import com.agent.model.TreeNode;
+import com.poiexcel.vo.Pagination;
 
 @Service
 public class AgentService {
@@ -22,8 +23,8 @@ public class AgentService {
 	 AgentDao dao ;
 	 Map<Integer , List<Agent>> mapTree = new HashMap<>();
 
-	public List<Agent> queryList(QueryData qo) {
-		return dao.queryList(qo);
+	public List<Agent> queryList(QueryData qo, Pagination page) {
+		return dao.queryList(qo,page);
 	}
 
 	public void insert(Agent agent ) {
@@ -41,7 +42,7 @@ public class AgentService {
 
 	public List<TreeNode> getTreeData(Integer agentid  , String urlType, HttpServletRequest request) {
 		QueryData qo = new QueryData();
-		 List<Agent> agentList = dao.queryList(qo);
+		 List<Agent> agentList = dao.queryList(qo, new Pagination());
 		 mapTree  = getMap(agentList);
 		 return getNodeList(agentList , agentid , urlType , request);
 	}

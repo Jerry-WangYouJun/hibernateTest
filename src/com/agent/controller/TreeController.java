@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.agent.common.CodeUtil;
 import com.agent.model.TreeNode;
 import com.agent.service.AgentService;
 import com.agent.service.CardAgentService;
 import com.poiexcel.vo.InfoVo;
+import com.poiexcel.vo.Pagination;
 
 
 @Controller
@@ -79,18 +81,34 @@ public class TreeController {
 	 
 		
 		@RequestMapping(value="/card/{id}")
-		public ModelAndView cardInfo(@PathVariable("id") Integer id, HttpServletResponse response ){
+		public ModelAndView cardInfo(@PathVariable("id") Integer id, HttpServletResponse response
+				, String pageNo , String pageSize){
 				  ModelAndView mv = new ModelAndView("/agent/agent/card_list");
-				  List<InfoVo>  list = cardAgentService.queryCardInfo(id);
+				  Pagination page = new Pagination();
+					List<InfoVo> tatolList = cardAgentService.queryCardInfo(id , page);
+					page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
+					page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
+					page.setTotal(tatolList.size());
+					CodeUtil.initPagination(page);
+				  List<InfoVo>  list = cardAgentService.queryCardInfo(id , page);
 				  mv.addObject("list", list);
+				  mv.addObject("page", page);
 				  return mv ;
 		}
 		
 		@RequestMapping(value="/kickback/{id}")
-		public ModelAndView Info(@PathVariable("id") Integer id, HttpServletResponse response ){
+		public ModelAndView Info(@PathVariable("id") Integer id, HttpServletResponse response
+				, String pageNo , String pageSize ){
 				  ModelAndView mv = new ModelAndView("/agent/agent/kickback_list");
-				  List<Map<String,String>>  list = cardAgentService.queryKickbackInfo(id);
+				  Pagination page = new Pagination();
+					List<Map<String,String>> tatolList = cardAgentService.queryKickbackInfo(id , page);
+					page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
+					page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
+					page.setTotal(tatolList.size());
+					CodeUtil.initPagination(page);
+				  List<Map<String,String>>  list = cardAgentService.queryKickbackInfo(id, page);
 				  mv.addObject("list", list);
+				  mv.addObject("page", page);
 				  return mv ;
 		}
 		
