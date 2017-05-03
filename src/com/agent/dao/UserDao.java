@@ -14,6 +14,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.agent.model.User;
+import com.poiexcel.util.Dialect;
+import com.poiexcel.vo.Pagination;
 
 
 @Repository
@@ -41,7 +43,7 @@ public class UserDao {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<User> queryList(User user) {
+	public List<User> queryList(User user, Pagination page) {
 		String sql = "select u.id , u.userno , u.username ,u.pwd , u.roleid , u.agentid , a.name , u.agentid "
 				+ "from a_user u , a_agent a where u.agentid = a.id  " ;
 		if(StringUtils.isNotEmpty(user.getUserNo())){
@@ -62,8 +64,9 @@ public class UserDao {
 		if(StringUtils.isNotEmpty(user.getAgentCode())){
 			sql += " and   code  like   '" + user.getAgentCode() + "%' ";
 		}
+		String finalSql = Dialect.getLimitString(sql, page.getPageNo(), page.getPageSize(), "MYSQL");
          final  List<User> list =   new ArrayList<>();
-         jdbcTemplate.query(sql, new RowMapper() {
+         jdbcTemplate.query(finalSql, new RowMapper() {
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
 					User  vo = new User(); 
 					vo.setId(rs.getInt("id"));

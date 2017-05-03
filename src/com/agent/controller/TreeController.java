@@ -3,7 +3,9 @@ package com.agent.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -32,7 +34,7 @@ public class TreeController {
 		CardAgentService cardAgentService;
 	
 		@RequestMapping("/tree")
-	    public void getTreeData(HttpSession session, HttpServletResponse response){
+	    public void getTreeData(HttpSession session, HttpServletResponse response , HttpServletRequest request){
 	    	  try {
 	    		  
 	    		List<TreeNode> list = new ArrayList<>();
@@ -42,7 +44,7 @@ public class TreeController {
 	    		//子节点
 	    		List<TreeNode> listChild = new ArrayList<>();
 	    		Integer agentid = Integer.valueOf(session.getAttribute("agentId").toString());
-	    		listChild = service.getTreeData(agentid , "card");
+	    		listChild = service.getTreeData(agentid , "card" , request);
 	    		treeNode.setChildren(listChild);
 	    		JSONArray json = JSONArray.fromObject(treeNode);
     		    response.setCharacterEncoding("utf-8");
@@ -54,9 +56,9 @@ public class TreeController {
 	    }
 		
 		@RequestMapping("/kickback")
-	    public void getKickbackData(HttpSession session, HttpServletResponse response){
+	    public void getKickbackData(HttpSession session, HttpServletResponse response , HttpServletRequest request ){
 	    	  try {
-	    		  
+	    		
 	    		List<TreeNode> list = new ArrayList<>();
 	    		TreeNode  treeNode = new TreeNode();
 	    		treeNode.setText("返佣管理");
@@ -64,7 +66,7 @@ public class TreeController {
 	    		//子节点
 	    		List<TreeNode> listChild = new ArrayList<>();
 	    		Integer agentid = Integer.valueOf(session.getAttribute("agentId").toString());
-	    		listChild = service.getTreeData(agentid , "kickback");
+	    		listChild = service.getTreeData(agentid , "kickback" ,request);
 	    		treeNode.setChildren(listChild);
 	    		JSONArray json = JSONArray.fromObject(treeNode);
     		    response.setCharacterEncoding("utf-8");
@@ -83,4 +85,14 @@ public class TreeController {
 				  mv.addObject("list", list);
 				  return mv ;
 		}
+		
+		@RequestMapping(value="/kickback/{id}")
+		public ModelAndView Info(@PathVariable("id") Integer id, HttpServletResponse response ){
+				  ModelAndView mv = new ModelAndView("/agent/agent/kickback_list");
+				  List<Map<String,String>>  list = cardAgentService.queryKickbackInfo(id);
+				  mv.addObject("list", list);
+				  return mv ;
+		}
+		
+		
 }

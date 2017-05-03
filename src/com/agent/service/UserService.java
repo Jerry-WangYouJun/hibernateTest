@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.agent.dao.AgentDao;
 import com.agent.dao.UserDao;
 import com.agent.model.User;
+import com.poiexcel.vo.Pagination;
 
 @Service
 public class UserService {
@@ -22,8 +23,8 @@ public class UserService {
 		return dao.checkUser(user);
 	}
 
-	public List<User> queryList(User user) {
-		return dao.queryList(user);
+	public List<User> queryList(User user, Pagination page) {
+		return dao.queryList(user ,page);
 	}
 
 	public void insert(User user) {

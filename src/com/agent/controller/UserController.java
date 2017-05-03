@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.agent.model.User;
 import com.agent.service.UserService;
+import com.poiexcel.vo.Pagination;
 
 
 @Controller
@@ -52,12 +53,16 @@ public class UserController {
 	}
 	
 	@RequestMapping("/user_query")
-	public ModelAndView quetyList(User user , HttpSession session){
+	public ModelAndView quetyList(User user , HttpSession session , String pageNo , String pageSize){
 		  ModelAndView mv = new ModelAndView("/agent/user/user_list");
 		  String agentCode = session.getAttribute("agentcode").toString();
 		  user.setAgentCode(agentCode);
-		  List<User> list = service.queryList(user);
+		  Pagination page = new Pagination();
+		  page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
+		  page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
+		  List<User> list = service.queryList(user , page);
 		  mv.addObject("list", list);
+		  mv.addObject("page", page);
 		  return  mv ;
 	}
 	
@@ -99,7 +104,7 @@ public class UserController {
 		ModelAndView  mv = new ModelAndView( "/agent/user/user_add");
 		User user = new User();
 		user.setId(id );
-		List<User> list = service.queryList(user);
+		List<User> list = service.queryList(user , new Pagination() );
 		mv.addObject("user", list.get(0));
 		return mv;
 	}

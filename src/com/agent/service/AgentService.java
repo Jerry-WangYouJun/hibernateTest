@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,39 +39,39 @@ public class AgentService {
 		dao.delete(id);
 	}
 
-	public List<TreeNode> getTreeData(Integer agentid  , String urlType) {
+	public List<TreeNode> getTreeData(Integer agentid  , String urlType, HttpServletRequest request) {
 		QueryData qo = new QueryData();
 		 List<Agent> agentList = dao.queryList(qo);
 		 mapTree  = getMap(agentList);
-		 return getNodeList(agentList , agentid , urlType);
+		 return getNodeList(agentList , agentid , urlType , request);
 	}
 
-	private List<TreeNode> getNodeList(List<Agent> agentList ,Integer agentId , String urlType) {
+	private List<TreeNode> getNodeList(List<Agent> agentList ,Integer agentId , String urlType, HttpServletRequest request) {
 		List<TreeNode> nodeList = new ArrayList<>();
 		for(Agent agent : agentList){
 			  if(agentId.equals(agent.getId())){
 				  TreeNode  node =  new TreeNode();
 				  node.setId(agent.getId()+"");
 				  node.setText(agent.getName());
-				  node.getAttributes().setPriUrl("http://localhost:8080/spring_mvc_demo/treeindex/" + urlType + "/" + agent.getId()); 
+				  node.getAttributes().setPriUrl(request.getContextPath() +  "/treeindex/" + urlType + "/" + agent.getId()); 
 				  List<Agent> firstListTemp = new ArrayList<>();
 				  firstListTemp =mapTree.get(agentId);
-				  node.setChildren(agentTreeData(firstListTemp , urlType));
+				  node.setChildren(agentTreeData(firstListTemp , urlType , request));
 				  nodeList.add(node);
 			  }
 		}
 		return nodeList;
 	}
 	
-	private  List<TreeNode>  agentTreeData(List<Agent> listTemp  , String urlType){
+	private  List<TreeNode>  agentTreeData(List<Agent> listTemp  , String urlType , HttpServletRequest request){
 			List<TreeNode> nodeList = new ArrayList<>();
 			 for(Agent agent : listTemp){
 				 TreeNode tn = new TreeNode();
 					tn.setId(agent.getId() + "");
 					tn.setText(agent.getName());
-					tn.getAttributes().setPriUrl("http://localhost:8080/spring_mvc_demo/treeindex/" + urlType + "/" + agent.getId()); 
+					tn.getAttributes().setPriUrl(request.getContextPath() + "/treeindex/" + urlType + "/" + agent.getId()); 
 					if(mapTree.containsKey(agent.getId())){
-						tn.setChildren(agentTreeData(mapTree.get(agent.getId()), urlType));
+						tn.setChildren(agentTreeData(mapTree.get(agent.getId()), urlType ,request) );
 					}
 					nodeList.add(tn);
 			 }

@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
@@ -423,5 +425,28 @@ public class DataMoveDao {
 			System.out.println("插入数据：" + iccidList.size() + "条");
 		}
 
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<Map<String, String>> queryKickbackList(Integer id) {
+		String sql = "select h.iccid , h.money , c.packageType , h.update_date , h.money - u.cost  kickback "
+				+ "from history h , cmtp c , card_agent a , a_agent u "
+				+ " where h.iccid = c.iccid and c.iccid = a.iccid "
+				+ " and  u.id = a.agentid  and  u.id = " + id  ;
+		final List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		// Map<String, String> map = new HashMap<String, String>();
+		jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+				Map<String, String>  map  =  new HashMap<>() ; 
+				map.put("iccid", rs.getString("iccid"));
+				map.put("money", rs.getString("money"));
+				map.put("packageType", rs.getString("packageType"));
+				map.put("update_date", rs.getString("update_date"));
+				map.put("kickback", rs.getString("kickback"));
+				list.add(map);
+				return null;
+			}
+		});
+		return list;
 	}
 }

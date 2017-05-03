@@ -30,7 +30,25 @@
 					handler: function(){deleteUser();}
 				}]
 			});
+			$('#data-table').datagrid('getPager').pagination({  
+                pageSize: "${page.pageSize}",  
+                pageNumber: "${page.pageNo}",  
+                pageList: [3 , 10, 30, 50],  
+                beforePageText: '第',//页数文本框前显示的汉字   
+                afterPageText: '页    共 {pages} 页',  
+                displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',  
+           });
 			
+			
+			 $(".pagination-num").val("${page.pageNo}");
+			
+			 $(".pagination-num").change(function(){
+				 doSearch();  
+			 });
+			 $(".pagination-page-list").change(function(){
+				 doSearch();  
+			 });
+			 
 			$('#dlg-frame').dialog( {
 				title : '用户管理',
 				width :  700,
@@ -56,11 +74,14 @@
 					}
 				} ]
 			});
+			
 		});
 		
 		function doSearch(){
 			var userNo = $("#search-userNo").val();
-			window.location.href = "${basePath}/user_query?userNo=" + userNo ;
+			var pageNo = $(".pagination-num").val(); 
+			var pageSize = $(".pagination-page-list").val();
+			window.location.href = "${basePath}/user_query?userNo=" + userNo + "&pageNo=" + pageNo + "&pageSize=" + pageSize ;
 		}
 		function doClear(){
 			$("#search-userNo").val("");
@@ -162,6 +183,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			
 		</form:form>
 		
 		<div id="dlg-frame">
