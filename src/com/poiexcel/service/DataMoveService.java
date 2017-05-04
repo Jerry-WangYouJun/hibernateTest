@@ -21,6 +21,8 @@ public interface DataMoveService {
 
 	public int queryDataSize(String dateBegin, String dateEnd, String status  , String iccid );
 
+	public void insertAgentCard();
+
 	
 	
 }

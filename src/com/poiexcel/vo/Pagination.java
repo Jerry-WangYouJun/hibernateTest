@@ -6,7 +6,7 @@ public class Pagination {
 	//第几页
 	 private int pageNo = 1;
 	 //每页几条
-	 private int pageSize = 100;
+	 private int pageSize = 9999999;
 	 //共几页
 	 private int pageIndex  ;
 	 //总条数
@@ -26,6 +26,7 @@ public class Pagination {
 		this.pageSize = pageSize;
 	}
 	public int getPageIndex() {
+		
 		return pageIndex;
 	}
 	public void setPageIndex(int pageIndex) {
