@@ -6,6 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- <script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/datagrid-detailview.js"></script> -->
 <title>用户管理</title>
 <script type="text/javascript">
 	$(function() {
@@ -15,33 +16,15 @@
 			singleSelect : true,
 			pagination : true,
 			nowrap : false,
-			toolbar : [ {
-				text : '添加',
-				iconCls : 'icon-add',
-				handler : function() {
-					addUser();
-				}
-			}, '-', {
-				text : '修改',
-				iconCls : 'icon-edit',
-				handler : function() {
-					updateUser();
-				}
-			}, '-', {
-				text : '删除',
-				iconCls : 'icon-remove',
-				handler : function() {
-					deleteUser();
-				}
-			} ]
+			fit: true, 
+			pagePosition: 'both'
 		});
 		$('#data-table').datagrid('getPager').pagination({  
             pageSize: "${page.pageSize}",  
             pageNumber: "${page.pageNo}",  
-            pageList: [3 , 10, 30, 50],  
+            pageList: [3 , 10, 30, 50 , 100],  
             beforePageText: '第',//页数文本框前显示的汉字   
-            afterPageText: '页    共 ${page.pageIndex} 页',  
-            displayMsg: '  共 ${page.total} 条记录',  
+            afterPageText: '页    共 ${page.pageIndex} 页    ${page.total} 条记录',  
             showRefresh:false ,
        });
 		
@@ -92,6 +75,7 @@
 				}
 			} ]
 		});
+		 $("#datagridDiv").height($(".layout-panel-center")[0].offsetHeight - 200);
 	});
 
 	function doSearch(index) {
@@ -101,6 +85,7 @@
 		var pageNo = $(".pagination-num").val(); 
 		var pageSize = $(".pagination-page-list").val();
 		var pageTotal = ${page.pageIndex};
+		alert(iccidStart);
 		if(index == "1"){
 			pageNo = 1 ;
 		}else if(index == "prev" && pageNo != 1 ){
@@ -110,8 +95,8 @@
 		}else if(index == "last" ){
 			pageNo  = pageTotal; 
 		}
-		window.location.href = "${basePath}/agent/agent_query?type=" + type +
-				"&iccidStart="+iccidStart + "&iccidEnd" + iccidEnd + 
+		window.location.href = "${basePath}/treeindex/card/${agentid}?type=" + type +
+				"&iccidStart="+iccidStart + "&iccidEnd=" + iccidEnd + 
 				"&pageNo=" + pageNo + "&pageSize=" + pageSize ;
 	}
 	function doClear() {
@@ -182,7 +167,12 @@
 		return id;
 	}
 </script>
+<style type="text/css">
+.datagrid-view{
+	height : 2000px;
+}
 
+</style>
 </head>
 <body class="easyui-layout">
 	<div id="tb" region="north" title="查询条件区" class="easyui-panel"
@@ -197,7 +187,7 @@
 			onclick="doSearch()">查询</a> <a href="####" class="easyui-linkbutton"
 			plain="true" iconCls="icon-clear" onclick="doClear()">清除</a>
 	</div>
-	<div region="center" border="0">
+	<div id="datagridDiv" region="center" border="0" style="height: 2800px">
 		<form:form id="dataForm" action="${basePath}/user/user_delete"
 			modelAttribute="user" method="post">
 			<input type="hidden" name="_method" value="DELETE" />

@@ -21,6 +21,9 @@ public class QueryData {
 	  //角色
 	  private String roleId;
 	  private String userId ;
+	  
+	  private String dateStart ; 
+	  private String dateEnd ;
 	public String getType() {
 		return type;
 	}
@@ -80,6 +83,18 @@ public class QueryData {
 	}
 	public void setAgentCode(String agentCode) {
 		this.agentCode = agentCode;
+	}
+	public String getDateStart() {
+		return dateStart;
+	}
+	public void setDateStart(String dateStart) {
+		this.dateStart = dateStart;
+	}
+	public String getDateEnd() {
+		return dateEnd;
+	}
+	public void setDateEnd(String dateEnd) {
+		this.dateEnd = dateEnd;
 	} 
 	
 }

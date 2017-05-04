@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.agent.common.CodeUtil;
+import com.agent.model.QueryData;
 import com.agent.model.TreeNode;
 import com.agent.service.AgentService;
 import com.agent.service.CardAgentService;
@@ -82,33 +83,35 @@ public class TreeController {
 		
 		@RequestMapping(value="/card/{id}")
 		public ModelAndView cardInfo(@PathVariable("id") Integer id, HttpServletResponse response
-				, String pageNo , String pageSize){
+				, String pageNo , String pageSize , QueryData qo){
 				  ModelAndView mv = new ModelAndView("/agent/agent/card_list");
 				  Pagination page = new Pagination();
-					List<InfoVo> tatolList = cardAgentService.queryCardInfo(id , page);
+					List<InfoVo> tatolList = cardAgentService.queryCardInfo(id , page , qo);
 					page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
 					page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
 					page.setTotal(tatolList.size());
 					CodeUtil.initPagination(page);
-				  List<InfoVo>  list = cardAgentService.queryCardInfo(id , page);
+				  List<InfoVo>  list = cardAgentService.queryCardInfo(id , page , qo);
 				  mv.addObject("list", list);
 				  mv.addObject("page", page);
+				  mv.addObject("agentid", id);
 				  return mv ;
 		}
 		
 		@RequestMapping(value="/kickback/{id}")
-		public ModelAndView Info(@PathVariable("id") Integer id, HttpServletResponse response
+		public ModelAndView Info(@PathVariable("id") Integer id, QueryData qo,  HttpServletResponse response
 				, String pageNo , String pageSize ){
 				  ModelAndView mv = new ModelAndView("/agent/agent/kickback_list");
 				  Pagination page = new Pagination();
-					List<Map<String,String>> tatolList = cardAgentService.queryKickbackInfo(id , page);
+					List<Map<String,String>> tatolList = cardAgentService.queryKickbackInfo(id , qo , page);
 					page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
 					page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
 					page.setTotal(tatolList.size());
 					CodeUtil.initPagination(page);
-				  List<Map<String,String>>  list = cardAgentService.queryKickbackInfo(id, page);
+				  List<Map<String,String>>  list = cardAgentService.queryKickbackInfo(id, qo  , page);
 				  mv.addObject("list", list);
 				  mv.addObject("page", page);
+				  mv.addObject("agentid", id);
 				  return mv ;
 		}
 		

@@ -14,9 +14,41 @@
 			autoRowHeight : true,
 			singleSelect : true,
 			pagination : true,
-			nowrap : false
+			nowrap : false,
+			fit: true, 
+			pagePosition: 'both'
 		});
+		$('#data-table').datagrid('getPager').pagination({  
+            pageSize: "${page.pageSize}",  
+            pageNumber: "${page.pageNo}",  
+            pageList: [3 , 10, 30, 50 , 100],  
+            beforePageText: '第',//页数文本框前显示的汉字   
+            afterPageText: '页    共 ${page.pageIndex} 页    ${page.total} 条记录',  
+            showRefresh:false ,
+       });
 
+		 $(".pagination-num").val("${page.pageNo}");
+		
+		 $(".pagination-num").change(function(){
+			 doSearch();  
+		 });
+		 $(".pagination-page-list").change(function(){
+			 doSearch();  
+		 });
+		 $(".pagination-first").click(function(){
+			 doSearch("1");  
+		 });
+		 $(".pagination-prev").click(function(){
+			 doSearch("prev");  
+		 });
+		 $(".pagination-next").click(function(){
+			 doSearch("next");  
+		 });
+		 $(".pagination-last").click(function(){
+			 doSearch("last");  
+		 });
+	 
+		 $("#datagridDiv").height($(".layout-panel-center")[0].offsetHeight - 200);
 		$('#dlg-frame').dialog({
 			title : '代理商管理',
 			width : 700,
@@ -44,17 +76,29 @@
 		});
 	});
 
-	function doSearch() {
+	function doSearch(index) {
 		var type = $("#search-type").val();
-		var iccidStart = $("#search-iccidStart").val();
-		var iccidEnd = $("#search-iccidEnd").val();
-		window.location.href = "${basePath}/agent/agent_query?type=" + type +
-				"&iccidStart="+iccidStart + "&iccidEnd" + iccidEnd;
+		var dateStart = document.getElementsByName("dateStart")[0].value;
+		var dateEnd = document.getElementsByName("dateEnd")[0].value;
+		var pageNo = $(".pagination-num").val(); 
+		var pageSize = $(".pagination-page-list").val();
+		var pageTotal = ${page.pageIndex};
+		if(index == "1"){
+			pageNo = 1 ;
+		}else if(index == "prev" && pageNo != 1 ){
+			 pageNo  -= 1 ;
+		}else if(index == "next" && pageNo != pageTotal){
+			pageNo  = parseInt(pageNo)+parseInt(1); 
+		}else if(index == "last" ){
+			pageNo  = pageTotal; 
+		}
+		window.location.href = "${basePath}/treeindex/kickback/${agentid}?dateStart="+dateStart + 
+				"&dateEnd=" + dateEnd + "&pageNo=" + pageNo + "&pageSize=" + pageSize ;
 	}
 	function doClear() {
 		$("#search-type").val("");
-		$("#search-iccidStart").val("");
-		$("#search-iccidEnd").val("");
+		$("#search-dateStart").val("");
+		$("#search-dateEnd").val("");
 	}
 </script>
 
@@ -62,17 +106,16 @@
 <body class="easyui-layout">
 	<div id="tb" region="north" title="查询条件区" class="easyui-panel"
 		iconCls="icon-search" style="padding: 3px; height: 60px; width: 86%">
-		<span>套餐类型:</span> <input id="search-type" name="type" /> 
-		<span>ICCID:</span>
-		<input id="search-iccidStart" name="iccidStart" /> - 
+		<span>查询时间:</span>
+		<input id="search-dateStart" name="dateStart" class="easyui-datebox"  type="text" /> - 
 		<input
-			id="search-iccidEnd" name="iccidEnd" />
+			id="search-dateEnd" name="dateEnd" class="easyui-datebox"  type="text"/>
 		<a href="####"
 			class="easyui-linkbutton" plain="true" iconCls="icon-search"
 			onclick="doSearch()">查询</a> <a href="####" class="easyui-linkbutton"
 			plain="true" iconCls="icon-clear" onclick="doClear()">清除</a>
 	</div>
-	<div region="center" border="0">
+	<div id = "datagridDiv" region="center" border="0">
 		<form:form id="dataForm" action="${basePath}/user/user_delete"
 			modelAttribute="user" method="post">
 			<input type="hidden" name="_method" value="DELETE" />

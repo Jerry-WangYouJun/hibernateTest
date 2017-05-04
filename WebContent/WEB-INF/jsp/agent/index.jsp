@@ -13,9 +13,6 @@
 		function loginOut(){
 					window.location.href = "${basePath}/loginOut" ;
 		}
-		
-		
-		
 		$(function(){
 			var treeData = [{
 				text:"用户管理",	
