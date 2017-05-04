@@ -6,36 +6,35 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<!-- <script type="text/javascript" src="http://www.w3cschool.cc/try/jeasyui/datagrid-detailview.js"></script> -->
 <title>用户管理</title>
 <script type="text/javascript">
 	$(function() {
 		$('#data-table').datagrid({
+			//url : '${basePath}/agent/agent_query',
 			rownumbers : true,
 			autoRowHeight : true,
 			singleSelect : true,
 			pagination : true,
 			nowrap : false,
-			fit: true, 
-			pagePosition: 'both',
 			toolbar : [ {
 				text : '分配',
-				iconCls : 'icon-edit',
+				iconCls : 'icon-add',
 				handler : function() {
-					updateCard();
+					moveCard();
 				}
 			}]
 		});
+		
 		$('#data-table').datagrid('getPager').pagination({  
             pageSize: "${page.pageSize}",  
             pageNumber: "${page.pageNo}",  
-            pageList: [3 , 10, 30, 50 , 100],  
+            pageList: [3 , 10, 30, 50],  
             beforePageText: '第',//页数文本框前显示的汉字   
-            afterPageText: '页    共 ${page.pageIndex} 页    ${page.total} 条记录',  
+            afterPageText: '页    共 ${page.pageIndex} 页',  
+            displayMsg: '  共 ${page.total} 条记录',  
             showRefresh:false ,
        });
 		
-
 		 $(".pagination-num").val("${page.pageNo}");
 		
 		 $(".pagination-num").change(function(){
@@ -56,11 +55,11 @@
 		 $(".pagination-last").click(function(){
 			 doSearch("last");  
 		 });
-		 
+
 		$('#dlg-frame').dialog({
 			title : '代理商管理',
-			width : 800,
-			height : 500,
+			width : 700,
+			height : 320,
 			top : 50,
 			left : 100,
 			closed : true,
@@ -82,7 +81,6 @@
 				}
 			} ]
 		});
-		 $("#datagridDiv").height($(".layout-panel-center")[0].offsetHeight - 200);
 	});
 
 	function doSearch(index) {
@@ -101,63 +99,43 @@
 		}else if(index == "last" ){
 			pageNo  = pageTotal; 
 		}
-		window.location.href = "${basePath}/treeindex/card/${agentid}?type=" + type +
-				"&iccidStart="+iccidStart + "&iccidEnd=" + iccidEnd + 
+		window.location.href = "${basePath}/agent/agent_query?type=" + type +
+				"&iccidStart="+iccidStart + "&iccidEnd" + iccidEnd +
 				"&pageNo=" + pageNo + "&pageSize=" + pageSize ;
 	}
+	
 	function doClear() {
 		$("#search-type").val("");
 		$("#search-iccidStart").val("");
 		$("#search-iccidEnd").val("");
 	}
-	function updateCard() {
-		var id = "";
-		$("input[type=checkbox]").each(function() {
-			if (this.checked) {
-				id += $(this).val() + ",";
+	function moveCard() {
+			var del = confirm("确认转移？");
+			if (!del) {
+				return false;
 			}
-		});
-		var path = "${basePath}/agent/move?iccids=" + id ;
-		document.getElementById('frameContent').src = path;
-		$('#dlg-frame').dialog('open');
-	}
+			var id = getChecked();
+			if (id > 0) {
+				var url = "${basePath}/agent/card_move";
+				$.ajax({
+					url : url,
+					type : 'post',
+					data : {iccids:"${ids}" , agentid : id},
+					dataType : 'json',
+					success : function(data) {
+						if (data.success) {
+							parent.doSearch();
+			       			parent.$('#dlg-frame').dialog("close");
+						} else {
+							$.messager.alert('提示', data.msg, "error");
+						}
 
-	function updateUser() {
-		var id = getChecked();
-		if (id > 0) {
-			var path = "${basePath}/agent/updateInit/" + id;
-			document.getElementById('frameContent').src = path;
-			$('#dlg-frame').dialog('open');
-		}
-	}
-
-	function deleteUser() {
-		var del = confirm("确认删除？");
-		if (!del) {
-			return false;
-		}
-		var id = getChecked();
-		if (id > 0) {
-			var url = "${basePath}/agent/agent_delete/" + id;
-			$.ajax({
-				url : url,
-				type : 'post',
-				data : $("#dataForm").serialize(),
-				dataType : 'json',
-				success : function(data) {
-					if (data.success) {
-						$.messager.alert('提示', data.msg);
-						doSearch();
-					} else {
-						$.messager.alert('提示', data.msg, "error");
+					},
+					error : function(transport) {
+						$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");
 					}
-
-				},
-				error : function(transport) {
-					$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");
-				}
-			});
-		}
+				});
+			}
 	}
 
 	function getChecked() {
@@ -179,12 +157,7 @@
 		return id;
 	}
 </script>
-<style type="text/css">
-.datagrid-view{
-	height : 2000px;
-}
 
-</style>
 </head>
 <body class="easyui-layout">
 	<div id="tb" region="north" title="查询条件区" class="easyui-panel"
@@ -199,32 +172,32 @@
 			onclick="doSearch()">查询</a> <a href="####" class="easyui-linkbutton"
 			plain="true" iconCls="icon-clear" onclick="doClear()">清除</a>
 	</div>
-	<div id="datagridDiv" region="center" border="0" style="height: 2800px">
+	<div region="center" border="0">
 		<form:form id="dataForm" action="${basePath}/user/user_delete"
 			modelAttribute="user" method="post">
 			<input type="hidden" name="_method" value="DELETE" />
-			<table class="easyui-datagrid" id="data-table"  title="数据列表" width="86%">
+			<table class="easyui-datagrid" id="data-table"  title="数据列表" width="86%" >
 				<thead>
 					<tr>
 						<th data-options="field:'id'"></th>
-						<th data-options="field:'cardCode'">cardCode</th>
-						<th data-options="field:'ICCID'">ICCID</th>
-						<th data-options="field:'gprsUsed'">gprsUsed</th>
-						<th data-options="field:'packageType'">packageType</th>
-						<th data-options="field:'openDate'">openDate</th>
-						<th data-options="field:'remark'">remark</th>
+						<th data-options="field:'name'">代理商</th>
+						<th data-options="field:'code'">代理商代码</th>
+						<th data-options="field:'cost'">成本价</th>
+						<th data-options="field:'renew'">续费价</th>
+						<th data-options="field:'type'">套餐类型</th>
+						<th data-options="field:'creater'">创建者</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${list}" var="card">
+					<c:forEach items="${list}" var="agent">
 						<tr>
-							<td><input type="checkbox" name="id" value="${card.id}" /></td>
-							<td>${card.cardCode}</td>
-							<td>${card.ICCID}</td>
-							<td>${card.gprsUsed}</td>
-							<td>${card.packageType}</td>
-							<td>${card.openDate}</td>
-							<td>${card.remark}</td>
+							<td><input type="checkbox" name="id" value="${agent.id}" /></td>
+							<td>${agent.name}</td>
+							<td>${agent.code}</td>
+							<td>${agent.cost}</td>
+							<td>${agent.renew}</td>
+							<td>${agent.type}</td>
+							<td>${agent.creater}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

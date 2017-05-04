@@ -96,5 +96,9 @@ public class AgentService {
 		return mapTree;
 	}
 
+	public void updateCardAgent(String iccids, String agentid) {
+		   dao.updateCardAgent(iccids,agentid );
+	}
+
 	 
 }

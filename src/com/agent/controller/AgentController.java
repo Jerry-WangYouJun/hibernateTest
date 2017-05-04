@@ -30,10 +30,43 @@ public class AgentController {
 	@Autowired
 	AgentService service ;
 	
-//	@RequestMapping("/list")
-//	public String list(){
-//		return "/agent/agent_query";
-//	}
+	@RequestMapping("/card_move")
+	public void moveCard(String iccids , String agentid ,HttpServletResponse response  ){
+		PrintWriter out;
+		try {
+			service.updateCardAgent(iccids,agentid);
+			out = response.getWriter();
+			JSONObject json = new JSONObject();
+			json.put("msg", "操作成功");
+			json.put("success", true);
+			out.println(json);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@RequestMapping("/move")
+	public ModelAndView  moveCardInit(QueryData  qo , HttpSession session , String pageNo , String pageSize ,String iccids){
+		ModelAndView  mv = new ModelAndView("/agent/card/agent_query");
+		List<Agent> list =  new ArrayList<>();
+		String agentCode = session.getAttribute("agentcode").toString();
+		qo.setAgentCode(agentCode);
+		Pagination page = new Pagination();
+		List<Agent> tatolList = service.queryList(qo , page);
+		page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
+		page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
+		page.setTotal(tatolList.size());
+		CodeUtil.initPagination(page);
+		list = service.queryList(qo , page);
+		mv.addObject("list", list);
+		 mv.addObject("page", page);
+		 mv.addObject("ids", iccids);
+		return mv ;
+	}
+	
+	
 	
 	@RequestMapping("/agent_query")
 	public ModelAndView  agentList(QueryData  qo , HttpSession session , String pageNo , String pageSize ){

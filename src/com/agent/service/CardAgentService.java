@@ -28,7 +28,7 @@ public class CardAgentService {
 			 String sql = "select c.* from card_agent a , cmtp c "
 				 		+ "where a.iccid = c.ICCID  and a.agentid = " + agentid;
 			if(StringUtils.isNotEmpty(qo.getIccidStart())){
-				 sql += " and c.ICCID >= '" + qo.getDateStart() + "'" ;
+				 sql += " and c.ICCID >= '" + qo.getIccidStart() + "'" ;
 			}
 			if(StringUtils.isNotEmpty(qo.getIccidEnd())){
 				 sql += " and  c.ICCID <= '" + qo.getIccidEnd() + "'" ;

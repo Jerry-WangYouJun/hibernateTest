@@ -175,4 +175,11 @@ public class AgentDao {
 		});
 		return list;
 	}
+
+	public void updateCardAgent(String iccids, String agentid) {
+		String sql = "update card_agent set  agentid = " +
+				agentid + "  where iccid in ("
+				+ " select iccid from cmtp  where id in (" + iccids  + "  0 ) )" ;
+		jdbcTemplate.update(sql);
+	}
 }
