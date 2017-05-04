@@ -57,7 +57,9 @@ public class AgentService {
 				  node.getAttributes().setPriUrl(request.getContextPath() +  "/treeindex/" + urlType + "/" + agent.getId()); 
 				  List<Agent> firstListTemp = new ArrayList<>();
 				  firstListTemp =mapTree.get(agentId);
-				  node.setChildren(agentTreeData(firstListTemp , urlType , request));
+				  if(firstListTemp !=null && firstListTemp.size() > 0){
+					  node.setChildren(agentTreeData(firstListTemp , urlType , request));
+				  }
 				  nodeList.add(node);
 			  }
 		}
