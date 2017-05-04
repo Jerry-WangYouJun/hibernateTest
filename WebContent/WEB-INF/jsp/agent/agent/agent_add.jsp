@@ -45,10 +45,6 @@
 			$.messager.alert("提示","成本价不能为空!","error");
 			return false;
 		}
-		if($("#type").val() == ""){
-			$.messager.alert("提示","套餐类型不能为空!","error");
-			return false;
-		}
 		if($("#renew").val() == ""){
 			$.messager.alert("提示","续费价不能为空!","error");
 			return false;
@@ -73,10 +69,12 @@
 		  		</td>
 		  	</tr>
 		  	<tr>
-		  		<td>套餐类型：</td>
-		  		<td style="padding: 20px">
-		  			<form:input id="type" path="type" />
-		  		</td>
+		  		<c:if test="${sessionScope.roleid eq 1}">
+			  		<td>套餐类型：</td>
+			  		<td style="padding: 20px">
+			  			<form:input id="type" path="type" />
+			  		</td>
+		  		</c:if>
 		  		<td>续费价：</td>
 		  		<td style="padding: 20px">
 		  			<form:input id="renew" path="renew"   />

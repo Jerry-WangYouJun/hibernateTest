@@ -29,17 +29,8 @@ public class AgentDao {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Agent> queryList(QueryData qo, Pagination page) {
 		String sql = "select * from a_agent where 1=1 " ;
-		if(StringUtils.isNotEmpty(qo.getType())){
-			sql += " and   type =  '" + qo.getType() + "' ";
-		}
-		if(StringUtils.isNotEmpty(qo.getIccidStart())){
-			sql += " and   iccid  >=  '" + qo.getIccidStart() + "' ";
-		}
-		if(StringUtils.isNotEmpty(qo.getIccidEnd())){
-			sql += " and   iccid <=  '" + qo.getIccidEnd() + "' ";
-		}
 		if(StringUtils.isNotEmpty(qo.getAgentName())){
-			sql += " and   name =  '" + qo.getAgentName() + "' ";
+			sql += " and   name  like  '%" + qo.getAgentName() + "%' ";
 		}
 		if(StringUtils.isNotEmpty(qo.getAgentCode())){
 			sql += " and   code  like   '" + qo.getAgentCode() + "%' ";
@@ -181,5 +172,18 @@ public class AgentDao {
 				agentid + "  where iccid in ("
 				+ " select iccid from cmtp  where id in (" + iccids  + "  0 ) )" ;
 		jdbcTemplate.update(sql);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public List<String> queryTypeList() {
+		String sql = "select distinct(packageType)  from  cmtp " ;
+		final List<String> list = new ArrayList<>();
+		jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+				list.add(rs.getString("packageType"));
+				 return null ;
+			}
+	});
+		return list;
 	}
 }

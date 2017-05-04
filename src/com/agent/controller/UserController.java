@@ -35,6 +35,7 @@ public class UserController {
 			session.setAttribute("agentcode", user.getAgentCode());
 			session.setAttribute("user", user.getUserName());
 			session.setAttribute("agentId", user.getAgentId());
+			session.setAttribute("roleid", user.getRoleId());
 			return "/agent/index" ;
 		}else{
 			request.setAttribute("msg", "用户名或者密码错误");

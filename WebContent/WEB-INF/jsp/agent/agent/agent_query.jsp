@@ -96,9 +96,7 @@
 	});
 
 	function doSearch(index) {
-		var type = $("#search-type").val();
-		var iccidStart = $("#search-iccidStart").val();
-		var iccidEnd = $("#search-iccidEnd").val();
+		var name = $("#search-name").val();
 		var pageNo = $(".pagination-num").val(); 
 		var pageSize = $(".pagination-page-list").val();
 		var pageTotal = ${page.pageIndex};
@@ -111,15 +109,12 @@
 		}else if(index == "last" ){
 			pageNo  = pageTotal; 
 		}
-		window.location.href = "${basePath}/agent/agent_query?type=" + type +
-				"&iccidStart="+iccidStart + "&iccidEnd" + iccidEnd +
+		window.location.href = "${basePath}/agent/agent_query?agentName=" + name
 				"&pageNo=" + pageNo + "&pageSize=" + pageSize ;
 	}
 	
 	function doClear() {
-		$("#search-type").val("");
-		$("#search-iccidStart").val("");
-		$("#search-iccidEnd").val("");
+		$("#search-name").val("");
 	}
 	function addUser() {
 		var path = "${basePath}/agent/addInit";
@@ -189,11 +184,7 @@
 <body class="easyui-layout">
 	<div id="tb" region="north" title="查询条件区" class="easyui-panel"
 		iconCls="icon-search" style="padding: 3px; height: 60px; width: 86%">
-		<span>套餐类型:</span> <input id="search-type" name="type" /> 
-		<span>ICCID:</span>
-		<input id="search-iccidStart" name="iccidStart" /> - 
-		<input
-			id="search-iccidEnd" name="iccidEnd" />
+		<span>代理商名称:</span> <input id="search-name" name="name" /> 
 		<a href="####"
 			class="easyui-linkbutton" plain="true" iconCls="icon-search"
 			onclick="doSearch()">查询</a> <a href="####" class="easyui-linkbutton"

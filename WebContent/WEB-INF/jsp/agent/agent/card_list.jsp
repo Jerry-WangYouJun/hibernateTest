@@ -189,7 +189,13 @@
 <body class="easyui-layout">
 	<div id="tb" region="north" title="查询条件区" class="easyui-panel"
 		iconCls="icon-search" style="padding: 3px; height: 60px; width: 86%">
-		<span>套餐类型:</span> <input id="search-type" name="type" /> 
+		<span>套餐类型:</span>
+		<select id="search-type" name="type" >
+			 <option>--选择--</option>
+			 <c:forEach items="${typeList}" var="typename">
+			 		<option value = "${typename}">${typename}</option>
+			 </c:forEach>	
+		</select>
 		<span>ICCID:</span>
 		<input id="search-iccidStart" name="iccidStart" /> - 
 		<input

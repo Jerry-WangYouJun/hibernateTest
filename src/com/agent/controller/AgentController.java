@@ -80,9 +80,11 @@ public class AgentController {
 		page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
 		page.setTotal(tatolList.size());
 		CodeUtil.initPagination(page);
+		List<String> typeList = service.getTypeList();
 		list = service.queryList(qo , page);
 		mv.addObject("list", list);
 		 mv.addObject("page", page);
+		 mv.addObject("typeList", typeList);
 		return mv ;
 	}
 	

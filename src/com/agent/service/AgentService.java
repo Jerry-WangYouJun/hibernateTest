@@ -100,5 +100,10 @@ public class AgentService {
 		   dao.updateCardAgent(iccids,agentid );
 	}
 
+	public List<String> getTypeList() {
+		List<String> list = dao.queryTypeList();
+		return list;
+	}
+
 	 
 }
