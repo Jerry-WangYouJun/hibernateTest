@@ -86,7 +86,7 @@
 		<table width="100%">
 			<tr>
 				<td align="center"> 
-					<img alt="" src="${basePath}/images/title.jpg" align="middle">
+					
 				</td>
 			</tr>
 			<tr>

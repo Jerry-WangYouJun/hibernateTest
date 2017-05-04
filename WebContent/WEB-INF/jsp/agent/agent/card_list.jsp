@@ -207,12 +207,12 @@
 				<thead>
 					<tr>
 						<th data-options="field:'id'"></th>
-						<th data-options="field:'cardCode'">cardCode</th>
+						<th data-options="field:'cardCode'">卡号</th>
 						<th data-options="field:'ICCID'">ICCID</th>
-						<th data-options="field:'gprsUsed'">gprsUsed</th>
-						<th data-options="field:'packageType'">packageType</th>
-						<th data-options="field:'openDate'">openDate</th>
-						<th data-options="field:'remark'">remark</th>
+						<th data-options="field:'gprsUsed'">已用流量</th>
+						<th data-options="field:'packageType'">套餐类型</th>
+						<th data-options="field:'openDate'">开卡时间</th>
+						<th data-options="field:'remark'">备注</th>
 					</tr>
 				</thead>
 				<tbody>

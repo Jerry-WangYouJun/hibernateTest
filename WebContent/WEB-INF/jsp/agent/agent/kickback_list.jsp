@@ -122,11 +122,11 @@
 			<table class="easyui-datagrid" id="data-table">
 				<thead>
 					<tr>
-						<th data-options="field:'iccid'">iccid</th>
-						<th data-options="field:'money'">money</th>
-						<th data-options="field:'packageType'">packageType</th>
-						<th data-options="field:'update_date'">update_date</th>
-						<th data-options="field:'kickback'">kickback</th>
+						<th data-options="field:'iccid'">ICCID</th>
+						<th data-options="field:'money'">充值金额</th>
+						<th data-options="field:'packageType'">套餐类型</th>
+						<th data-options="field:'update_date'">充值时间</th>
+						<th data-options="field:'kickback'">返佣</th>
 					</tr>
 				</thead>
 				<tbody>
