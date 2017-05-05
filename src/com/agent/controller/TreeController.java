@@ -94,6 +94,8 @@ public class TreeController {
 				  mv.addObject("list", list);
 				  mv.addObject("page", page);
 				  mv.addObject("agentid", id);
+				  List<String> typeList = service.getTypeList();
+				  mv.addObject("typeList", typeList);
 				  return mv ;
 		}
 		

@@ -1,5 +1,6 @@
 package com.agent.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,13 @@ public class CardAgentService {
 				 sql += " and  c.ICCID <= '" + qo.getIccidEnd() + "'" ;
 			}
 			if(StringUtils.isNotEmpty(qo.getType())){
-				 sql += " and  packageType  like '%" + qo.getIccidEnd() + "%'" ;
+				String packageType  = "";
+				try {
+					 packageType =  new String(qo.getType().getBytes("ISO-8859-1"),"UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				sql += " and  packageType  like '%" + packageType + "%'" ;
 			}
 			 String finalSql = Dialect.getLimitString(sql, page.getPageNo(), page.getPageSize(), "MYSQL");
 			 return dao.queryDataList(finalSql);
@@ -45,7 +52,13 @@ public class CardAgentService {
 				 sql += " and  c.ICCID <= '" + qo.getIccidEnd() + "'" ;
 			}
 			if(StringUtils.isNotEmpty(qo.getType())){
-				 sql += " and  packageType  like '%" + qo.getIccidEnd() + "%'" ;
+				String packageType  = "";
+				try {
+					 packageType =  new String(qo.getType().getBytes("ISO-8859-1"),"UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				sql += " and  packageType  like '%" + packageType + "%'" ;
 			}
 			 return dao.queryDataTotal(sql);
 		 }
