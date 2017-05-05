@@ -75,7 +75,7 @@ public class CardAgentService {
 			if(StringUtils.isNotEmpty(qo.getDateEnd())){
 				 sql += " and  h.update_date <= '" + qo.getDateEnd() + "'" ;
 			}
-			
+			sql += " order by h.update_date  desc ";
 			String finalSql = Dialect.getLimitString(sql, page.getPageNo(), page.getPageSize(), "MYSQL");
 			list = dao.queryKickbackList(finalSql);
 			return list;
