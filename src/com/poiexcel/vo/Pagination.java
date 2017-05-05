@@ -6,7 +6,7 @@ public class Pagination {
 	//第几页
 	 private int pageNo = 1;
 	 //每页几条
-	 private int pageSize = 9999999;
+	 private int pageSize = 50;
 	 //共几页
 	 private int pageIndex  ;
 	 //总条数

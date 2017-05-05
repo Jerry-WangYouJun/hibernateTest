@@ -86,10 +86,9 @@ public class TreeController {
 				, String pageNo , String pageSize , QueryData qo){
 				  ModelAndView mv = new ModelAndView("/agent/agent/card_list");
 				  Pagination page = new Pagination();
-					List<InfoVo> tatolList = cardAgentService.queryCardInfo(id , page , qo);
 					page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
 					page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
-					page.setTotal(tatolList.size());
+					page.setTotal(cardAgentService.queryCardTotal(id  , qo));
 					CodeUtil.initPagination(page);
 				  List<InfoVo>  list = cardAgentService.queryCardInfo(id , page , qo);
 				  mv.addObject("list", list);
@@ -103,10 +102,9 @@ public class TreeController {
 				, String pageNo , String pageSize ){
 				  ModelAndView mv = new ModelAndView("/agent/agent/kickback_list");
 				  Pagination page = new Pagination();
-					List<Map<String,String>> tatolList = cardAgentService.queryKickbackInfo(id , qo , page);
 					page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
 					page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
-					page.setTotal(tatolList.size());
+					page.setTotal( cardAgentService.queryKickbackTotal(id , qo));
 					CodeUtil.initPagination(page);
 				  List<Map<String,String>>  list = cardAgentService.queryKickbackInfo(id, qo  , page);
 				  mv.addObject("list", list);

@@ -105,5 +105,9 @@ public class AgentService {
 		return list;
 	}
 
+	public int queryTatol(QueryData qo) {
+		return dao.queryTotal(qo);
+	}
+	
 	 
 }

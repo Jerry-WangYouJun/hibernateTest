@@ -28,17 +28,7 @@ public class AgentDao {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Agent> queryList(QueryData qo, Pagination page) {
-		String sql = "select * from a_agent where 1=1 " ;
-		if(StringUtils.isNotEmpty(qo.getAgentName())){
-			sql += " and   name  like  '%" + qo.getAgentName() + "%' ";
-		}
-		if(StringUtils.isNotEmpty(qo.getAgentCode())){
-			sql += " and   code  like   '" + qo.getAgentCode() + "%' ";
-			
-		}
-		if(StringUtils.isNotEmpty(qo.getAgentid())){
-			sql += " and   id =  '" + qo.getAgentid() + "' ";
-		}
+		String sql = "select * from a_agent where 1=1 " + whereSQL(qo) ;
 		String finalSql = Dialect.getLimitString(sql, page.getPageNo(), page.getPageSize(), "MYSQL");
          final  List<Agent> list =   new ArrayList<>();
          jdbcTemplate.query(finalSql, new RowMapper() {
@@ -185,5 +175,33 @@ public class AgentDao {
 			}
 	});
 		return list;
+	}
+	
+	public String whereSQL(QueryData qo){
+		String whereSql = "";
+		if(StringUtils.isNotEmpty(qo.getAgentName())){
+			whereSql += " and   name  like  '%" + qo.getAgentName() + "%' ";
+		}
+		if(StringUtils.isNotEmpty(qo.getAgentCode())){
+			whereSql += " and   code  like   '" + qo.getAgentCode() + "%' ";
+			
+		}
+		if(StringUtils.isNotEmpty(qo.getAgentid())){
+			whereSql += " and   id =  '" + qo.getAgentid() + "' ";
+		}
+		return whereSql ;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public int queryTotal(QueryData qo) {
+		final Integer[] total =  {0} ;
+		String  sql  = "select count(*) total from a_agent where 1=1 " + whereSQL(qo) ;
+		jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+				 total[0] = rs.getInt("total");
+				 return null ;
+			}
+		});
+		return total[0];
 	}
 }

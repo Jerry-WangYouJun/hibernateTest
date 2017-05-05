@@ -54,10 +54,9 @@ public class AgentController {
 		String agentCode = session.getAttribute("agentcode").toString();
 		qo.setAgentCode(agentCode);
 		Pagination page = new Pagination();
-		List<Agent> tatolList = service.queryList(qo , page);
 		page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
 		page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
-		page.setTotal(tatolList.size());
+		page.setTotal(service.queryTatol(qo ));
 		CodeUtil.initPagination(page);
 		list = service.queryList(qo , page);
 		mv.addObject("list", list);
@@ -75,10 +74,9 @@ public class AgentController {
 		String agentCode = session.getAttribute("agentcode").toString();
 		qo.setAgentCode(agentCode);
 		Pagination page = new Pagination();
-		List<Agent> tatolList = service.queryList(qo , page);
 		page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
 		page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
-		page.setTotal(tatolList.size());
+		page.setTotal(service.queryTatol(qo ));
 		CodeUtil.initPagination(page);
 		List<String> typeList = service.getTypeList();
 		list = service.queryList(qo , page);

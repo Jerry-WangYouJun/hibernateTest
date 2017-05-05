@@ -445,4 +445,16 @@ public class DataMoveDao {
 		});
 		return list;
 	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public int queryDataTotal(String sql) {
+	         final  Integer[] arr =  {0};
+	         jdbcTemplate.query(sql, new RowMapper() {
+				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+						arr[0] = rs.getInt("total");
+					 return null ;
+				}
+			});
+			return arr[0];
+	}
 }

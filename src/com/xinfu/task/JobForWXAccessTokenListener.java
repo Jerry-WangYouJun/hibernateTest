@@ -18,7 +18,7 @@ public class JobForWXAccessTokenListener implements ApplicationListener<ContextR
 					/**
 					 * 定时设置accessToken
 					 */
-					AccessTokenUtil.initAndSetAccessToken();
+					//AccessTokenUtil.initAndSetAccessToken();
 				}
 			};
 			

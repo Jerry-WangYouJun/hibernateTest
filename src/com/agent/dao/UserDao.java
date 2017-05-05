@@ -45,25 +45,7 @@ public class UserDao {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<User> queryList(User user, Pagination page) {
 		String sql = "select u.id , u.userno , u.username ,u.pwd , u.roleid , u.agentid , a.name , u.agentid "
-				+ "from a_user u , a_agent a where u.agentid = a.id  " ;
-		if(StringUtils.isNotEmpty(user.getUserNo())){
-			sql += " and   userno  like  '%" + user.getUserNo() + "%' ";
-		}
-		if(StringUtils.isNotEmpty(user.getUserName())){
-			sql += " and   u.username  >=  '%" + user.getUserName() + "%' ";
-		}
-		if(StringUtils.isNotEmpty(user.getRoleId())){
-			sql += " and   u.roleid =  '" + user.getRoleId() + "' ";
-		}
-		if(StringUtils.isNotEmpty(user.getAgentName())){
-			sql += " and   a.name  like  '%" + user.getAgentName() + "%' ";
-		}
-		if(user.getId()!=null && StringUtils.isNotEmpty(user.getId()+"")){
-			sql += " and   u.id =  '" + user.getId() + "' ";
-		}
-		if(StringUtils.isNotEmpty(user.getAgentCode())){
-			sql += " and   code  like   '" + user.getAgentCode() + "%' ";
-		}
+				+ "from a_user u , a_agent a where u.agentid = a.id  " + whereSql(user);
 		String finalSql = Dialect.getLimitString(sql, page.getPageNo(), page.getPageSize(), "MYSQL");
          final  List<User> list =   new ArrayList<>();
          jdbcTemplate.query(finalSql, new RowMapper() {
@@ -81,7 +63,20 @@ public class UserDao {
 		});
 		return list;
 	}
-
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public int queryTotal(User user, Pagination page) {
+		String sql = "select count(*) total from a_user u , a_agent a where u.agentid = a.id  " + whereSql(user);
+         final  Integer[] arr =  {0};
+         jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+					arr[0] = rs.getInt("total");
+				 return null ;
+			}
+		});
+		return arr[0];
+	}
+	
 	public void insert(final User user) {
 		jdbcTemplate.update("insert into a_user (userno ,username , pwd , roleid , agentid  ) values(?,?,?,?,?)",   
                 new PreparedStatementSetter(){  
@@ -113,5 +108,28 @@ public class UserDao {
 	                "delete from a_user where id = ?",   
 	                new Object[]{id},   
 	                new int[]{java.sql.Types.INTEGER});  
+	}
+	
+	public String whereSql(User user){
+		String sql = "";
+		if(StringUtils.isNotEmpty(user.getUserNo())){
+			sql += " and   userno  like  '%" + user.getUserNo() + "%' ";
+		}
+		if(StringUtils.isNotEmpty(user.getUserName())){
+			sql += " and   u.username  >=  '%" + user.getUserName() + "%' ";
+		}
+		if(StringUtils.isNotEmpty(user.getRoleId())){
+			sql += " and   u.roleid =  '" + user.getRoleId() + "' ";
+		}
+		if(StringUtils.isNotEmpty(user.getAgentName())){
+			sql += " and   a.name  like  '%" + user.getAgentName() + "%' ";
+		}
+		if(user.getId()!=null && StringUtils.isNotEmpty(user.getId()+"")){
+			sql += " and   u.id =  '" + user.getId() + "' ";
+		}
+		if(StringUtils.isNotEmpty(user.getAgentCode())){
+			sql += " and   code  like   '" + user.getAgentCode() + "%' ";
+		}
+		return sql;
 	}
 }
