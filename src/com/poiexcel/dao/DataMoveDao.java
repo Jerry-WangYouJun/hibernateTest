@@ -141,10 +141,10 @@ public class DataMoveDao {
 										String.valueOf(info.getPackageType()));
 								ps.setString(12,
 										String.valueOf(info.getApiCode()));
-								ps.setString(13,
-										String.valueOf(info.getICCID()));
-								ps.setString(14, String.valueOf(info
+								ps.setString(13, String.valueOf(info
 										.getMonthTotalStream()));
+								ps.setString(14,
+										String.valueOf(info.getICCID()));
 							} catch (Exception e) {
 								System.out.println("问题行是：" + i);
 								// e.printStackTrace();
