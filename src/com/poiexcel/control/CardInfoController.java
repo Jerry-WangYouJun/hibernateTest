@@ -32,12 +32,12 @@ public class CardInfoController {
 		    		mv.addObject("info", vo);
 		    	}else{
 		    		InfoVo   wrongInfo = new InfoVo();
-		    		wrongInfo.setUserStatus("卡号信息异常");
+		    		wrongInfo.setUserStatus("卡号错误，请联系管理员确认");
 		    		mv.addObject("info", wrongInfo);
 		    	}
 			} catch (Exception e) {
 				InfoVo   wrongInfo = new InfoVo();
-				wrongInfo.setUserStatus("卡号信息异常:" + e.getMessage());
+				wrongInfo.setUserStatus("卡号错误:" + e.getMessage());
 				mv.addObject("info", wrongInfo);
 			}
 	    	return mv ;
