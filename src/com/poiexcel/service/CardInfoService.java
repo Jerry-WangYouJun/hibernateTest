@@ -64,19 +64,19 @@ public class CardInfoService {
 		    if(info.getGprsUsed()!=null && Double.valueOf(info.getGprsUsed()) != gprsUsed){
 		    	info.setGprsUsed(gprsUsed + "");
 		    }
+		    updateGprsUsed(gprsUsed , info.getICCID());
 		    //gprsUsed = 0.1 ;
-		    	if(gprsUsed == 0 && info.getRestDay()>0){
+		    	if(gprsUsed == 0 && info.getRestDay()>0 && "待激活".equals(info.getUserStatus())){
 		    		info.setUserStatus("待激活");
 		    		info.setRestDay(365L);
 		    		info.setDateEnd("****-**-**");
 		    		//int curMonth = Integer.valueOf(info.getOpenDate().split("-")[1]) ;
 		    	}else if(gprsUsed>0 && Double.valueOf(info.getMonthTotalStream())>  gprsUsed && info.getRestDay()>0){
-		    		updateGprsUsed(gprsUsed , info.getICCID());
 		    		if(!"正常".equals(info.getUserStatus())){
 		    			updateUserStatus("正常",info.getICCID());
 		    			info.setUserStatus("正常");
 		    		}
-		    	}else{
+		    	}else if( gprsUsed > Double.valueOf(info.getMonthTotalStream())){
 		    		if(!"停机".equals(info.getUserStatus())){
 		    			updateUserStatus("停机",info.getICCID());
 		    			info.setUserStatus("停机");
