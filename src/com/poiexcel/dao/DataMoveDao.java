@@ -105,7 +105,7 @@ public class DataMoveDao {
 		String updatesqlTemp = "update cmtp set cardcode = ? , remark = ? ,IMSI = ? ,ICCID =? ,"
 				+ " cardStatus = ? ,gprsUsed=? ,"
 				+ " messageUsed=? ,openDate = ? ,withMessageService=? ,withGPRSService =? ,"
-				+ " packageType = ? , apiCode = ? , monthTotalStream = ? where iccid = ? ";
+				+ " packageType = ? , apiCode = ? , monthTotalStream = ? , userStatus = ? where iccid = ? ";
 		voList = list;
 		if (voList != null && voList.size() > 0) {
 			jdbcTemplate.batchUpdate(updatesqlTemp,
@@ -114,9 +114,6 @@ public class DataMoveDao {
 							try {
 								// 并根据数据类型对Statement 中的占位符进行赋值
 								InfoVo info = voList.get(i);
-								if (i == 19990) {
-									System.out.println("1111111111");
-								}
 								ps.setString(1,
 										String.valueOf(info.getCardCode()));
 								ps.setString(2,
@@ -143,7 +140,9 @@ public class DataMoveDao {
 										String.valueOf(info.getApiCode()));
 								ps.setString(13, String.valueOf(info
 										.getMonthTotalStream()));
-								ps.setString(14,
+								ps.setString(14, String.valueOf(info
+										.getUserStatus()));
+								ps.setString(15,
 										String.valueOf(info.getICCID()));
 							} catch (Exception e) {
 								System.out.println("问题行是：" + i);

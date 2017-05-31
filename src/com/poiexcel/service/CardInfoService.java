@@ -96,6 +96,11 @@ public class CardInfoService {
 		dao.update(sql);
 		
 	}
+	
+	public static void main(String[] args) throws Exception {
+		CardInfoService service = new CardInfoService();
+		service.getResultData(new InfoVo(),"898602B6111770667999");
+	}
 
 	public  JSONObject  getResultData(InfoVo info ,  String ebid) throws Exception{
 		 String url ; 
