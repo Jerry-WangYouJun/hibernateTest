@@ -45,6 +45,13 @@ public class UploadExcelControl {
 		 return "main";
 	}
 	
+	@RequestMapping(value = "forward", method = { RequestMethod.GET,
+			RequestMethod.POST })
+	public String  forwardInit(){
+		 return "forwardData";
+	}
+	
+	
 	/**
 	 * 通过传统方式form表单提交方式导入excel文件
 	 * 

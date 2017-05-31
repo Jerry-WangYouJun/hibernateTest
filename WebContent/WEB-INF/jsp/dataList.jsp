@@ -130,6 +130,11 @@
 	     $("#myModal").modal({backdrop:"static"});
 	}
 	
+	function importForwardData(){
+		window.location.href="${basePath}/uploadExcel/forward"	
+	
+	}
+	
 	   //关闭Modal框
     function closeModal() {
         $("#myModal").modal('hide');
@@ -155,6 +160,7 @@
 		 }
 	}
 	
+	
 </script>
 </head>
 
@@ -173,8 +179,9 @@
 					<span>ICCID</span> <input class="top-data" type="text" name="iccid" id="iccid" value="${iccid}" />
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<input class="bta" type="button" value="查询" onclick="query()" />
-					<input class="btd" type="reset" value="清除"  />
+					<input class="bta" type="reset" value="清除"  />
 					<input class="btd" type="button" value="导入数据" onclick="exportInit()">
+					<input class="btd" type="button" value="跳转数据" onclick="importForwardData()">
 			</p>
 			 <div class="main-list">
 				<div class="main-list-top">
