@@ -122,16 +122,23 @@ public class AgentDao {
 		 System.out.println(a.replaceFirst("a", ""));
 	}*/
 	public void update(final Agent agent) {
-		jdbcTemplate.update("update a_agent set  name=? , cost=?, renew = ? , type = ?  where id = ? ",   
+		String sql = "update a_agent set  cost=?, renew = ? " ;
+		if(agent.getType()!= null && StringUtils.isNotEmpty(agent.getType())){
+			 sql += ", type = ?  " ;
+		}
+		sql += " where id = ? ";
+		jdbcTemplate.update(sql,   
                 new PreparedStatementSetter(){  
-              
                     @Override  
                     public void setValues(PreparedStatement ps) throws SQLException {  
-                        ps.setString(1, agent.getName()); 
-                        ps.setDouble(2, agent.getCost());
-                        ps.setDouble(3 , agent.getRenew());
-                        ps.setString(4, agent.getType());
-                        ps.setString(5, agent.getId()+ "");
+                        ps.setDouble(1, agent.getCost());
+                        ps.setDouble(2 , agent.getRenew());
+                        if(agent.getType()!= null && StringUtils.isNotEmpty(agent.getType())){
+                        	ps.setString(3, agent.getType());
+                        	ps.setString(4, agent.getId()+ "");
+                        }else{
+                        	ps.setString(3, agent.getId()+ "");
+                        }
                     }  
         });
 	}

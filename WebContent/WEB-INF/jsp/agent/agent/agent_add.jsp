@@ -41,9 +41,6 @@
 			$.messager.alert("提示","代理商名称不能为空!","error");
 			return false;
 		}
-		if(!checkUser()){
-			return false ;
-		}
 		if($("#cost").val() == ""){
 			$.messager.alert("提示","成本价不能为空!","error");
 			return false;
