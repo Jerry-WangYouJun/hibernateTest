@@ -15,8 +15,8 @@
 			singleSelect : true,
 			pagination : true,
 			nowrap : false,
-			fit: true, 
-			pagePosition: 'both'
+			fitColumns  : true,
+			pagePosition: 'top'
 		});
 		$('#data-table').datagrid('getPager').pagination({  
             pageSize: "${page.pageSize}",  
@@ -48,7 +48,7 @@
 			 doSearch("last");  
 		 });
 	 
-		 $("#datagridDiv").height($(".layout-panel-center")[0].offsetHeight - 200);
+		 
 		$('#dlg-frame').dialog({
 			title : '代理商管理',
 			width : 700,
@@ -93,7 +93,7 @@
 			pageNo  = pageTotal; 
 		}
 		window.location.href = "${basePath}/treeindex/kickback/${agentid}?dateStart="+dateStart + 
-				"&dateEnd=" + dateEnd + "&pageNo=" + pageNo + "&pageSize=" + pageSize ;
+				"&dateEnd=" + dateEnd + "&pageNo=" + pageNo + "&pageSize=" + pageSize + "&timeType=" + $("#timeType").val();
 	}
 	function doClear() {
 		$("#search-type").val("");
@@ -110,16 +110,24 @@
 		<input id="search-dateStart" name="dateStart" class="easyui-datebox"  type="text" /> - 
 		<input
 			id="search-dateEnd" name="dateEnd" class="easyui-datebox"  type="text"/>
+		<span>查询固定时间</span>
+		<select id="timeType"  name="timeType">
+			  <option value="0">--请选择--</option>
+			  <option value="7">--本周--</option>
+			  <option value="30">--本月--</option>
+			  <option value="60">--上月--</option>
+		</select>
 		<a href="####"
 			class="easyui-linkbutton" plain="true" iconCls="icon-search"
-			onclick="doSearch()">查询</a> <a href="####" class="easyui-linkbutton"
+			onclick="doSearch()">查询</a> 
+		<a href="####" class="easyui-linkbutton"
 			plain="true" iconCls="icon-clear" onclick="doClear()">清除</a>
 	</div>
-	<div id = "datagridDiv" region="center" border="0">
+	<div id = "datagridDiv" region="center" border="0"  >
 		<form:form id="dataForm" action="${basePath}/user/user_delete"
 			modelAttribute="user" method="post">
 			<input type="hidden" name="_method" value="DELETE" />
-			<table class="easyui-datagrid" id="data-table">
+			<table class="easyui-datagrid" id="data-table" width="85%" height="400px">
 				<thead>
 					<tr>
 						<th data-options="field:'iccid'">ICCID</th>
@@ -130,6 +138,7 @@
 					</tr>
 				</thead>
 				<tbody>
+					 
 					<c:forEach items="${list}" var="card">
 						<tr>
 							<td>${card.iccid}</td>
@@ -141,8 +150,15 @@
 					</c:forEach>
 				</tbody>
 			</table>
-
 		</form:form>
+	      <table >
+				<thead>
+					<tr>
+						<th >充值总金额</th>
+						<th >${sumKick }</th>
+					</tr>
+				</thead>
+			</table>
 
 		<div id="dlg-frame">
 			<iframe width="99%" height="98%" name="frameContent"

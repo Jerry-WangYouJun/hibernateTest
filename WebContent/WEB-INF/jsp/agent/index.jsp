@@ -22,7 +22,7 @@
 						url:"${basePath}/agent/agent_query"
 					}
 				},{
-					text:"用户管理",
+					text:"密码管理",
 					attributes:{
 						url:"${basePath}/user_query"
 					}

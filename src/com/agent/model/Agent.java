@@ -1,11 +1,13 @@
 package com.agent.model;
 
-import java.util.List;
+import java.io.Serializable;
 
-import com.poiexcel.vo.InfoVo;
-
-public class Agent {
-	  private Integer id ; 
+public class Agent implements Serializable{
+	  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Integer id ; 
 	  private String code ; 
 	  private String name ; 
 	  private Double cost ; 
@@ -15,6 +17,7 @@ public class Agent {
 	  private String createdate ;
 	  private String iccid;
 	  private Integer parengId ;
+	  private String userNo;
 	public Integer getId() {
 		return id;
 	}
@@ -75,5 +78,12 @@ public class Agent {
 	public void setParengId(Integer parengId) {
 		this.parengId = parengId;
 	}
+	public String getUserNo() {
+		return userNo;
+	}
+	public void setUserNo(String userNo) {
+		this.userNo = userNo;
+	}
+	
 	
 }

@@ -63,7 +63,7 @@ public class CardAgentService {
 			 return dao.queryDataTotal(sql);
 		 }
 
-		public List<Map<String,String>> queryKickbackInfo(Integer id , QueryData qo ,  Pagination page) {
+		public List<Map<String,String>> queryKickbackInfo(Integer id , QueryData qo ,  Pagination page , int timeType) {
 			List<Map<String,String>>  list = new ArrayList<>();
 			String sql = "select h.iccid , h.money , c.packageType , h.update_date , h.money - u.cost  kickback "
 					+ "from history h , cmtp c , card_agent a , a_agent u "
@@ -75,14 +75,21 @@ public class CardAgentService {
 			if(StringUtils.isNotEmpty(qo.getDateEnd())){
 				 sql += " and  h.update_date <= '" + qo.getDateEnd() + "'" ;
 			}
+			if(timeType == 7 ) {
+				sql += " and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(h.update_date)";
+			}else if(timeType == 30) {
+				sql += " and DATE_FORMAT( h.update_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )";
+			}else if(timeType == 60) {
+				sql +=" and PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( h.update_date, '%Y%m' ) ) =1";
+			}
 			sql += " order by h.update_date  desc ";
 			String finalSql = Dialect.getLimitString(sql, page.getPageNo(), page.getPageSize(), "MYSQL");
 			list = dao.queryKickbackList(finalSql);
 			return list;
 		}
 		
-		 public int queryKickbackTotal(Integer agentid ,  QueryData qo ){
-			 String sql = "select count(*) total  "
+		 public Map<String , Double > queryKickbackTotal(Integer agentid ,  QueryData qo  , int timeType){
+			 String sql = "select   sum(h.money) - sum(u.cost) sumKick , count(*) total  "
 						+ "from history h , cmtp c , card_agent a , a_agent u "
 						+ " where h.iccid = c.iccid and c.iccid = a.iccid "
 						+ " and  u.id = a.agentid  and  u.id = " + agentid  ;
@@ -92,6 +99,13 @@ public class CardAgentService {
 				if(StringUtils.isNotEmpty(qo.getDateEnd())){
 					 sql += " and  h.update_date <= '" + qo.getDateEnd() + "'" ;
 				}
-			 return dao.queryDataTotal(sql);
+				if(timeType == 7 ) {
+					sql += " and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(h.update_date)";
+				}else if(timeType == 30) {
+					sql += " and DATE_FORMAT( h.update_date, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )";
+				}else if(timeType == 60) {
+					sql +=" and PERIOD_DIFF( date_format( now( ) , '%Y%m' ) , date_format( h.update_date, '%Y%m' ) ) =1";
+				}
+			 return dao.querySumKick(sql);
 		 }
 }

@@ -77,6 +77,7 @@
 			closed : true,
 			cache : false,
 			modal : true,
+			singleSelected:true,
 			buttons : [ {
 				text : '确定',
 				iconCls : 'icon-ok',

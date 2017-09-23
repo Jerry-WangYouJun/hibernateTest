@@ -1,16 +1,21 @@
 package com.agent.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.agent.common.CodeUtil;
@@ -28,7 +33,7 @@ public class AgentDao {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Agent> queryList(QueryData qo, Pagination page) {
-		String sql = "select * from a_agent where 1=1 " + whereSQL(qo) ;
+		String sql = "select a.* , u.userno from a_agent a , a_user u   where a.id = u.agentid " + whereSQL(qo) ;
 		String finalSql = Dialect.getLimitString(sql, page.getPageNo(), page.getPageSize(), "MYSQL");
          final  List<Agent> list =   new ArrayList<>();
          jdbcTemplate.query(finalSql, new RowMapper() {
@@ -42,6 +47,7 @@ public class AgentDao {
 					vo.setRenew(rs.getDouble("renew"));
 					vo.setParengId(rs.getInt("parentid"));
 					vo.setCreater(rs.getString("creater"));
+					vo.setUserNo(rs.getString("userNo"));
 					list.add(vo);
 				 return null ;
 			}
@@ -49,24 +55,43 @@ public class AgentDao {
 		return list;
 	}
 
-	public void insert(final Agent agent) {
-		jdbcTemplate.update("insert into a_agent (code,name,cost,renew,type,creater,parentid) values(?,?,?,?,?,?,?)",   
-                new PreparedStatementSetter(){  
-              
-                    @Override  
-                    public void setValues(PreparedStatement ps) throws SQLException { 
-                    	int parentId = queryPrentIdByCode(agent.getCode()) ;
-                        ps.setString(1,  getMaxCode(agent.getCode(),parentId));  
-                        ps.setString(2, agent.getName()); 
-                        ps.setDouble(3, agent.getCost());
-                        ps.setDouble(4 , agent.getRenew());
-                        ps.setString(5, agent.getType());
-                        ps.setString(6, agent.getCreater());
-                        ps.setInt(7, parentId);
-                    }  
-        });  
+	public int insert(final Agent agent) {
+		//KeyHolder keyHolder = new GeneratedKeyHolder();
+		 final String sql = "insert into a_agent (code,name,cost,renew,type,creater,parentid) values(?,?,?,?,?,?,?)";
+		 KeyHolder keyHolder = new GeneratedKeyHolder();
+		 jdbcTemplate.update(new PreparedStatementCreator() {
+	        @Override
+	        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+	        	int parentId = queryPrentIdByCode(agent.getCode()) ;
+	            PreparedStatement ps  = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1,  getMaxCode(agent.getCode(),parentId));  
+                ps.setString(2, agent.getName()); 
+                ps.setDouble(3, agent.getCost());
+                ps.setDouble(4 , agent.getRenew());
+                ps.setString(5, agent.getType());
+                ps.setString(6, agent.getCreater());
+                ps.setInt(7, parentId);
+	            return ps;
+	        }
+	    }, keyHolder);
+	    return keyHolder.getKey().intValue();
 	}
 
+
+	public int addAndGetId(final Agent agent) {
+	    final String sql = "insert into orders(name, address,createtime,totalprice,status) values(?,?,?,?,?)";
+	    KeyHolder keyHolder = new GeneratedKeyHolder();
+	    jdbcTemplate.update(new PreparedStatementCreator() {
+	        @Override
+	        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+	        	int parentId = queryPrentIdByCode(agent.getCode()) ;
+	            PreparedStatement ps  = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+	           
+	            return ps;
+	        }
+	    }, keyHolder);
+	    return keyHolder.getKey().intValue();
+	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String getMaxCode(String createrCode , int parentId){
@@ -180,14 +205,14 @@ public class AgentDao {
 	public String whereSQL(QueryData qo){
 		String whereSql = "";
 		if(StringUtils.isNotEmpty(qo.getAgentName())){
-			whereSql += " and   name  like  '%" + qo.getAgentName() + "%' ";
+			whereSql += " and   a.name  like  '%" + qo.getAgentName() + "%' ";
 		}
 		if(StringUtils.isNotEmpty(qo.getAgentCode())){
-			whereSql += " and   code  like   '" + qo.getAgentCode() + "%' ";
+			whereSql += " and   a.code  like   '" + qo.getAgentCode() + "%' ";
 			
 		}
 		if(StringUtils.isNotEmpty(qo.getAgentid())){
-			whereSql += " and   id =  '" + qo.getAgentid() + "' ";
+			whereSql += " and   a.id =  '" + qo.getAgentid() + "' ";
 		}
 		return whereSql ;
 	}
@@ -195,7 +220,7 @@ public class AgentDao {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public int queryTotal(QueryData qo) {
 		final Integer[] total =  {0} ;
-		String  sql  = "select count(*) total from a_agent where 1=1 " + whereSQL(qo) ;
+		String  sql  = "select count(*) total from a_agent a where 1=1 " + whereSQL(qo) ;
 		jdbcTemplate.query(sql, new RowMapper() {
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
 				 total[0] = rs.getInt("total");
@@ -204,4 +229,19 @@ public class AgentDao {
 		});
 		return total[0];
 	}
+
+	@SuppressWarnings("unchecked")
+	public int checkUser(String userNo) {
+		final Integer[] total =  {0} ;
+		String  sql  = "select count(*) total from a_user a where  userNo =  '" + userNo + "'" ;
+		jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+				 total[0] = rs.getInt("total");
+				 return null ;
+			}
+		});
+		return total[0];
+	}
+	
+	
 }
