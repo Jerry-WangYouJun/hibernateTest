@@ -24,6 +24,7 @@ public class QueryData {
 	  
 	  private String dateStart ; 
 	  private String dateEnd ;
+	  private Integer timeType;
 	public String getType() {
 		return type;
 	}
@@ -95,6 +96,11 @@ public class QueryData {
 	}
 	public void setDateEnd(String dateEnd) {
 		this.dateEnd = dateEnd;
+	}
+	public Integer getTimeType() {
+		return timeType;
+	}
+	public void setTimeType(Integer timeType) {
+		this.timeType = timeType;
 	} 
-	
 }

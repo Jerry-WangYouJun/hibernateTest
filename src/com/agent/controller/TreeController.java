@@ -2,6 +2,7 @@ package com.agent.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -101,17 +102,20 @@ public class TreeController {
 		
 		@RequestMapping(value="/kickback/{id}")
 		public ModelAndView Info(@PathVariable("id") Integer id, QueryData qo,  HttpServletResponse response
-				, String pageNo , String pageSize ){
+				, String pageNo , String pageSize , Integer timeType ){
 				  ModelAndView mv = new ModelAndView("/agent/agent/kickback_list");
 				  Pagination page = new Pagination();
 					page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
 					page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
-					page.setTotal( cardAgentService.queryKickbackTotal(id , qo));
+					Map<String , Double > map = cardAgentService.queryKickbackTotal(id , qo , timeType);
+					page.setTotal( map.get("total").intValue());
 					CodeUtil.initPagination(page);
-				  List<Map<String,String>>  list = cardAgentService.queryKickbackInfo(id, qo  , page);
+				  List<Map<String,String>>  list = cardAgentService.queryKickbackInfo(id, qo  , page , timeType);
 				  mv.addObject("list", list);
 				  mv.addObject("page", page);
 				  mv.addObject("agentid", id);
+				  mv.addObject("timeType", timeType);
+				  mv.addObject("sumKick", map.get("sumKick"));
 				  return mv ;
 		}
 		

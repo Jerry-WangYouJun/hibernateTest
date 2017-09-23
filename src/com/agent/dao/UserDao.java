@@ -105,7 +105,7 @@ public class UserDao {
 	
 	public void delete(Integer id) {
 		 jdbcTemplate.update(  
-	                "delete from a_user where id = ?",   
+	                "delete from a_user where agentid = ?",   
 	                new Object[]{id},   
 	                new int[]{java.sql.Types.INTEGER});  
 	}

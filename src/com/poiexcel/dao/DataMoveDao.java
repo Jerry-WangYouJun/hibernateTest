@@ -456,4 +456,17 @@ public class DataMoveDao {
 			});
 			return arr[0];
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Map<String , Double > querySumKick(String sql) {
+	         final  Map<String, Double>  map  =  new HashMap<>() ; 
+	         jdbcTemplate.query(sql, new RowMapper() {
+				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+					map.put("total", rs.getDouble("total"));
+					map.put("sumKick", rs.getDouble("sumKick"));
+					return null;
+				}
+			});
+			return map;
+	}
 }

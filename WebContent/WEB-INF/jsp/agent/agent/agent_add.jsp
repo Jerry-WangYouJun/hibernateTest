@@ -41,6 +41,9 @@
 			$.messager.alert("提示","代理商名称不能为空!","error");
 			return false;
 		}
+		if(!checkUser()){
+			return false ;
+		}
 		if($("#cost").val() == ""){
 			$.messager.alert("提示","成本价不能为空!","error");
 			return false;
@@ -52,6 +55,29 @@
 		
 		return true;
 	}
+	function checkUser(){
+		$.ajax({
+	    	url : "${basePath}/agent/checkUser",
+       		type:'post',  
+       		data: { userNo:$("#userNo").val()},
+       		dataType: 'json',
+       		success: function(data){
+	       		if(data.success ) {
+	       			$.messager.alert('提示',"用户名重复，请填入其他用户名!","error");
+	       			$("#userNo").val("");
+		       	}
+       		},
+       		error: function(transport) { 
+       			$.messager.alert('提示',"系统产生错误,请联系管理员!","error");
+        	} 
+       	});
+	}
+	$(function(){
+		 if( Number("${agent.id}") > 0 ){
+			 $("#userNo").attr("disabled" , "true");
+			 $("#name").attr("disabled" , "true");
+		 };
+	});
 </script>
 </head>
 <body>
@@ -63,9 +89,19 @@
 		  		<td style="padding: 20px">
 		  			<form:input id="name" path="name" />
 		  		</td>
+		  		<td >登录名：</td>
+		  		<td style="padding: 20px">
+		  			<form:input id="userNo" path="userNo"  onchange="checkUser()" />
+		  		</td>
+		  	</tr>
+		  	<tr>
 		  		<td >成本价：</td>
 		  		<td style="padding: 20px">
 		  			<form:input id="cost" path="cost"   />
+		  		</td>
+		  		<td>续费价：</td>
+		  		<td style="padding: 20px">
+		  			<form:input id="renew" path="renew"   />
 		  		</td>
 		  	</tr>
 		  	<tr>
@@ -75,10 +111,6 @@
 			  			<form:input id="type" path="type" />
 			  		</td>
 		  		</c:if>
-		  		<td>续费价：</td>
-		  		<td style="padding: 20px">
-		  			<form:input id="renew" path="renew"   />
-		  		</td>
 		  	</tr>
 		  </table>
 	</form:form>

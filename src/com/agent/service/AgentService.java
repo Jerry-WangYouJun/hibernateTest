@@ -27,9 +27,9 @@ public class AgentService {
 		return dao.queryList(qo,page);
 	}
 
-	public void insert(Agent agent ) {
+	public int insert(Agent agent ) {
 		 dao.queryPrentIdByCode(agent.getCode());
-		 dao.insert(agent );
+		 return  dao.insert(agent );
 	}
 
 	public void update(Agent agent) {
@@ -54,7 +54,11 @@ public class AgentService {
 				  TreeNode  node =  new TreeNode();
 				  node.setId(agent.getId()+"");
 				  node.setText(agent.getName());
-				  node.getAttributes().setPriUrl(request.getContextPath() +  "/treeindex/" + urlType + "/" + agent.getId()); 
+				  String timeType = "" ;
+					if("kickback".equals(urlType)) {
+						timeType = "?timeType=0";
+				  }
+				  node.getAttributes().setPriUrl(request.getContextPath() +  "/treeindex/" + urlType + "/" + agent.getId() + timeType); 
 				  List<Agent> firstListTemp = new ArrayList<>();
 				  firstListTemp =mapTree.get(agentId);
 				  if(firstListTemp !=null && firstListTemp.size() > 0){
@@ -72,7 +76,11 @@ public class AgentService {
 				 TreeNode tn = new TreeNode();
 					tn.setId(agent.getId() + "");
 					tn.setText(agent.getName());
-					tn.getAttributes().setPriUrl(request.getContextPath() + "/treeindex/" + urlType + "/" + agent.getId()); 
+					String timeType = "" ;
+					if("kickback".equals(urlType)) {
+						timeType = "?timeType=0";
+					}
+					tn.getAttributes().setPriUrl(request.getContextPath() + "/treeindex/" + urlType + "/" + agent.getId() + timeType); 
 					if(mapTree.containsKey(agent.getId())){
 						tn.setChildren(agentTreeData(mapTree.get(agent.getId()), urlType ,request) );
 					}
@@ -107,6 +115,10 @@ public class AgentService {
 
 	public int queryTatol(QueryData qo) {
 		return dao.queryTotal(qo);
+	}
+
+	public int checkUser(String userNo) {
+		return  dao.checkUser(userNo);
 	}
 	
 	 

@@ -19,7 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.agent.common.CodeUtil;
 import com.agent.model.Agent;
 import com.agent.model.QueryData;
+import com.agent.model.User;
 import com.agent.service.AgentService;
+import com.agent.service.UserService;
 import com.poiexcel.vo.Pagination;
 
 @RequestMapping("/agent")
@@ -29,6 +31,8 @@ public class AgentController {
 	
 	@Autowired
 	AgentService service ;
+	@Autowired
+	UserService userService ;
 	
 	@RequestMapping("/card_move")
 	public void moveCard(String iccids , String agentid ,HttpServletResponse response  ){
@@ -128,7 +132,13 @@ public class AgentController {
 		}else{
 			agent.setCreater(session.getAttribute("user").toString());
 			agent.setCode(session.getAttribute("agentcode").toString());
-			service.insert(agent );
+			 int agentId = service.insert(agent );
+			User user = new User();
+			user.setAgentId(agentId);
+			user.setUserNo(agent.getUserNo());
+			user.setUserName(agent.getName());
+			user.setPwd("123456");
+			userService.insert(user);
 		}
 		response.setContentType("text/text;charset=UTF-8");
 		PrintWriter out;
@@ -161,6 +171,7 @@ public class AgentController {
 		PrintWriter out;
 		try {
 			service.delete(id);
+			userService.delete(id);
 			out = response.getWriter();
 			JSONObject json = new JSONObject();
 			json.put("msg", "操作成功");
@@ -173,4 +184,23 @@ public class AgentController {
 		}
 	}
 	
+	@RequestMapping(value="/checkUser")
+	public void checkUser(String userNo, HttpServletResponse response ) {
+		PrintWriter out;
+		int num = service.checkUser(userNo);
+		try {
+			out = response.getWriter();
+			JSONObject json = new JSONObject();
+			if(num > 0 ) {
+				json.put("success", true);
+			}else {
+				json.put("success", false);
+			}
+			out.println(json);
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
