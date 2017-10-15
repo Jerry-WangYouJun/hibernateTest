@@ -9,6 +9,9 @@ public class User {
 	  private String  agentName;
 	  private String  agentCode;
 	  private String roleId ;
+	  private String type ; 
+	  private double renew;
+	  private double cost;
 	public Integer getId() {
 		return id;
 	}
@@ -56,6 +59,24 @@ public class User {
 	}
 	public void setAgentCode(String agentCode) {
 		this.agentCode = agentCode;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public double getRenew() {
+		return renew;
+	}
+	public void setRenew(double renew) {
+		this.renew = renew;
+	}
+	public double getCost() {
+		return cost;
+	}
+	public void setCost(double cost) {
+		this.cost = cost;
 	} 
-	  
+	 
 }
