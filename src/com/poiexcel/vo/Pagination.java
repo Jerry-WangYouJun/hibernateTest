@@ -12,7 +12,27 @@ public class Pagination {
 	 //总条数
 	 private int total ;
 	 private List list;
-	 
+	
+	public Pagination() {
+		super();
+	}
+	public Pagination(int pageNo, int pageSize) {
+		super();
+		this.pageNo = pageNo;
+		this.pageSize = pageSize;
+	}
+	
+	public Pagination(String pageNo, String pageSize) {
+		super();
+		this.pageNo = pageNo==null?1:Integer.valueOf(pageNo);
+		this.pageSize = pageSize==null?10:Integer.valueOf(pageSize);
+	}
+	
+	public Pagination(String pageNo, String pageSize , int initSize) {
+		super();
+		this.pageNo = pageNo==null?1:Integer.valueOf(pageNo);
+		this.pageSize = pageSize==null?initSize:Integer.valueOf(pageSize);
+	}
 	public int getPageNo() {
 		return pageNo;
 	}

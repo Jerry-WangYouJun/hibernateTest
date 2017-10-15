@@ -7,6 +7,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>用户管理</title>
+<style type="text/css">     
+    .mask {       
+            position: absolute; top: 0px; filter: alpha(opacity=60); background-color: #777;     
+            z-index: 1002; left: 0px;     
+            opacity:0.5; -moz-opacity:0.5;     
+        }     
+</style>  
 <script type="text/javascript">
 	$(function() {
 		$('#data-table').datagrid({
@@ -122,6 +129,16 @@
 					type : 'post',
 					data : {iccids:"${ids}" , agentid : id},
 					dataType : 'json',
+					beforeSend: function () {
+					    $.messager.progress({ 
+					       title: '提示', 
+					       msg: '操作中，请稍候……', 
+					       text: '' 
+					    });
+					    },
+					complete: function () {
+					         $.messager.progress('close');
+					},
 					success : function(data) {
 						if (data.success) {
 							parent.doSearch();
@@ -135,6 +152,7 @@
 						$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");
 					}
 				});
+				
 			}
 	}
 
@@ -172,7 +190,7 @@
 			onclick="doSearch()">查询</a> <a href="####" class="easyui-linkbutton"
 			plain="true" iconCls="icon-clear" onclick="doClear()">清除</a>
 	</div>
-	<div region="center" border="0">
+	<div id="mask" region="center" border="0">
 		<form:form id="dataForm" action="${basePath}/user/user_delete"
 			modelAttribute="user" method="post">
 			<input type="hidden" name="_method" value="DELETE" />

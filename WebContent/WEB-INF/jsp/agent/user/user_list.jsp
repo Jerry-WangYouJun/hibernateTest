@@ -38,29 +38,17 @@
                 afterPageText: '页    共 ${page.pageIndex} 页',  
                 displayMsg: '  共 ${page.total} 条记录',  
                 showRefresh:false ,
+                onSelectPage:function(pageNumber, pageSize){
+	            		$(this).pagination('loading');
+	            		alert('pageNumber:'+pageNumber+',pageSize:'+pageSize);
+	            		$(this).pagination('loaded');
+	            	}
            });
 			
 			
 			 $(".pagination-num").val("${page.pageNo}");
 			
-			 $(".pagination-num").change(function(){
-				 doSearch();  
-			 });
-			 $(".pagination-page-list").change(function(){
-				 doSearch();  
-			 });
-			 $(".pagination-first").click(function(){
-				 doSearch("1");  
-			 });
-			 $(".pagination-prev").click(function(){
-				 doSearch("prev");  
-			 });
-			 $(".pagination-next").click(function(){
-				 doSearch("next");  
-			 });
-			 $(".pagination-last").click(function(){
-				 doSearch("last");  
-			 });
+			
 			 
 			$('#dlg-frame').dialog( {
 				title : '用户管理',
@@ -104,6 +92,7 @@
 			}else if(index == "last" ){
 				pageNo  = pageTotal; 
 			}
+			console.info(pageSize)
 			window.location.href = "${basePath}/user_query?userNo=" + userNo +
 					"&pageNo=" + pageNo + "&pageSize=" + pageSize ;
 		}

@@ -215,7 +215,7 @@ public class AgentDao {
 			whereSql += " and   a.name  like  '%" + qo.getAgentName() + "%' ";
 		}
 		if(StringUtils.isNotEmpty(qo.getAgentCode())){
-			whereSql += " and   a.code  like   '" + qo.getAgentCode() + "%' ";
+			whereSql += " and   a.code  like   '" + qo.getAgentCode() + "-__' ";
 			
 		}
 		if(StringUtils.isNotEmpty(qo.getAgentid())){

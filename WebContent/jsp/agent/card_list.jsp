@@ -10,17 +10,27 @@
 <title>用户管理</title>
 <script type="text/javascript">
 	$(function() {
-		$('#data-table').datagrid({
+		 var agentId = parent.$('#tabs').tabs('getSelected').panel('options').id;
+		$('#card_table').datagrid({
+			url:"${basePath}/treeindex/card_query/" + agentId ,
 			rownumbers : true,
 			autoRowHeight : true,
-			singleSelect : true,
 			pagination : true,
+			fitColumns: true,
 			nowrap : false,
 			fit: true, 
-			pagePosition: 'both',
+			columns:[[
+				{field : 'id',align : 'center',halign:'center',checkbox : true}, 
+				{field:'ICCID',title:'ICCID',align:'center'},
+				{field:'cardCode',title:'卡号',align:'center'},
+				{field:'gprsUsed',title:'使用流量',align:'center'},
+				{field:'packageType',title:'套餐类型',align:'center'},
+				{field:'openDate',title:'开卡时间',align:'center'},				
+				{field:'remark',title:'备注',align:'center'}
+			]],
 			toolbar : [ {
-				text:'全部分配',
-				iconCls: 'icon-remove',
+				text:'全选',
+				iconCls: 'icon-ok',
 				handler: function(){
 					$("input:checkbox").each(function(){
 				    	   	 this.checked = "checked" ;
@@ -28,7 +38,7 @@
 				}
 			},'-',{
 				text:'全取消',
-				iconCls: 'icon-remove',
+				iconCls: 'icon-redo',
 				handler: function(){
 					$("input:checkbox").each(function(){
 			    	   		  this.checked = false;
@@ -43,36 +53,15 @@
 				}
 			}]
 		});
-		$('#data-table').datagrid('getPager').pagination({  
-            pageSize: "${page.pageSize}",  
-            pageNumber: "${page.pageNo}",  
-            pageList: [ 100, 300, 500 , 1000],  
-            beforePageText: '第',//页数文本框前显示的汉字   
-            afterPageText: '页    共 ${page.pageIndex} 页    ${page.total} 条记录',  
-            showRefresh:false ,
+		$('#card_table').datagrid('getPager').pagination({  
+			 pageSize: 100,  
+	            pageList: [ 50 ,100 , 300, 500 , 1000],  
+	            showRefresh:false ,
+	            onSelectPage:function(pageNumber, pageSize){
+	            		doSearch();
+		        	}
        });
 		
-
-		 $(".pagination-num").val("${page.pageNo}");
-		
-		 $(".pagination-num").change(function(){
-			 doSearch();  
-		 });
-		 $(".pagination-page-list").change(function(){
-			 doSearch();  
-		 });
-		 $(".pagination-first").click(function(){
-			 doSearch("1");  
-		 });
-		 $(".pagination-prev").click(function(){
-			 doSearch("prev");  
-		 });
-		 $(".pagination-next").click(function(){
-			 doSearch("next");  
-		 });
-		 $(".pagination-last").click(function(){
-			 doSearch("last");  
-		 });
 		 
 		$('#dlg-frame').dialog({
 			title : '代理商管理',
@@ -82,24 +71,8 @@
 			left : 100,
 			closed : true,
 			cache : false,
-			modal : true,
-			buttons : [ {
-				text : '确定',
-				iconCls : 'icon-ok',
-				handler : function() {
-					if (confirm("确定执行下一步操作？")) {
-						frameContent.window.doServlet();
-					}
-				}
-			}, {
-				text : '关闭',
-				iconCls : 'icon-cancel',
-				handler : function() {
-					$('#dlg-frame').dialog("close");
-				}
-			} ]
+			modal : true
 		});
-		 $("#datagridDiv").height($(".layout-panel-center")[0].offsetHeight - 200);
 	});
 
 	function doSearch(index) {
@@ -108,19 +81,10 @@
 		var iccidEnd = $("#search-iccidEnd").val();
 		var pageNo = $(".pagination-num").val(); 
 		var pageSize = $(".pagination-page-list").val();
-		var pageTotal = ${page.pageIndex};
-		if(index == "1"){
-			pageNo = 1 ;
-		}else if(index == "prev" && pageNo != 1 ){
-			 pageNo  -= 1 ;
-		}else if(index == "next" && pageNo != pageTotal){
-			pageNo  = parseInt(pageNo)+parseInt(1); 
-		}else if(index == "last" ){
-			pageNo  = pageTotal; 
-		}
-		window.location.href = "${basePath}/treeindex/card/${agentid}?type=" + type +
-				"&iccidStart="+iccidStart + "&iccidEnd=" + iccidEnd + 
-				"&pageNo=" + pageNo + "&pageSize=" + pageSize ;
+	    $('#card_table').datagrid('reload',{
+	    	type : type,pageNo:pageNo,pageSize:pageSize ,
+	    		iccidStart:iccidStart,iccidEnd:iccidEnd
+		} );
 	}
 	function doClear() {
 		$("#search-type").val("");
@@ -134,6 +98,9 @@
 				id += $(this).val() + ",";
 			}
 		});
+		if(id.indexOf("on,")>=0){
+			id = id.substring(3);
+		}
 		var path = "${basePath}/agent/move?iccids=" + id ;
 		document.getElementById('frameContent').src = path;
 		$('#dlg-frame').dialog('open');
@@ -203,16 +170,16 @@
 
 </style>
 </head>
-<body class="easyui-layout">
+<body >
 	<div id="tb" region="north" title="查询条件区" class="easyui-panel"
 		iconCls="icon-search" style="padding: 3px; height: 60px; width: 86%">
-		<span>套餐类型:</span>
+		<%-- <span>套餐类型:</span>
 		<select id="search-type" name="type" >
-			 <option>--选择--</option>
+			 <option value="0">--选择--</option>
 			 <c:forEach items="${typeList}" var="typename">
 			 		<option value = "${typename}">${typename}</option>
 			 </c:forEach>	
-		</select>
+		</select> --%>
 		<span>ICCID:</span>
 		<input id="search-iccidStart" name="iccidStart" /> - 
 		<input
@@ -222,38 +189,12 @@
 			onclick="doSearch()">查询</a> <a href="####" class="easyui-linkbutton"
 			plain="true" iconCls="icon-clear" onclick="doClear()">清除</a>
 	</div>
-	<div id="datagridDiv" region="center" border="0" style="height: 2800px">
-		<form:form id="dataForm" action="${basePath}/user/user_delete"
-			modelAttribute="user" method="post">
-			<input type="hidden" name="_method" value="DELETE" />
-			<table class="easyui-datagrid" id="data-table"  title="数据列表" width="86%">
-				<thead>
-					<tr>
-						<th data-options="field:'id'"></th>
-						<th data-options="field:'cardCode'">卡号</th>
-						<th data-options="field:'ICCID'">ICCID</th>
-						<th data-options="field:'gprsUsed'">已用流量</th>
-						<th data-options="field:'packageType'">套餐类型</th>
-						<th data-options="field:'openDate'">开卡时间</th>
-						<th data-options="field:'remark'">备注</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach items="${list}" var="card">
-						<tr>
-							<td><input type="checkbox" name="id" value="${card.id}" /></td>
-							<td>${card.cardCode}</td>
-							<td>${card.ICCID}</td>
-							<td>${card.gprsUsed}</td>
-							<td>${card.packageType}</td>
-							<td>${card.openDate}</td>
-							<td>${card.remark}</td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-
-		</form:form>
+ 	<div id="main_layout" data-options="region:'center',border:false,showHeader:false" style="width:80%;height:70%;">
+ 		<table id="card_table" class="easyui-datagrid" fit="true" ></table>
+ 	</div>
+	<div data-options="region:'south',border:false,showHeader:false" style="width:900px;height:20%;">
+ 		 &nbsp;
+ 	</div>
 
 		<div id="dlg-frame">
 			<iframe width="99%" height="98%" name="frameContent"

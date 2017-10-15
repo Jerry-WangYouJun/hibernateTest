@@ -53,6 +53,9 @@
 			$.messager.alert("提示","确认密码不能为空!","error");
 			return false;
 		}
+		if(checkPwd() == "1"){
+			 return false ;
+		}
 		return true;
 	}
 	
@@ -62,6 +65,8 @@
 		 if( pwd != "" && pwd2 != ""){
 			   if(pwd != pwd2 ){
 				   $.messager.alert("提示","两次输入的密码不一致!","error");
+				   return '1
+				   ' ;
 			   }
 		 }
 	}
@@ -115,11 +120,11 @@
 		  	<tr>
 		  		<td>密码：</td>
 		  		<td style="padding: 20px">
-		  			<form:input id="pwd" path="pwd" onchange="checkPwd();" />
+		  			<form:input id="pwd" path="pwd"  />
 		  		</td>
 		  		<td>确认密码：</td>
 		  		<td style="padding: 20px">
-		  			<form:input id="pwd2" path="pwd" onchange="checkPwd();" />
+		  			<form:input id="pwd2" path="pwd"  />
 		  		</td>
 		  	</tr>
 		   <tr>

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.agent.common.CodeUtil;
 import com.agent.model.Agent;
+import com.agent.model.Grid;
 import com.agent.model.QueryData;
 import com.agent.model.User;
 import com.agent.service.AgentService;
@@ -33,6 +35,37 @@ public class AgentController {
 	AgentService service ;
 	@Autowired
 	UserService userService ;
+	
+	@RequestMapping("/user_query")
+	public void queryTest( HttpServletResponse response, HttpServletRequest request  ,HttpSession session ) {
+		String userName = request.getParameter("userName");
+		String pageNo = request.getParameter("pageNo");
+		String pageSize = request.getParameter("pageSize");
+		//System.out.println(userName);
+		Grid grid = new Grid();
+	    User user = new User();
+	    user.setUserName(userName);
+	    String agentCode = session.getAttribute("agentcode").toString();
+		user.setAgentCode(agentCode);
+		Pagination page =  new Pagination(pageNo, pageSize) ;
+	    CodeUtil.initPagination(page);
+		List<User> list = userService.queryList(user , page );
+		grid.setTotal(Long.valueOf(userService.queryListCount(user)));
+		grid.setRows(list);
+		PrintWriter out;
+			try {
+				response.setContentType("text/html;charset=UTF-8");
+				out = response.getWriter();
+				JSONObject json = new JSONObject();
+				json = JSONObject.fromObject(grid);
+				out.println(json);
+				out.flush();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		
+	}
 	
 	@RequestMapping("/card_move")
 	public void moveCard(String iccids , String agentid ,HttpServletResponse response  ){
@@ -203,4 +236,5 @@ public class AgentController {
 			e.printStackTrace();
 		}
 	}
+	
 }

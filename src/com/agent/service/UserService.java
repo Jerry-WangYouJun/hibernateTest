@@ -26,6 +26,10 @@ public class UserService {
 	public List<User> queryList(User user, Pagination page) {
 		return dao.queryList(user ,page);
 	}
+	
+	public int queryListCount(User user  ) {
+		return dao.queryTotal(user);
+	}
 
 	public void insert(User user) {
 		 dao.insert(user);

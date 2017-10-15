@@ -19,12 +19,7 @@
 				children:[{
 					text:"代理商管理",
 					attributes:{
-						url:"${basePath}/agent/agent_query"
-					}
-				},{
-					text:"密码管理",
-					attributes:{
-						url:"${basePath}/user_query"
+						url:"${basePath}/jsp/agent/agent_manage.jsp"
 					}
 				}]
 			}];
@@ -68,9 +63,13 @@
 				if($("#tabs").tabs('exists',text)){
 					$("#tabs").tabs('select',text);
 				}else{
-					var content="<iframe frameborder='0' scrolling='auto' style='width:100%;height:100%' src="+url+"></iframe>";
+					var arr = url.split("/");
+					if(text.indexOf("卡信息") >= 0){
+						 url = "${basePath}/jsp/agent/card_list.jsp"
+					}
+					var content="<iframe frameborder='0' scrolling='auto' style='width:100%;height:100%' src="+ url+"></iframe>";
 					$("#tabs").tabs('add',{
-						id:text,
+						id:arr[4],
 						title:text,
 						closable:true,
 						content:content
@@ -82,7 +81,7 @@
   </head>
   
  <body class="easyui-layout">
-	<div region="north" style="height:150px; background-color:#13A7D5;">
+	<div region="north" style="height:15%; background-color:#13A7D5;">
 		<table width="100%">
 			<tr>
 				<td align="center"> 
@@ -116,12 +115,12 @@
 		</ul>
 	</div>
 	
-	<div region="center" class="easyui-tabs" fit="true" border="false" id="tabs">
+	<div region="center" class="easyui-tabs" fit="true" border="false" id="tabs" style="height: 80%">
 		<div title="首页" >
 			<div align="center" style="padding-top: 100px;"><font color="red" size="10">欢迎使用丰宁物联网管理系统</font></div>		
 		</div>
 	</div>
-	<div region="south" style="height:25px;background-color:#13A7D5;" align="center"  >
+	<div region="south" style="height:3%;background-color:#13A7D5;" align="center"  >
 		<font color="#ffffff"> 版权所有:wang_yjun@163.com&copy;丰宁物联网公司</font>
 	</div>
 </body>

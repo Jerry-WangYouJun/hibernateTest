@@ -45,7 +45,7 @@ public class UserDao {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<User> queryList(User user, Pagination page) {
 		String sql = "select u.id , u.userno , u.username ,u.pwd , u.roleid , u.agentid , a.name , u.agentid "
-				+ "from a_user u , a_agent a where u.agentid = a.id  " + whereSql(user);
+				+ " ,a.code , a.renew , a.type,a.cost from a_user u , a_agent a where u.agentid = a.id  " + whereSql(user);
 		String finalSql = Dialect.getLimitString(sql, page.getPageNo(), page.getPageSize(), "MYSQL");
          final  List<User> list =   new ArrayList<>();
          jdbcTemplate.query(finalSql, new RowMapper() {
@@ -57,6 +57,10 @@ public class UserDao {
 					vo.setAgentName(rs.getString("name"));
 					vo.setRoleId(rs.getString("roleid"));
 					vo.setAgentId(rs.getInt("agentid"));
+					vo.setAgentCode(rs.getString("code"));
+					vo.setType(rs.getString("type"));
+					vo.setRenew(rs.getDouble("renew"));
+					vo.setCost(rs.getDouble("cost"));
 					list.add(vo);
 				 return null ;
 			}
@@ -65,7 +69,7 @@ public class UserDao {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public int queryTotal(User user, Pagination page) {
+	public int queryTotal(User user) {
 		String sql = "select count(*) total from a_user u , a_agent a where u.agentid = a.id  " + whereSql(user);
          final  Integer[] arr =  {0};
          jdbcTemplate.query(sql, new RowMapper() {
@@ -116,7 +120,7 @@ public class UserDao {
 			sql += " and   userno  like  '%" + user.getUserNo() + "%' ";
 		}
 		if(StringUtils.isNotEmpty(user.getUserName())){
-			sql += " and   u.username  >=  '%" + user.getUserName() + "%' ";
+			sql += " and   a.name  like  '%" + user.getUserName() + "%' ";
 		}
 		if(StringUtils.isNotEmpty(user.getRoleId())){
 			sql += " and   u.roleid =  '" + user.getRoleId() + "' ";
