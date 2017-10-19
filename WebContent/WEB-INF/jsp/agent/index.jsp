@@ -66,6 +66,8 @@
 					var arr = url.split("/");
 					if(text.indexOf("卡信息") >= 0){
 						 url = "${basePath}/jsp/agent/card_list.jsp"
+					}else if(text.indexOf("返佣") >= 0){
+						url = "${basePath}/jsp/agent/kickback_list.jsp"
 					}
 					var content="<iframe frameborder='0' scrolling='auto' style='width:100%;height:100%' src="+ url+"></iframe>";
 					$("#tabs").tabs('add',{

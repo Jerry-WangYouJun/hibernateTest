@@ -98,6 +98,9 @@ public class QueryData {
 		this.dateEnd = dateEnd;
 	}
 	public Integer getTimeType() {
+		if(timeType == null ) {
+			  return 0 ;
+		}
 		return timeType;
 	}
 	public void setTimeType(Integer timeType) {

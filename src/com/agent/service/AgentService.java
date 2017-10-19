@@ -54,11 +54,11 @@ public class AgentService {
 				  TreeNode  node =  new TreeNode();
 				  node.setId(agent.getId()+"");
 				  node.setText(agent.getName());
-				  String timeType = "" ;
-					if("kickback".equals(urlType)) {
-						timeType = "?timeType=0";
-				  }
-				  node.getAttributes().setPriUrl(request.getContextPath() +  "/treeindex/" + urlType + "/" + agent.getId() + timeType); 
+//				  String timeType = "" ;
+//				  if("kickback".equals(urlType)) {
+//						timeType = "?timeType=0";
+//				  }
+				  node.getAttributes().setPriUrl(request.getContextPath() +  "/treeindex/" + urlType + "/" + agent.getId() ); 
 				  List<Agent> firstListTemp = new ArrayList<>();
 				  firstListTemp =mapTree.get(agentId);
 				  if(firstListTemp !=null && firstListTemp.size() > 0){
