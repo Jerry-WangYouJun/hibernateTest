@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.agent.common.CodeUtil;
 import com.agent.model.Grid;
@@ -42,7 +41,6 @@ public class TreeController {
 		@RequestMapping("/tree")
 	    public void getTreeData(HttpSession session, HttpServletResponse response , HttpServletRequest request){
 	    	  try {
-	    		  
 	    		List<TreeNode> list = new ArrayList<>();
 	    		TreeNode  treeNode = new TreeNode();
 	    		treeNode.setText("SIM卡管理");
@@ -83,25 +81,6 @@ public class TreeController {
 			}
 	    }
 	 
-		
-		@RequestMapping(value="/card/{id}")
-		public ModelAndView cardInfo(@PathVariable("id") Integer id, HttpServletResponse response
-				, String pageNo , String pageSize , QueryData qo){
-				  ModelAndView mv = new ModelAndView("/agent/agent/card_list");
-				  Pagination page = new Pagination();
-					page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
-					page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
-					page.setTotal(cardAgentService.queryCardTotal(id  , qo));
-					CodeUtil.initPagination(page);
-				  List<InfoVo>  list = cardAgentService.queryCardInfo(id , page , qo);
-				  mv.addObject("list", list);
-				  mv.addObject("page", page);
-				  mv.addObject("agentid", id);
-				  List<String> typeList = service.getTypeList();
-				  mv.addObject("typeList", typeList);
-				  return mv ;
-		}
-		
 		@RequestMapping("/card_query/{agentId}")
 		public void queryCard(@PathVariable("agentId") Integer agentId, HttpServletResponse response, 
 				HttpServletRequest request  ,HttpSession session , QueryData qo) {
@@ -111,8 +90,11 @@ public class TreeController {
 			Grid grid = new Grid();
 			Pagination page =  new Pagination(pageNo, pageSize , 100) ;
 		    CodeUtil.initPagination(page);
+		    System.out.println("开始" + System.currentTimeMillis());
 		    List<InfoVo>  list = cardAgentService.queryCardInfo(agentId , page , qo);
+		    System.out.println("开始2" + System.currentTimeMillis());
 			grid.setTotal(Long.valueOf(cardAgentService.queryCardTotal(agentId  , qo)));
+			System.out.println("结束" + System.currentTimeMillis());
 			grid.setRows(list);
 			PrintWriter out;
 				try {
@@ -127,26 +109,7 @@ public class TreeController {
 					e.printStackTrace();
 				}
 		}
-		
-		
-		@RequestMapping(value="/kickback/{id}")
-		public ModelAndView Info(@PathVariable("id") Integer id, QueryData qo,  HttpServletResponse response
-				, String pageNo , String pageSize , Integer timeType ){
-				  ModelAndView mv = new ModelAndView("/agent/agent/kickback_list");
-				  Pagination page = new Pagination();
-					page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
-					page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
-					Map<String , Double > map = cardAgentService.queryKickbackTotal(id , qo , timeType);
-					page.setTotal( map.get("total").intValue());
-					CodeUtil.initPagination(page);
-				  List<Map<String,String>>  list = cardAgentService.queryKickbackInfo(id, qo  , page , timeType);
-				  mv.addObject("list", list);
-				  mv.addObject("page", page);
-				  mv.addObject("agentid", id);
-				  mv.addObject("timeType", timeType);
-				  mv.addObject("sumKick", map.get("sumKick"));
-				  return mv ;
-		}
+
 		@RequestMapping("/kickback_query/{agentId}")
 		public void queryKickback(@PathVariable("agentId") Integer agentId, HttpServletResponse response, 
 				HttpServletRequest request  ,HttpSession session , QueryData qo ) {
