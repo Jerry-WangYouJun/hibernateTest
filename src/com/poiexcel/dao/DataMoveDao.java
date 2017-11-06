@@ -64,11 +64,11 @@ public class DataMoveDao {
 								// 并根据数据类型对Statement 中的占位符进行赋值
 								InfoVo info = voList.get(i);
 								ps.setString(1,
-										String.valueOf(info.getCardCode()));
+										String.valueOf(info.getCardCode()).trim());
 								ps.setString(2,
 										String.valueOf(info.getRemark()));
-								ps.setString(3, String.valueOf(info.getIMSI()));
-								ps.setString(4, String.valueOf(info.getICCID()));
+								ps.setString(3, String.valueOf(info.getIMSI()).trim());
+								ps.setString(4, String.valueOf(info.getICCID()).trim());
 								ps.setString(5,
 										String.valueOf(info.getUserStatus()));
 								ps.setString(6,
@@ -179,11 +179,11 @@ public class DataMoveDao {
 												String.valueOf(valueList.get(0))
 														.trim());
 										ps.setString(2, String
-												.valueOf(valueList.get(1)));
+												.valueOf(valueList.get(1)).trim());
 										ps.setString(3, String
-												.valueOf(valueList.get(2)));
+												.valueOf(valueList.get(2)).trim());
 										ps.setString(4, String
-												.valueOf(valueList.get(3)));
+												.valueOf(valueList.get(3)).trim());
 										ps.setString(5, String
 												.valueOf(valueList.get(4)));
 										ps.setString(6, String
@@ -262,7 +262,7 @@ public class DataMoveDao {
 						lastMonth = 12;
 					}
 					if (lastMonth > 9) {
-						deadLine = DateUtils.getEndDate(nextYear + lastMonth
+						deadLine = DateUtils.getEndDate(String.valueOf(nextYear) + String.valueOf(lastMonth)
 								+ "");
 					} else {
 						deadLine = DateUtils.getEndDate(nextYear + "0"
@@ -281,7 +281,7 @@ public class DataMoveDao {
 						lastMonth = 12;
 					}
 					if (lastMonth > 9) {
-						deadLine = DateUtils.getEndDate(nextYear + lastMonth
+						deadLine = DateUtils.getEndDate(String.valueOf(nextYear) + String.valueOf(lastMonth)
 								+ "");
 					} else {
 						deadLine = DateUtils.getEndDate(nextYear + "0"
