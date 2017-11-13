@@ -8,6 +8,13 @@
   	<welcome-file>/WEB-INF/jsp/index.jsp</welcome-file>
     <welcome-file>/WEB-INF/jsp/hello.jsp</welcome-file>
   </welcome-file-list>
+    <context-param>  
+      <param-name>contextConfigLocation</param-name>  
+      <param-value>classpath:springmvc-servlet.xml</param-value>  
+  </context-param>  
+  <listener>  
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>  
+  </listener> 
  <servlet>
     <servlet-name>springmvc</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

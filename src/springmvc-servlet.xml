@@ -15,6 +15,26 @@
     <!-- if you use annotation you must configure following setting -->
     <mvc:annotation-driven />
      
+     
+	<bean name="taskJob" class="com.wyj.sendMail.SendMailTask" />
+ 	<bean id="quartzTestJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="taskJob"></property>
+        <property name="targetMethod" value="myExecutor"></property>
+        <property name="concurrent" value="false"></property>
+    </bean>
+    <bean id="quartzTestTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="quartzTestJob"/>
+        <!-- 每天五秒 -->
+        <property name="cronExpression" value="0 0/30 8-18 * * ?"></property>
+    </bean>
+    <bean lazy-init="false"  class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+    <property name="triggers">  
+        <list>  
+        <ref bean="quartzTestTrigger"/>  
+        </list>  
+    </property> 
+    </bean>
+     
     <!-- configure the InternalResourceViewResolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
             id="internalResourceViewResolver">
