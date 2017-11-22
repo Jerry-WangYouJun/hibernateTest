@@ -1,4 +1,4 @@
-package com.agent.controller;
+package com.unicom.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,9 +26,9 @@ import com.agent.service.AgentService;
 import com.agent.service.UserService;
 import com.poiexcel.vo.Pagination;
 
-@RequestMapping("/agent")
+@RequestMapping("/unicom")
 @Controller
-public class AgentController {
+public class UnicomAgentController {
 	 
 	
 	@Autowired
@@ -86,7 +86,7 @@ public class AgentController {
 	
 	@RequestMapping("/move")
 	public ModelAndView  moveCardInit(QueryData  qo , HttpSession session , String pageNo , String pageSize ,String iccids){
-		ModelAndView  mv = new ModelAndView("/agent/agent/agent_move");
+		ModelAndView  mv = new ModelAndView("/agent/card/agent_query");
 		List<Agent> list =  new ArrayList<>();
 		String agentCode = session.getAttribute("agentcode").toString();
 		qo.setAgentCode(agentCode);
@@ -205,7 +205,6 @@ public class AgentController {
 		try {
 			service.delete(id);
 			userService.delete(id);
-			response.setCharacterEncoding("UTF-8"); 
 			out = response.getWriter();
 			JSONObject json = new JSONObject();
 			json.put("msg", "操作成功");

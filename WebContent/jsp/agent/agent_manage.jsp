@@ -38,7 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				fitColumns: true,
 				singleSelect: true,
 				columns:[[
-					{field : 'agentid',align : 'center',halign:'center',checkbox : true}, 
+					{field:'agentId',align : 'center',halign:'center',checkbox : true}, 
 					{field:'agentName',title:'代理商名称',align:'center'},
 					{field:'agentCode',title:'代理商代码',align:'center'},
 					{field:'userNo',title:'登录名',align:'center'},
@@ -181,6 +181,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						checkTotal++;
 					}
 				});
+				console.info(checkTotal);
 				if (checkTotal == 0) {
 					$.messager.alert('提示', "请先选中一行(只允许单行操作)", 'error');
 					return 0;

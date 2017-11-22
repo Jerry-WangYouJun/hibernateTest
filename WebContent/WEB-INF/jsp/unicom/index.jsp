@@ -3,7 +3,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>丰宁信息后台管理首页</title>
+    <title>丰宁联通信息后台管理首页</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -33,14 +33,14 @@
 				}
 			});
 			$("#cardtree").tree({
-				url:"${basePath}/treeindex/tree", 
+				url:"${basePath}/treeindex/tree_unicom", 
 				loadFilter: function(data){	
 							 return data;	
 					},
 				lines:true,
 				onClick:function( node){
 					if(node.attributes.priUrl != ""){
-						openTab("卡信息-"+node.text,node.attributes );
+						openTab("卡信息-"+ node.text , node.attributes);
 						return false;
 					}
 				}
@@ -53,25 +53,25 @@
 				lines:true,
 				onClick:function( node){
 					if(node.attributes.priUrl != ""){
-						openTab("返佣"+node.text,node.attributes);
+						openTab("返佣-"+ node.text , node.attributes);
 						return false;
 					}
 				}
 			});
 			
-			function openTab(text, attr){
-				 var url ="";
+			function openTab(text, attr ){
+				var url = "";
 				if($("#tabs").tabs('exists',text)){
 					$("#tabs").tabs('select',text);
 				}else{
-					if(attr.urlType == "card"){
-						 url = "${basePath}/jsp/agent/card_list.jsp"
-					}else if(attr.urlType == "kickback"){
-						url = "${basePath}/jsp/agent/kickback_list.jsp"
+					if(attr.urlType == "unicom_card"){
+						url = "${basePath}/jsp/unicom/card_list.jsp"
+					}else if(attr.urlType == "unicom_kickback"){
+						url = "${basePath}/jsp/unicom/kickback_list.jsp"
 					}
-					var content="<iframe frameborder='0' scrolling='auto' style='width:100%;height:100%' src="+ url +"></iframe>";
+					var content="<iframe frameborder='0' scrolling='auto' style='width:100%;height:100%' src="+ url+"></iframe>";
 					$("#tabs").tabs('add',{
-						id:attr.agentId,
+						id: attr.agentId,
 						title:text,
 						closable:true,
 						content:content

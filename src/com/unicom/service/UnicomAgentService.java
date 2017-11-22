@@ -1,4 +1,4 @@
-package com.agent.service;
+package com.unicom.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import com.agent.model.TreeNode;
 import com.poiexcel.vo.Pagination;
 
 @Service
-public class AgentService {
+public class UnicomAgentService {
 	  
 	 @Autowired
 	 AgentDao dao ;
@@ -59,8 +59,6 @@ public class AgentService {
 //						timeType = "?timeType=0";
 //				  }
 				  node.getAttributes().setPriUrl(request.getContextPath() +  "/treeindex/" + urlType + "/" + agent.getId() ); 
-				  node.getAttributes().setAgentId(agent.getId());
-				  node.getAttributes().setUrlType(urlType);
 				  List<Agent> firstListTemp = new ArrayList<>();
 				  firstListTemp =mapTree.get(agentId);
 				  if(firstListTemp !=null && firstListTemp.size() > 0){
@@ -83,8 +81,6 @@ public class AgentService {
 						timeType = "?timeType=0";
 					}
 					tn.getAttributes().setPriUrl(request.getContextPath() + "/treeindex/" + urlType + "/" + agent.getId() + timeType); 
-					tn.getAttributes().setAgentId(agent.getId());
-					tn.getAttributes().setUrlType(urlType);
 					if(mapTree.containsKey(agent.getId())){
 						tn.setChildren(agentTreeData(mapTree.get(agent.getId()), urlType ,request) );
 					}

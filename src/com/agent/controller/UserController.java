@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.agent.common.CodeUtil;
+import com.agent.common.*;
 import com.agent.model.User;
 import com.agent.service.UserService;
 import com.poiexcel.vo.Pagination;
@@ -36,7 +36,13 @@ public class UserController {
 			session.setAttribute("user", user.getUserName());
 			session.setAttribute("agentId", user.getAgentId());
 			session.setAttribute("roleid", user.getRoleId());
-			return "/agent/index" ;
+			if(ContextString.ROLE_ADMIN.equals(user.getRoleId())
+					|| ContextString.ROLE_AGENT.equals(user.getRoleId())) {
+				
+				return "/agent/index" ;
+			}else {
+				return "/unicom/index" ;
+			}
 		}else{
 			request.setAttribute("msg", "用户名或者密码错误");
 			return "/agent/login" ;
@@ -46,6 +52,11 @@ public class UserController {
 	@RequestMapping("/login")
 	public String login(){
 		return "/agent/login";
+	}
+	
+	@RequestMapping("/unicom")
+	public String loginUnicom() {
+		return "/unicom/login";
 	}
 	@RequestMapping("/loginOut")
 	public String logout(HttpSession session){
