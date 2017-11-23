@@ -5,16 +5,23 @@ package com.poiexcel.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.poiexcel.dao.DataMoveDao;
+import com.poiexcel.util.DateUtils;
 import com.poiexcel.util.Dialect;
+import com.poiexcel.util.ImportExcelUtil;
 import com.poiexcel.util.StringUtils;
 import com.poiexcel.vo.InfoVo;
 import com.poiexcel.vo.Pagination;
@@ -52,8 +59,8 @@ public class DataMoveServiceImpl implements DataMoveService {
 	}
 
 	@Override
-	public void deleteDataTemp() {
-		dataMoveDao.deleteDataTemp();
+	public void deleteDataTemp(String table) {
+		dataMoveDao.deleteDataTemp(table);
 	}
 	
 	@Override
@@ -159,10 +166,26 @@ public class DataMoveServiceImpl implements DataMoveService {
 			e.printStackTrace();
 		}
 	}
-
-	@Override
-	public void insertUnicomList() {
-		cardInfoMapper.selectByWhere(new UnicomInfoVo());
-	}
 	
+	public List<List<Object>>  getDataList(MultipartHttpServletRequest multipartRequest,
+			HttpServletResponse response ) throws Exception {
+		PrintWriter out = null;
+		response.setCharacterEncoding("utf-8");
+		out = response.getWriter();
+		InputStream in = null;
+		List<List<Object>> listob = null;
+		MultipartFile file = multipartRequest.getFile("upfile");
+		if (file == null  || file.isEmpty()) {
+			out.print("未添加上传文件或者文件中内容为空！");
+			out.flush();
+			out.close();
+			return  null;
+		}
+		in = file.getInputStream();
+		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
+		listob = new ImportExcelUtil().getBankListByExcel(in,
+				file.getOriginalFilename());
+		in.close();
+		return listob ;
+	}
 }

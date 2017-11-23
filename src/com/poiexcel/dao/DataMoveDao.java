@@ -43,8 +43,8 @@ public class DataMoveDao {
 			+ "	messageUsed,	openDate,	withMessageService,	withGPRSService,	"
 			+ "packageType , apiCode , monthTotalStream";
 
-	public void deleteDataTemp() {
-		String insertNewDataSql = "delete from cmtp_temp";
+	public void deleteDataTemp(String  table ) {
+		String insertNewDataSql = "delete from " +  table;
 		try {
 			jdbcTemplate.update(insertNewDataSql);
 		} catch (Exception e) {

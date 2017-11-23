@@ -2,12 +2,16 @@ package com.poiexcel.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.poiexcel.vo.InfoVo;
 import com.poiexcel.vo.Pagination;
 
 public interface DataMoveService {
 	
-	public void deleteDataTemp();
+	public void deleteDataTemp(String table);
 
 	public int dataMoveSql2Oracle(String apiCode);
 	
@@ -23,7 +27,7 @@ public interface DataMoveService {
 
 	public void insertAgentCard();
 
-	public void insertUnicomList();
+	public List<List<Object>> getDataList(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) throws Exception;
 
 	
 	

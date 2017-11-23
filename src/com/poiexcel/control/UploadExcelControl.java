@@ -1,7 +1,6 @@
 package com.poiexcel.control;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -10,7 +9,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,14 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.agent.common.ContextString;
 import com.poiexcel.service.DataMoveService;
 import com.poiexcel.util.DateUtils;
-import com.poiexcel.util.ImportExcelUtil;
 import com.poiexcel.vo.InfoVo;
 import com.poiexcel.vo.Pagination;
 
@@ -46,16 +41,6 @@ public class UploadExcelControl {
 			RequestMethod.POST })
 	public String  uploadInit(){
 		 return "main";
-	}
-	
-	@RequestMapping(value = "uploadUnicomInit", method = { RequestMethod.GET,
-			RequestMethod.POST })
-	public String  uploadUnicomInit(HttpSession session ){
-		String roleId =  session.getAttribute("roleid").toString();
-		if(!ContextString.ROLE_ADMIN_UNICOM.equals(roleId)){
-			   return "unicom/agent";
-		}
-		 return "unicom/main";
 	}
 	
 	@RequestMapping(value = "forward", method = { RequestMethod.GET,
@@ -111,9 +96,9 @@ public class UploadExcelControl {
 		response.setCharacterEncoding("utf-8");
 		PrintWriter out =  response.getWriter();
 		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
-		List<List<Object>> listob = getDataList(multipartRequest, response);
+		List<List<Object>> listob = moveDataServices.getDataList(multipartRequest, response);
 		System.out.println("删除表插入开始：" + System.currentTimeMillis());
-		moveDataServices.deleteDataTemp();
+		moveDataServices.deleteDataTemp("cmtp_temp");
 		System.out.println("临时表插入开始：" + System.currentTimeMillis());
 		moveDataServices.insertDataToTemp(listob, apiCode);
 		System.out.println("覆盖数据开始    ：" + System.currentTimeMillis());
@@ -128,44 +113,4 @@ public class UploadExcelControl {
 		out.close();
 	}
 	
-	@ResponseBody
-	@RequestMapping(value = "uploadExcelUnicom", method = { RequestMethod.GET,
-			RequestMethod.POST })
-	public void uploadExcelUnicom(HttpServletRequest request,
-			HttpServletResponse response , String act) throws Exception {
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		response.setCharacterEncoding("utf-8");
-		PrintWriter out =  response.getWriter();
-		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
-		List<List<Object>> listob = getDataList(multipartRequest, response);
-		if("insert".equals(act)) {
-			moveDataServices.insertUnicomList();
-		}
-		out.flush();
-		out.close();
-	}
-	
-	public List<List<Object>>  getDataList(HttpServletRequest request,
-			HttpServletResponse response )  throws Exception {
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		PrintWriter out = null;
-		response.setCharacterEncoding("utf-8");
-		out = response.getWriter();
-		InputStream in = null;
-		List<List<Object>> listob = null;
-		MultipartFile file = multipartRequest.getFile("upfile");
-		if (file == null  || file.isEmpty()) {
-			out.print("未添加上传文件或者文件中内容为空！");
-			out.flush();
-			out.close();
-			return  null;
-		}
-		in = file.getInputStream();
-		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
-		listob = new ImportExcelUtil().getBankListByExcel(in,
-				file.getOriginalFilename());
-		in.close();
-		return listob ;
-	}
-
 }
