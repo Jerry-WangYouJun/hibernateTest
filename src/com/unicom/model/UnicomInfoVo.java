@@ -8,8 +8,8 @@ public class UnicomInfoVo {
 	private String  IMSI ; 
 	private String ICCID ;
 	private String cardStatus ; // 卡状态
-	private String gprsUsed; //使用流量
-	private String monthTotalStream; //月总流量
+	private Double gprsUsed; //使用流量
+	private Double monthTotalStream; //月总流量
 	private String company ; //公司名	
 	private String companyLevel;//公司等级
 	private String withGPRSService ;
@@ -48,16 +48,16 @@ public class UnicomInfoVo {
 	public void setCardStatus(String cardStatus) {
 		this.cardStatus = cardStatus;
 	}
-	public String getGprsUsed() {
+	public Double getGprsUsed() {
 		return gprsUsed;
 	}
-	public void setGprsUsed(String gprsUsed) {
+	public void setGprsUsed(Double gprsUsed) {
 		this.gprsUsed = gprsUsed;
 	}
-	public String getMonthTotalStream() {
+	public Double getMonthTotalStream() {
 		return monthTotalStream;
 	}
-	public void setMonthTotalStream(String monthTotalStream) {
+	public void setMonthTotalStream(Double monthTotalStream) {
 		this.monthTotalStream = monthTotalStream;
 	}
 	public String getCompany() {

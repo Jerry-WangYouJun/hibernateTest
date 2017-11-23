@@ -23,6 +23,8 @@ public interface DataMoveService {
 
 	public void insertAgentCard();
 
+	public void insertUnicomList();
+
 	
 	
 }
