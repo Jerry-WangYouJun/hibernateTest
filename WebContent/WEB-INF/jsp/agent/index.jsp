@@ -28,7 +28,7 @@
 				lines:true,
 				onClick:function(node ){
 					if(node.attributes){
-						openTab(node.text,node.attributes.url);
+						openTab(node.text,node.attributes);
 					}
 				}
 			});
@@ -60,7 +60,7 @@
 			});
 			
 			function openTab(text, attr){
-				 var url ="";
+				 var url = attr.url;
 				if($("#tabs").tabs('exists',text)){
 					$("#tabs").tabs('select',text);
 				}else{
