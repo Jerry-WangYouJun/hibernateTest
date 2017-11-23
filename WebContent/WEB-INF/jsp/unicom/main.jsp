@@ -11,18 +11,13 @@
 <script type="text/javascript" src="${basePath}/js/jquery-3.1.1.min.js"></script>
 <script type="text/JavaScript" src="${basePath}/js/jquery.form.js"></script>
 <script type="text/javascript" src="${basePath}/js/bootstrap.min.js"></script>
-<title>My JSP 'index.jsp' starting page</title>
+<title>导入联通卡信息</title>
 <script type="text/javascript">
 	//ajax 方式上传文件操作
 	$(document).ready(function() {
-		$('#btn').click(function() {
-			if($("#apiCode").val() == "0"){
-				  alert("请选择数据接口");
-				  return false ;
-			}
-			//if (checkData()) {
+		$('#btn_insert').click(function() {
 				$('#form1').ajaxSubmit({
-					url : '${basePath}/uploadExcel/ajaxUpload.do',
+					url : '${basePath}/uploadExcel/uploadExcelUnicom?act=insert',
 					dataType : 'text',
 					success : resutlMsg,
 					error : errorMsg
@@ -30,14 +25,30 @@
 				function resutlMsg(msg) {
 					alert(msg);
 					parent.closeModal();
-					window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=&dateEnd=&status=";
+					//window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=&dateEnd=&status=";
 					$("#upfile").val("");
 				}
 				function errorMsg() {
 					alert("导入excel出错！");
 				}
-			//}
 		});
+		$('#btn_update').click(function() {
+			$('#form1').ajaxSubmit({
+				url : '${basePath}/uploadExcel/uploadExcelUnicom?act=update',
+				dataType : 'text',
+				success : resutlMsg,
+				error : errorMsg
+			});
+			function resutlMsg(msg) {
+				alert(msg);
+				parent.closeModal();
+				//window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=&dateEnd=&status=";
+				$("#upfile").val("");
+			}
+			function errorMsg() {
+				alert("导入excel出错！");
+			}
+	});
 	});
 
 	//JS校验form表单信息
@@ -88,35 +99,13 @@
 									class="col-md-12" required>
 								</div>
 						</div>
-						<div class="row " style="padding-left: 100px;padding-top: 20px">
-						  <div class="col-xs-3 ">
-						    <label for="name"  class="control-label col-md-12 col-sm-12">选择接口</label>
-						  </div>
-						  <div class="col-xs-4 " style="height: 20px">
-						    <select name="apiCode" id = "apiCode">
-						      <option value="0">--选择--</option>
-						      <option value="1">永思接口数据</option>
-						      <option value="2">丰宁接口数据</option>
-						    </select>
-						  </div>
-						</div>
 					</form>
-					<%-- <form action="${basePath}/ExportExcel/ajaxExport.do" method="post" id="form2">
-						<div class="row" style="padding-left: 100px;padding-top: 20px">
-							  <div class="col-xs-3 ">
-									<label  class="control-label col-md-12 col-sm-12" style="float:left">下载模板</label> 
-							  </div>
-						     <div class="col-xs-4 ">
-						        <a  id="exportFile" style="cursor: pointer;" style="float:left;position: relative;" >点击下载模板</a>
-						     </div>
-						  </div>
-					</form> --%>
 			<div class="box-b" style="padding-left: 100px;padding-top: 20px">
 				<div class="col-xs-3">
-					<button type="button" class="btn btn-primary btn-sm btn-block" id="btn"  >上传</button>
+					<button type="button" class="btn btn-primary btn-sm btn-block" id="btn_insert"  >上传新数据</button>
 				</div>
 				<div class="col-xs-3">
-					<button type="button" class="btn btn-primary btn-sm btn-block" onclick="parent.closeModal()">取消</button>
+					<button type="button" class="btn btn-primary btn-sm btn-block" id="btn_update"  >上传更新数据</button>
 				</div>
 			</div>
 </body>

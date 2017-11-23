@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.agent.common.ContextString;
 import com.poiexcel.service.DataMoveService;
+import com.poiexcel.util.DateUtils;
 import com.poiexcel.util.ImportExcelUtil;
 import com.poiexcel.vo.InfoVo;
 import com.poiexcel.vo.Pagination;
@@ -45,6 +48,16 @@ public class UploadExcelControl {
 		 return "main";
 	}
 	
+	@RequestMapping(value = "uploadUnicomInit", method = { RequestMethod.GET,
+			RequestMethod.POST })
+	public String  uploadUnicomInit(HttpSession session ){
+		String roleId =  session.getAttribute("roleid").toString();
+		if(!ContextString.ROLE_ADMIN_UNICOM.equals(roleId)){
+			   return "unicom/agent";
+		}
+		 return "unicom/main";
+	}
+	
 	@RequestMapping(value = "forward", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	public String  forwardInit(){
@@ -52,42 +65,6 @@ public class UploadExcelControl {
 	}
 	
 	
-	/**
-	 * 通过传统方式form表单提交方式导入excel文件
-	 * 
-	 * @param request
-	 * @throws Exception
-	 */
-	/*@RequestMapping(value = "upload", method = { RequestMethod.GET,
-			RequestMethod.POST })
-	public ModelAndView uploadExcel(HttpServletRequest request , Model model)
-			throws Exception {
-		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		System.out.println("ͨ通过传统方式form表单提交方式导入excel文件！");
-		InputStream in = null;
-		List<List<Object>> listob = null;
-		MultipartFile file = multipartRequest.getFile("upfile");
-		if (file.isEmpty()) {
-			throw new Exception("");
-		}
-		in = file.getInputStream();
-		System.out.println("读取表插入开始：" + System.currentTimeMillis());
-		listob = new ImportExcelUtil().getBankListByExcel(in,
-				file.getOriginalFilename());
-		in.close();
-		System.out.println("删除表插入开始：" + System.currentTimeMillis());
-		moveDataServices.deleteDataTemp();
-		System.out.println("临时表插入开始：" + System.currentTimeMillis());
-		moveDataServices.insertDataToTemp(listob);
-		System.out.println("覆盖数据开始    ：" + System.currentTimeMillis());
-		moveDataServices.updateExistData();
-		System.out.println("插入新数据开始：" + System.currentTimeMillis());
-		moveDataServices.dataMoveSql2Oracle();
-		System.out.println("执行结束            ：" + System.currentTimeMillis());
-		model.addAttribute("list", listob);
-		ModelAndView mv = new ModelAndView("main");
-		return mv;
-	}*/
 
 	@RequestMapping(value = "dataList.do", method = { RequestMethod.GET,
 			RequestMethod.POST })
@@ -131,24 +108,10 @@ public class UploadExcelControl {
 	public void ajaxUploadExcel(HttpServletRequest request,
 			HttpServletResponse response , String apiCode) throws Exception {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		System.out.println("通过Ajax方式form表单提交方式导入excel文件！");
-		PrintWriter out = null;
 		response.setCharacterEncoding("utf-8");
-		out = response.getWriter();
-		InputStream in = null;
-		List<List<Object>> listob = null;
-		MultipartFile file = multipartRequest.getFile("upfile");
-		if (file == null  || file.isEmpty()) {
-			out.print("未添加上传文件或者文件中内容为空！");
-			out.flush();
-			out.close();
-			return ;
-		}
-		in = file.getInputStream();
-		System.out.println("导入表数据开始：" + System.currentTimeMillis());
-		listob = new ImportExcelUtil().getBankListByExcel(in,
-				file.getOriginalFilename());
-		in.close();
+		PrintWriter out =  response.getWriter();
+		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
+		List<List<Object>> listob = getDataList(multipartRequest, response);
 		System.out.println("删除表插入开始：" + System.currentTimeMillis());
 		moveDataServices.deleteDataTemp();
 		System.out.println("临时表插入开始：" + System.currentTimeMillis());
@@ -163,6 +126,43 @@ public class UploadExcelControl {
 		out.print("更新数据" + updateNum + "条 ; 新增数据" + insertNum  + "条");
 		out.flush();
 		out.close();
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "uploadExcelUnicom", method = { RequestMethod.GET,
+			RequestMethod.POST })
+	public void uploadExcelUnicom(HttpServletRequest request,
+			HttpServletResponse response , String act) throws Exception {
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		response.setCharacterEncoding("utf-8");
+		PrintWriter out =  response.getWriter();
+		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
+		List<List<Object>> listob = getDataList(multipartRequest, response);
+		out.flush();
+		out.close();
+	}
+	
+	public List<List<Object>>  getDataList(HttpServletRequest request,
+			HttpServletResponse response )  throws Exception {
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		PrintWriter out = null;
+		response.setCharacterEncoding("utf-8");
+		out = response.getWriter();
+		InputStream in = null;
+		List<List<Object>> listob = null;
+		MultipartFile file = multipartRequest.getFile("upfile");
+		if (file == null  || file.isEmpty()) {
+			out.print("未添加上传文件或者文件中内容为空！");
+			out.flush();
+			out.close();
+			return  null;
+		}
+		in = file.getInputStream();
+		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
+		listob = new ImportExcelUtil().getBankListByExcel(in,
+				file.getOriginalFilename());
+		in.close();
+		return listob ;
 	}
 
 }

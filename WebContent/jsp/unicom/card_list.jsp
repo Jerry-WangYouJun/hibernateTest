@@ -54,7 +54,7 @@
 				text : '导入数据',
 				iconCls : 'icon-edit',
 				handler : function() {
-					updateCard();
+					upload();
 				}
 			}]
 		});
@@ -110,7 +110,21 @@
 		document.getElementById('frameContent').src = path;
 		$('#dlg-frame').dialog('open');
 	}
-
+	
+	function upload() {
+		/* var id = "";
+		$("input[type=checkbox]").each(function() {
+			if (this.checked) {
+				id += $(this).val() + ",";
+			}
+		});
+		if(id.indexOf("on,")>=0){
+			id = id.substring(3);
+		} */
+		var path = "${basePath}/uploadExcel/uploadUnicomInit"  ;
+		document.getElementById('frameContent').src = path;
+		$('#dlg-frame').dialog('open');
+	}
 	function updateUser() {
 		var id = getChecked();
 		if (id > 0) {

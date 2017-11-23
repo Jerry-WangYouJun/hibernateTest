@@ -96,7 +96,6 @@ public class UserController {
 		if(user.getId()!=null && user.getId() >0){
 			service.update(user);
 		}else{
-			//user.setAgentId(agentId);
 			service.insert(user);
 		}
 		response.setContentType("text/text;charset=UTF-8");

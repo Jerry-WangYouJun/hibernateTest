@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.agent.common.CodeUtil;
+import com.agent.common.ContextString;
 import com.agent.model.Agent;
 import com.agent.model.Grid;
 import com.agent.model.QueryData;
@@ -165,12 +166,19 @@ public class AgentController {
 		}else{
 			agent.setCreater(session.getAttribute("user").toString());
 			agent.setCode(session.getAttribute("agentcode").toString());
-			 int agentId = service.insert(agent );
+			int agentId = service.insert(agent );
 			User user = new User();
 			user.setAgentId(agentId);
 			user.setUserNo(agent.getUserNo());
 			user.setUserName(agent.getName());
 			user.setPwd("123456");
+			String roleId = session.getAttribute("roleid").toString();
+			if(ContextString.ROLE_ADMIN.equals(roleId)
+					|| ContextString.ROLE_AGENT.equals(roleId)) {
+				 user.setRoleId("2");
+			}else{
+				user.setRoleId("4");
+			}
 			userService.insert(user);
 		}
 		response.setContentType("text/text;charset=UTF-8");

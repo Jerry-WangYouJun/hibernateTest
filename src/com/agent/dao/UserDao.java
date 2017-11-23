@@ -90,7 +90,7 @@ public class UserDao {
                         ps.setString(1,  user.getUserNo());  
                         ps.setString(2, user.getUserName()); 
                         ps.setString(3, user.getPwd());
-                        ps.setString(4 , "2");
+                        ps.setString(4 , user.getRoleId());
                         ps.setInt(5, user.getAgentId());
                     }  
         });  
