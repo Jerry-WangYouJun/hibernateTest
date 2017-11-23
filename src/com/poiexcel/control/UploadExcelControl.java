@@ -138,6 +138,9 @@ public class UploadExcelControl {
 		PrintWriter out =  response.getWriter();
 		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
 		List<List<Object>> listob = getDataList(multipartRequest, response);
+		if("insert".equals(act)) {
+			moveDataServices.insertUnicomList();
+		}
 		out.flush();
 		out.close();
 	}

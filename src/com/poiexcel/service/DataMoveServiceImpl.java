@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ import com.poiexcel.util.Dialect;
 import com.poiexcel.util.StringUtils;
 import com.poiexcel.vo.InfoVo;
 import com.poiexcel.vo.Pagination;
+import com.unicom.mapping.CardInfoMapper;
+import com.unicom.model.UnicomInfoVo;
 
 /**
  * @author lx g
@@ -30,6 +34,9 @@ public class DataMoveServiceImpl implements DataMoveService {
 	public Properties pro = new Properties();
 	@Autowired
 	public DataMoveDao dataMoveDao;
+	@Autowired
+	public CardInfoMapper cardInfoMapper;
+	
 	StringBuffer message;
 
 
@@ -151,6 +158,11 @@ public class DataMoveServiceImpl implements DataMoveService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void insertUnicomList() {
+		cardInfoMapper.selectByWhere(new UnicomInfoVo());
 	}
 	
 }
