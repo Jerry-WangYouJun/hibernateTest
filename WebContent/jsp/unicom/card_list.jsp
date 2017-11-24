@@ -112,16 +112,7 @@
 	}
 	
 	function upload() {
-		/* var id = "";
-		$("input[type=checkbox]").each(function() {
-			if (this.checked) {
-				id += $(this).val() + ",";
-			}
-		});
-		if(id.indexOf("on,")>=0){
-			id = id.substring(3);
-		} */
-		var path = "${basePath}/uploadExcel/uploadUnicomInit"  ;
+		var path = "${basePath}/unicomUpload/uploadUnicomInit"  ;
 		document.getElementById('frameContent').src = path;
 		$('#dlg-frame').dialog('open');
 	}

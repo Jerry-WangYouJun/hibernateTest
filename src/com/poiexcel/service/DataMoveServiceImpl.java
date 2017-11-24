@@ -9,8 +9,6 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Properties;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,24 +23,16 @@ import com.poiexcel.util.ImportExcelUtil;
 import com.poiexcel.util.StringUtils;
 import com.poiexcel.vo.InfoVo;
 import com.poiexcel.vo.Pagination;
-import com.unicom.mapping.CardInfoMapper;
-import com.unicom.model.UnicomInfoVo;
 
 /**
  * @author lx g
  *
  */
-@Service
+@Service("dataMoveService")
 public class DataMoveServiceImpl implements DataMoveService {
-	
-	String columuns = "cardcode,	remark,	IMSI,	ICCID,	userStatus,	cardStatus,	gprsUsed,	messageUsed,"
-			+ "  openDate,	withMessageService,	withGPRSService,	packageType,	monthTotalStream , updateTime , apiCode ";
-
 	public Properties pro = new Properties();
 	@Autowired
 	public DataMoveDao dataMoveDao;
-	@Autowired
-	public CardInfoMapper cardInfoMapper;
 	
 	StringBuffer message;
 

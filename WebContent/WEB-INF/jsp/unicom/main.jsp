@@ -17,7 +17,7 @@
 	$(document).ready(function() {
 		$('#btn_insert').click(function() {
 				$('#form1').ajaxSubmit({
-					url : '${basePath}/uploadExcel/uploadExcelUnicom?act=insert',
+					url : '${basePath}/unicomUpload/uploadExcelUnicom?act=insert',
 					dataType : 'text',
 					success : resutlMsg,
 					error : errorMsg

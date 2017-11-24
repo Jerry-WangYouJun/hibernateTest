@@ -23,7 +23,7 @@ import com.unicom.service.UnicomUploadService;
 public class UnicomUploadController {
 	
 	@Autowired
-	private UnicomUploadService moveDataServices;
+	private UnicomUploadService dataServices;
 	
 	@RequestMapping(value = "uploadUnicomInit", method = { RequestMethod.GET,
 			RequestMethod.POST })
@@ -43,18 +43,22 @@ public class UnicomUploadController {
 			HttpServletResponse response , String act) throws Exception {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		response.setCharacterEncoding("utf-8");
+		Long startTime = System.currentTimeMillis(); 
 		PrintWriter out =  response.getWriter();
 		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
-		List<List<Object>> listob = moveDataServices.getDataList(multipartRequest, response);
+		List<List<Object>> listob = dataServices.getDataList(multipartRequest, response);
+		System.out.println("读取xls数据用时：" + (System.currentTimeMillis() - startTime));
+		String msg = "";
+		dataServices.deleteDataTemp("u_cmtp_temp");
 		if("insert".equals(act)) {
-			System.out.println("删除临时表");
-			moveDataServices.deleteDataTemp("u_cmtp_temp");
+			System.out.println("删除临时表,用时" + (System.currentTimeMillis() - startTime));
 			if("insert".equals(act)) {
-				moveDataServices.insertUnicomList(listob );
+				msg = dataServices.insertUnicomList(listob );
 			}else if("update".equals(act)) {
-				moveDataServices.updateUnicomList(listob );
+				msg = dataServices.updateUnicomList(listob );
 			}
 		}
+		out.print(msg);
 		out.flush();
 		out.close();
 	}
