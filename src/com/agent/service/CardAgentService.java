@@ -17,7 +17,10 @@ import com.poiexcel.vo.Pagination;
 
 @Service
 public class CardAgentService {
-	   
+	   private final String KICKBACK_SQL ="select h.iccid , h.money , c.packageType , h.update_date , h.money - u.cost  kickback "
+				+ "from history h , cmtp c , card_agent a , a_agent u "
+				+ " where h.iccid = c.iccid and c.iccid = a.iccid "
+				+ " and  u.id = a.agentid  and  u.id = " ;
 		 @Autowired
 		 DataMoveDao dao ;
 		 public List<InfoVo> queryCardInfo(Integer agentid , Pagination page, QueryData qo ){
@@ -65,10 +68,7 @@ public class CardAgentService {
 
 		public List<Map<String,String>> queryKickbackInfo(Integer id , QueryData qo ,  Pagination page , int timeType) {
 			List<Map<String,String>>  list = new ArrayList<>();
-			String sql = "select h.iccid , h.money , c.packageType , h.update_date , h.money - u.cost  kickback "
-					+ "from history h , cmtp c , card_agent a , a_agent u "
-					+ " where h.iccid = c.iccid and c.iccid = a.iccid "
-					+ " and  u.id = a.agentid  and  u.id = " + id  ;
+			String sql = KICKBACK_SQL + id  ;
 			if(StringUtils.isNotEmpty(qo.getDateStart())){
 				 sql += " and h.update_date >= '" + qo.getDateStart() + "'" ;
 			}

@@ -1,6 +1,7 @@
 package com.unicom.controller;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.agent.common.ContextString;
 import com.poiexcel.util.DateUtils;
+import com.unicom.model.UnicomHistory;
 import com.unicom.service.UnicomUploadService;
 
 @Controller
@@ -47,18 +49,29 @@ public class UnicomUploadController {
 		PrintWriter out =  response.getWriter();
 		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
 		List<List<Object>> listob = dataServices.getDataList(multipartRequest, response);
-		System.out.println("读取xls数据用时：" + (System.currentTimeMillis() - startTime));
-		String msg = "";
-		dataServices.deleteDataTemp("u_cmtp_temp");
-		if("insert".equals(act)) {
+		if(listob != null ){
+			System.out.println("读取xls数据用时：" + (System.currentTimeMillis() - startTime));
+			String msg = "";
+			dataServices.deleteDataTemp("u_cmtp_temp");
 			System.out.println("删除临时表,用时" + (System.currentTimeMillis() - startTime));
 			if("insert".equals(act)) {
 				msg = dataServices.insertUnicomList(listob );
 			}else if("update".equals(act)) {
 				msg = dataServices.updateUnicomList(listob );
 			}
+			List<UnicomHistory>  historyList =  new ArrayList<>();
+			for(int i = 0 ; i < listob.size() ; i ++){//1 iccid  10 money 11.updatetime
+				  if(Double.valueOf(listob.get(i).get(9).toString()) > 0){
+					   UnicomHistory history =   new UnicomHistory();
+					   history.setIccid(listob.get(i).get(0).toString());
+					   history.setMoney(Double.valueOf(listob.get(i).get(9).toString()));
+					   history.setUpdateDate(listob.get(i).get(10).toString());
+					   historyList.add(history);
+				  }
+			}
+			dataServices.insertHistoryList(historyList);
+			out.print(msg);
 		}
-		out.print(msg);
 		out.flush();
 		out.close();
 	}

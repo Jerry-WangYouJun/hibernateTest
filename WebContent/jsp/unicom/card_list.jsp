@@ -12,7 +12,7 @@
 	$(function() {
 		 var agentId = parent.$('#tabs').tabs('getSelected').panel('options').id;
 		$('#card_table').datagrid({
-			url:"${basePath}/treeindex/card_query/" + agentId ,
+			url:"${basePath}/unicom/card_query/" + agentId ,
 			rownumbers : true,
 			autoRowHeight : true,
 			pagination : true,
@@ -22,7 +22,7 @@
 			columns:[[
 				{field : 'id',align : 'center',halign:'center',checkbox : true}, 
 				{field:'ICCID',title:'ICCID',align:'center'},
-				{field:'cardCode',title:'卡号',align:'center'},
+				{field:'IMSI',title:'卡号',align:'center'},
 				{field:'gprsUsed',title:'使用流量',align:'center'},
 				{field:'packageType',title:'套餐类型',align:'center'},
 				{field:'remark',title:'备注',align:'center'}

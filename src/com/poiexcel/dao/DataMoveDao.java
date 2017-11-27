@@ -234,7 +234,6 @@ public class DataMoveDao {
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
 				InfoVo vo = new InfoVo();
 				vo.setId(rs.getString("id"));
-				vo.setCardCode(rs.getString("CardCode"));
 				vo.setIMSI(rs.getString("IMSI"));
 				vo.setICCID(rs.getString("ICCID"));
 				vo.setUserStatus(rs.getString("userStatus"));
@@ -249,51 +248,6 @@ public class DataMoveDao {
 				vo.setRemark(rs.getString("remark"));
 				vo.setStatus(rs.getString("status"));
 				vo.setUpdateTime(rs.getString("updateTime"));
-				vo.setApiCode(rs.getString("apicode"));
-				Long restDays = 0L;
-				String deadLine;
-				if (vo.getUpdateTime() == null) {
-					int nextYear = Integer.valueOf(DateUtils.formatDateYear(
-							"yyyy", vo.getOpenDate())) + 1;
-					int curMonth = Integer
-							.valueOf(vo.getOpenDate().split("-")[1]);
-					int lastMonth = curMonth - 1;
-					if (curMonth == 1) {
-						lastMonth = 12;
-					}
-					if (lastMonth > 9) {
-						deadLine = DateUtils.getEndDate(String.valueOf(nextYear) + String.valueOf(lastMonth)
-								+ "");
-					} else {
-						deadLine = DateUtils.getEndDate(nextYear + "0"
-								+ lastMonth);
-					}
-					restDays = DateUtils.betweenDays(
-							DateUtils.formatDate("yyyyMMdd"), deadLine);
-
-				} else {
-					int nextYear = Integer.valueOf(DateUtils.formatDateYear(
-							"yyyy", vo.getUpdateTime())) + 1;
-					int curMonth = Integer.valueOf(vo.getUpdateTime()
-							.split("-")[1]);
-					int lastMonth = curMonth - 1;
-					if (curMonth == 1) {
-						lastMonth = 12;
-					}
-					if (lastMonth > 9) {
-						deadLine = DateUtils.getEndDate(String.valueOf(nextYear) + String.valueOf(lastMonth)
-								+ "");
-					} else {
-						deadLine = DateUtils.getEndDate(nextYear + "0"
-								+ lastMonth);
-					}
-					restDays = DateUtils.betweenDays(
-							DateUtils.formatDate("yyyyMMdd"), deadLine);
-				}
-				vo.setDateEnd(deadLine.substring(0, 4) + "-"
-						+ deadLine.substring(4, 6) + "-"
-						+ deadLine.substring(6));
-				vo.setRestDay(restDays);
 				list.add(vo);
 				return null;
 			}

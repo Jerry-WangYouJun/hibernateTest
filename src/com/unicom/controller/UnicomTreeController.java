@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,12 +23,9 @@ import com.agent.model.Grid;
 import com.agent.model.QueryData;
 import com.agent.model.TreeNode;
 import com.agent.service.AgentService;
-import com.agent.service.CardAgentService;
-import com.poiexcel.vo.InfoVo;
 import com.poiexcel.vo.Pagination;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.unicom.model.UnicomInfoVo;
+import com.unicom.service.UnicomCardAgentService;
 
 
 @Controller
@@ -36,7 +36,7 @@ public class UnicomTreeController {
 		AgentService service ;
 		
 		@Autowired
-		CardAgentService cardAgentService;
+		UnicomCardAgentService cardAgentService;
 	
 		@RequestMapping("/tree")
 	    public void getTreeData(HttpSession session, HttpServletResponse response , HttpServletRequest request){
@@ -90,7 +90,7 @@ public class UnicomTreeController {
 			Grid grid = new Grid();
 			Pagination page =  new Pagination(pageNo, pageSize , 100) ;
 		    CodeUtil.initPagination(page);
-		    List<InfoVo>  list = cardAgentService.queryCardInfo(agentId , page , qo);
+		    List<UnicomInfoVo>  list = cardAgentService.queryCardInfo(agentId , page , qo);
 			grid.setTotal(Long.valueOf(cardAgentService.queryCardTotal(agentId  , qo)));
 			grid.setRows(list);
 			PrintWriter out;

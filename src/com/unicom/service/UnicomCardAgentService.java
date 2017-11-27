@@ -10,18 +10,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.agent.model.QueryData;
-import com.poiexcel.dao.DataMoveDao;
 import com.poiexcel.util.Dialect;
 import com.poiexcel.vo.InfoVo;
 import com.poiexcel.vo.Pagination;
+import com.unicom.dao.UnicomCardAgentDao;
+import com.unicom.mapping.CardInfoMapper;
+import com.unicom.model.UnicomInfoVo;
 
 @Service
 public class UnicomCardAgentService {
 	   
 		 @Autowired
-		 DataMoveDao dao ;
-		 public List<InfoVo> queryCardInfo(Integer agentid , Pagination page, QueryData qo ){
-			 String sql = "select c.* from card_agent a , cmtp c "
+		 UnicomCardAgentDao dao ;
+		 
+		 @Autowired
+		 CardInfoMapper cardInfoDao;
+		 public List<UnicomInfoVo> queryCardInfo(Integer agentid , Pagination page, QueryData qo ){
+			 String sql = "select c.* from u_card_agent a , u_cmtp c "
 				 		+ "where a.iccid = c.ICCID  and a.agentid = " + agentid;
 			if(StringUtils.isNotEmpty(qo.getIccidStart())){
 				 sql += " and c.ICCID >= '" + qo.getIccidStart() + "'" ;

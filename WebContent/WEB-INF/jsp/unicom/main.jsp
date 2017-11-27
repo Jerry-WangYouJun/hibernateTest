@@ -24,7 +24,7 @@
 				});
 				function resutlMsg(msg) {
 					alert(msg);
-					parent.closeModal();
+					parent.$('#dlg-frame').dialog('close');
 					//window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=&dateEnd=&status=";
 					$("#upfile").val("");
 				}
@@ -34,14 +34,14 @@
 		});
 		$('#btn_update').click(function() {
 			$('#form1').ajaxSubmit({
-				url : '${basePath}/uploadExcel/uploadExcelUnicom?act=update',
+				url : '${basePath}/unicomUpload/uploadExcelUnicom?act=update',
 				dataType : 'text',
 				success : resutlMsg,
 				error : errorMsg
 			});
 			function resutlMsg(msg) {
 				alert(msg);
-				parent.closeModal();
+				parent.$('#dlg-frame').dialog('close');
 				//window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=&dateEnd=&status=";
 				$("#upfile").val("");
 			}

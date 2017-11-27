@@ -180,30 +180,12 @@ public class UnicomUploadDao {
 		return list;
 	}
 
-	public void insertAgentCard(List<String> list) {
-		String insertsqlTemp = "INSERT INTO card_agent (  iccid , agentid   ) "
-				+ "VALUES (?, 1 )";
-		iccidList = list;
-		if (iccidList != null && iccidList.size() > 0) {
-			jdbcTemplate.batchUpdate(insertsqlTemp,
-					new BatchPreparedStatementSetter() {
-						public void setValues(PreparedStatement ps, int i) {
-							try {
-								// 并根据数据类型对Statement 中的占位符进行赋值
-								ps.setString(1,
-										String.valueOf(iccidList.get(i)));
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-
-						public int getBatchSize() {
-							return iccidList.size();
-						}
-					});
-			System.out.println("插入数据：" + iccidList.size() + "条");
-		}
-
+	public void insertAgentCard() {
+		String insertsqlTemp = "insert u_card_agent (iccid , agentid ) select t.iccid , '14'"
+				+ " from u_cmtp_temp t LEFT JOIN u_card_agent a  on  t.iccid = a.iccid "
+				+ " where  t.iccid not in (select iccid  from  u_cmtp ) "
+				+ " and t.iccid  not in (select iccid  from  u_card_agent)";
+		jdbcTemplate.update(insertsqlTemp);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -257,7 +239,10 @@ public class UnicomUploadDao {
 	}
 
 	public int updateData() {
-		
-		return 0;
+		String updateSqlTemp = "UPDATE u_cmtp c , u_cmtp_temp t SET c.cardStatus=t.cardStatus , "
+				+ "c.company_level=t.company_level , c.deadline = t.deadline , c.gprsRest = t.gprsRest , "
+				+ "c.gprsUsed=t.gprsUsed  , c.monthTotalStream = t.monthTotalStream  , c.packageDetail=t.packageDetail , "
+				+ "c.packageType =t.packageType , c.remark=t.remark , c.updateTime = t.updateTime WHERE c.ICCID = t.ICCID ";
+		return jdbcTemplate.update(updateSqlTemp);
 	}
 }
