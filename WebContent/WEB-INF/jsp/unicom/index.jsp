@@ -46,7 +46,7 @@
 				}
 			});
 			$("#kickbacktree").tree({
-				url:"${basePath}/treeindex/kickback", 
+				url:"${basePath}/treeindex/kickback_unicom", 
 				loadFilter: function(data){	
 							 return data;	
 					},

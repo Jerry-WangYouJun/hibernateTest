@@ -56,12 +56,14 @@ public class TreeController {
 	public void getKickbackData(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
 		TreeNode treeNode = new TreeNode();
 		treeNode.setText("返佣管理");
-		if(ContextString.ROLE_ADMIN.equals(session.getAttribute("roleid"))
-				|| ContextString.ROLE_AGENT.equals(session.getAttribute("roleid"))) {
-			getTreeDataBytype(session, response, request, "kickback", treeNode);
-		}else {
-			getTreeDataBytype(session, response, request, "unicom_kickback", treeNode);
-		}
+		getTreeDataBytype(session, response, request, "kickback", treeNode);
+	}
+	
+	@RequestMapping("/kickback_unicom")
+	public void getUnicomKickbackData(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
+		TreeNode treeNode = new TreeNode();
+		treeNode.setText("返佣管理");
+		getTreeDataBytype(session, response, request, "unicom_kickback", treeNode);
 	}
 
 	public void getTreeDataBytype(HttpSession session, HttpServletResponse response, HttpServletRequest request 
@@ -86,7 +88,7 @@ public class TreeController {
 	@RequestMapping("/card_query/{agentId}")
 	public void queryCard(@PathVariable("agentId") Integer agentId, HttpServletResponse response,
 			HttpServletRequest request, HttpSession session, QueryData qo) {
-		String pageNo = request.getParameter("pageNo");
+ 		String pageNo = request.getParameter("pageNo");
 		String pageSize = request.getParameter("pageSize");
 		// System.out.println(userName);
 		Grid grid = new Grid();

@@ -10,17 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.agent.dao.AgentDao;
 import com.agent.model.Agent;
 import com.agent.model.QueryData;
 import com.agent.model.TreeNode;
 import com.poiexcel.vo.Pagination;
+import com.unicom.dao.UnicomAgentDao;
 
 @Service
 public class UnicomAgentService {
 	  
 	 @Autowired
-	 AgentDao dao ;
+	 UnicomAgentDao dao ;
 	 Map<Integer , List<Agent>> mapTree = new HashMap<>();
 
 	public List<Agent> queryList(QueryData qo, Pagination page) {

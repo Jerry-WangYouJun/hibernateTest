@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.agent.model.QueryData;
 import com.poiexcel.util.Dialect;
-import com.poiexcel.vo.InfoVo;
 import com.poiexcel.vo.Pagination;
 import com.unicom.dao.UnicomCardAgentDao;
 import com.unicom.mapping.CardInfoMapper;
@@ -48,7 +47,7 @@ public class UnicomCardAgentService {
 		 }
 		 
 		 public int queryCardTotal(Integer agentid ,  QueryData qo ){
-			 String sql = "select count(*) total from card_agent a , cmtp c "
+			 String sql = "select count(*) total from u_card_agent a , u_cmtp c "
 				 		+ "where a.iccid = c.ICCID  and a.agentid = " + agentid;
 			if(StringUtils.isNotEmpty(qo.getIccidStart())){
 				 sql += " and c.ICCID >= '" + qo.getIccidStart() + "'" ;
@@ -71,7 +70,7 @@ public class UnicomCardAgentService {
 		public List<Map<String,String>> queryKickbackInfo(Integer id , QueryData qo ,  Pagination page , int timeType) {
 			List<Map<String,String>>  list = new ArrayList<>();
 			String sql = "select h.iccid , h.money , c.packageType , h.update_date , h.money - u.cost  kickback "
-					+ "from history h , cmtp c , card_agent a , a_agent u "
+					+ "from u_history h , u_cmtp c , u_card_agent a , a_agent u "
 					+ " where h.iccid = c.iccid and c.iccid = a.iccid "
 					+ " and  u.id = a.agentid  and  u.id = " + id  ;
 			if(StringUtils.isNotEmpty(qo.getDateStart())){
@@ -95,7 +94,7 @@ public class UnicomCardAgentService {
 		
 		 public Map<String , Double > queryKickbackTotal(Integer agentid ,  QueryData qo  , int timeType){
 			 String sql = "select   sum(h.money) - sum(u.cost) sumKick , count(*) total  "
-						+ "from history h , cmtp c , card_agent a , a_agent u "
+						+ "from u_history h , u_cmtp c , u_card_agent a , a_agent u "
 						+ " where h.iccid = c.iccid and c.iccid = a.iccid "
 						+ " and  u.id = a.agentid  and  u.id = " + agentid  ;
 				if(StringUtils.isNotEmpty(qo.getDateStart())){

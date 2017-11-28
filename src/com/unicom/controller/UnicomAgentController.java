@@ -22,9 +22,9 @@ import com.agent.model.Agent;
 import com.agent.model.Grid;
 import com.agent.model.QueryData;
 import com.agent.model.User;
-import com.agent.service.AgentService;
 import com.agent.service.UserService;
 import com.poiexcel.vo.Pagination;
+import com.unicom.service.UnicomAgentService;
 
 @RequestMapping("/unicom")
 @Controller
@@ -32,7 +32,7 @@ public class UnicomAgentController {
 	 
 	
 	@Autowired
-	AgentService service ;
+	UnicomAgentService service ;
 	@Autowired
 	UserService userService ;
 	
@@ -86,7 +86,7 @@ public class UnicomAgentController {
 	
 	@RequestMapping("/move")
 	public ModelAndView  moveCardInit(QueryData  qo , HttpSession session , String pageNo , String pageSize ,String iccids){
-		ModelAndView  mv = new ModelAndView("/agent/card/agent_query");
+		ModelAndView  mv = new ModelAndView("/unicom/agent_move");
 		List<Agent> list =  new ArrayList<>();
 		String agentCode = session.getAttribute("agentcode").toString();
 		qo.setAgentCode(agentCode);

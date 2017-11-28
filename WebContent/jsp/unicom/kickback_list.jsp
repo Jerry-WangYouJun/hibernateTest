@@ -11,7 +11,7 @@
 		var agentId = parent.$('#tabs').tabs('getSelected').panel('options').id;
 	$(function() {
 		$('#data_table').datagrid({
-			url:"${basePath}/treeindex/kickback_query/" + agentId  ,
+			url:"${basePath}/unicom/kickback_query/" + agentId  ,
 			rownumbers : true,
 			autoRowHeight : true,
 			pagination : true,
@@ -19,6 +19,7 @@
 			nowrap : false,
 			fit: true,
 			columns:[[
+			          
 				{field:'iccid',title:'ICCID',align:'center'},
 				{field:'money',title:'充值金额',align:'center'},
 				{field:'packageType',title:'套餐类型',align:'center'},
@@ -54,7 +55,7 @@
 			var dateEnd = document.getElementsByName("dateEnd")[0].value;
 			var pageNo = $(".pagination-num").val(); 
 			var pageSize = $(".pagination-page-list").val();
-			var url = "${basePath}/treeindex/kickback_sum/" + id;
+			var url = "${basePath}/unicom/kickback_sum/" + id;
 			$.ajax({
 				url : url,
 				data :{

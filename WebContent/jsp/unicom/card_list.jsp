@@ -56,6 +56,10 @@
 				handler : function() {
 					upload();
 				}
+			},'-',{
+				text:'修改订单状态',
+				iconCls: 'icon-edit',
+				handler: function(){updateOrderStatus();}
 			}]
 		});
 		$('#card_table').datagrid('getPager').pagination({  
@@ -79,7 +83,30 @@
 			modal : true
 		});
 	});
+	function updateOrderStatus() {
+		var id = getChecked();
+		if (id > 0) {
+			var url = "${basePath}/unicom/status/" + id;
+			$.ajax({
+				url : url,
+				type : 'post',
+				data : $("#dataForm").serialize(),
+				dataType : 'json',
+				success : function(data) {
+					if (data.success) {
+						$.messager.alert('提示', data.msg);
+						doSearch();
+					} else {
+						$.messager.alert('提示', data.msg, "error");
+					}
 
+				},
+				error : function(transport) {
+					$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");
+				}
+			});
+		}
+	}
 	function doSearch(index) {
 		var type = $("#search-type").val();
 		var iccidStart = $("#search-iccidStart").val();
@@ -106,7 +133,7 @@
 		if(id.indexOf("on,")>=0){
 			id = id.substring(3);
 		}
-		var path = "${basePath}/agent/move?iccids=" + id ;
+		var path = "${basePath}/unicom/move?iccids=" + id ;
 		document.getElementById('frameContent').src = path;
 		$('#dlg-frame').dialog('open');
 	}
