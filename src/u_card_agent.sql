@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2017-11-27 17:24:57
+Date: 2017-11-28 17:10:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -30,7 +30,7 @@ CREATE TABLE `u_card_agent` (
 -- ----------------------------
 -- Records of u_card_agent
 -- ----------------------------
-INSERT INTO `u_card_agent` VALUES ('40', '89860616010040477735', '14');
+INSERT INTO `u_card_agent` VALUES ('40', '89860616010040477735', '19');
 INSERT INTO `u_card_agent` VALUES ('41', '89860616010040477743', '14');
 INSERT INTO `u_card_agent` VALUES ('42', '89860616010040477750', '14');
 INSERT INTO `u_card_agent` VALUES ('43', '89860616010040477768', '14');
