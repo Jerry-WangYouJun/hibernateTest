@@ -65,8 +65,7 @@
 		 if( pwd != "" && pwd2 != ""){
 			   if(pwd != pwd2 ){
 				   $.messager.alert("提示","两次输入的密码不一致!","error");
-				   return '1
-				   ' ;
+				   return '1' ;
 			   }
 		 }
 	}

@@ -55,100 +55,6 @@ public class UnicomAgentDao {
 		return list;
 	}
 
-	public int insert(final Agent agent) {
-		//KeyHolder keyHolder = new GeneratedKeyHolder();
-		 final String sql = "insert into a_agent (code,name,cost,renew,type,creater,parentid) values(?,?,?,?,?,?,?)";
-		 KeyHolder keyHolder = new GeneratedKeyHolder();
-		 jdbcTemplate.update(new PreparedStatementCreator() {
-	        @Override
-	        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-	        	int parentId = queryPrentIdByCode(agent.getCode()) ;
-	            PreparedStatement ps  = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1,  getMaxCode(agent.getCode(),parentId));  
-                ps.setString(2, agent.getName()); 
-                ps.setDouble(3, agent.getCost());
-                ps.setDouble(4 , agent.getRenew());
-                ps.setString(5, agent.getType());
-                ps.setString(6, agent.getCreater());
-                ps.setInt(7, parentId);
-	            return ps;
-	        }
-	    }, keyHolder);
-	    return keyHolder.getKey().intValue();
-	}
-
-
-	public int addAndGetId(final Agent agent) {
-	    final String sql = "insert into orders(name, address,createtime,totalprice,status) values(?,?,?,?,?)";
-	    KeyHolder keyHolder = new GeneratedKeyHolder();
-	    jdbcTemplate.update(new PreparedStatementCreator() {
-	        @Override
-	        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-	        	int parentId = queryPrentIdByCode(agent.getCode()) ;
-	            PreparedStatement ps  = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	           
-	            return ps;
-	        }
-	    }, keyHolder);
-	    return keyHolder.getKey().intValue();
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String getMaxCode(String createrCode , int parentId){
-		String sql = "select code  from a_agent  where code   like   '" + createrCode + "%' and parentid =  " + parentId ;
-		final List<String> list = new ArrayList<>();
-		jdbcTemplate.query(sql, new RowMapper() {
-				public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-					list.add(rs.getString("code"));
-					 return null ;
-				}
-		});
-		int temp = 0;
-		if(list.size()==0){
-			 return createrCode + "-01"  ;  
-		} 
-		 for(int i = 0   ;  i < list.size() ; i ++){
-			 String a = list.get(i).replaceFirst( createrCode + "-" , "");
-			  int t = Integer.valueOf(a);
-			  if(t > temp){
-				    temp = t ;
-			  }
-		 }
-		return createrCode + CodeUtil.getFixCode(temp+1);
-	}
-	
-	/*public static void main(String[] args) {
-		String a = "aaabvvv";
-		 System.out.println(a.replaceFirst("a", ""));
-	}*/
-	public void update(final Agent agent) {
-		String sql = "update a_agent set  cost=?, renew = ? " ;
-		if(agent.getType()!= null && StringUtils.isNotEmpty(agent.getType())){
-			 sql += ", type = ?  " ;
-		}
-		sql += " where id = ? ";
-		jdbcTemplate.update(sql,   
-                new PreparedStatementSetter(){  
-                    @Override  
-                    public void setValues(PreparedStatement ps) throws SQLException {  
-                        ps.setDouble(1, agent.getCost());
-                        ps.setDouble(2 , agent.getRenew());
-                        if(agent.getType()!= null && StringUtils.isNotEmpty(agent.getType())){
-                        	ps.setString(3, agent.getType());
-                        	ps.setString(4, agent.getId()+ "");
-                        }else{
-                        	ps.setString(3, agent.getId()+ "");
-                        }
-                    }  
-        });
-	}
-
-	public void delete(Integer id) {
-		 jdbcTemplate.update(  
-	                "delete from a_agent where id = ?",   
-	                new Object[]{id},   
-	                new int[]{java.sql.Types.INTEGER});  
-	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Integer queryPrentIdByCode(String code) {
@@ -196,19 +102,6 @@ public class UnicomAgentDao {
 		jdbcTemplate.update(sql);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List<String> queryTypeList() {
-		String sql = "select distinct(packageType)  from  cmtp " ;
-		final List<String> list = new ArrayList<>();
-		jdbcTemplate.query(sql, new RowMapper() {
-			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-				list.add(rs.getString("packageType"));
-				 return null ;
-			}
-	});
-		return list;
-	}
-	
 	public String whereSQL(QueryData qo){
 		String whereSql = "";
 		if(StringUtils.isNotEmpty(qo.getAgentName())){
@@ -237,18 +130,12 @@ public class UnicomAgentDao {
 		return total[0];
 	}
 
-	@SuppressWarnings("unchecked")
-	public int checkUser(String userNo) {
-		final Integer[] total =  {0} ;
-		String  sql  = "select count(*) total from a_user a where  userNo =  '" + userNo + "'" ;
-		jdbcTemplate.query(sql, new RowMapper() {
-			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
-				 total[0] = rs.getInt("total");
-				 return null ;
-			}
-		});
-		return total[0];
+	public void updateOrderStatus(Integer id) {
+			 jdbcTemplate.update(  
+		                "update u_cmtp set orderStatus = '1'  where id = ?",   
+		                new Object[]{id},   
+		                new int[]{java.sql.Types.INTEGER});  
 	}
-	
+
 	
 }

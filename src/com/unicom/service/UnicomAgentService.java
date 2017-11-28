@@ -27,19 +27,6 @@ public class UnicomAgentService {
 		return dao.queryList(qo,page);
 	}
 
-	public int insert(Agent agent ) {
-		 dao.queryPrentIdByCode(agent.getCode());
-		 return  dao.insert(agent );
-	}
-
-	public void update(Agent agent) {
-		dao.update(agent);
-	}
-
-	public void delete(Integer id) {
-		dao.delete(id);
-	}
-
 	public List<TreeNode> getTreeData(Integer agentid  , String urlType, HttpServletRequest request) {
 		QueryData qo = new QueryData();
 		 List<Agent> agentList = dao.queryList(qo, new Pagination());
@@ -108,17 +95,12 @@ public class UnicomAgentService {
 		   dao.updateCardAgent(iccids,agentid );
 	}
 
-	public List<String> getTypeList() {
-		List<String> list = dao.queryTypeList();
-		return list;
-	}
-
 	public int queryTatol(QueryData qo) {
 		return dao.queryTotal(qo);
 	}
 
-	public int checkUser(String userNo) {
-		return  dao.checkUser(userNo);
+	public void updateOrderStatus(Integer id) {
+		dao.updateOrderStatus(id);
 	}
 	
 	 

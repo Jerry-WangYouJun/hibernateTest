@@ -39,6 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				singleSelect: true,
 				columns:[[
 					{field:'agentId',align : 'center',halign:'center',checkbox : true}, 
+					{field:'id', hidden:'true'},
 					{field:'agentName',title:'代理商名称',align:'center'},
 					{field:'agentCode',title:'代理商代码',align:'center'},
 					{field:'userNo',title:'登录名',align:'center'},
@@ -164,7 +165,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	}
 	    	
 	    	function updatePassword(){
-				var id = getChecked();
+				var id = $('#company_table').datagrid('getSelected').id;
 				if (id > 0) {
 					var path = "${basePath}/updateInit/" + id;
 					document.getElementById('frameContent').src = path;

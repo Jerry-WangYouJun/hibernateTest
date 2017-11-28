@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.agent.common.*;
 import com.agent.model.User;
+import com.agent.service.AgentService;
 import com.agent.service.UserService;
 import com.poiexcel.vo.Pagination;
 
@@ -27,6 +28,9 @@ public class UserController {
 	 
 	@Autowired
 	UserService service ;
+	
+	@Autowired
+	AgentService agentService ;
 	
 	@RequestMapping("/checkUser")
 	public String checkUser(User user , HttpServletRequest request , HttpSession session){

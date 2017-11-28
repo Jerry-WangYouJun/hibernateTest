@@ -10,9 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +21,10 @@ import com.agent.model.QueryData;
 import com.agent.model.TreeNode;
 import com.agent.service.AgentService;
 import com.poiexcel.vo.Pagination;
-import com.unicom.model.UnicomInfoVo;
 import com.unicom.service.UnicomCardAgentService;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 
 @Controller
@@ -81,31 +80,7 @@ public class UnicomTreeController {
 			}
 	    }
 	 
-		@RequestMapping("/card_query/{agentId}")
-		public void queryCard(@PathVariable("agentId") Integer agentId, HttpServletResponse response, 
-				HttpServletRequest request  ,HttpSession session , QueryData qo) {
-			String pageNo = request.getParameter("pageNo");
-			String pageSize = request.getParameter("pageSize");
-			//System.out.println(userName);
-			Grid grid = new Grid();
-			Pagination page =  new Pagination(pageNo, pageSize , 100) ;
-		    CodeUtil.initPagination(page);
-		    List<UnicomInfoVo>  list = cardAgentService.queryCardInfo(agentId , page , qo);
-			grid.setTotal(Long.valueOf(cardAgentService.queryCardTotal(agentId  , qo)));
-			grid.setRows(list);
-			PrintWriter out;
-				try {
-					response.setContentType("text/html;charset=UTF-8");
-					out = response.getWriter();
-					JSONObject json = new JSONObject();
-					json = JSONObject.fromObject(grid);
-					out.println(json);
-					out.flush();
-					out.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		}
+		
 
 		@RequestMapping("/kickback_query/{agentId}")
 		public void queryKickback(@PathVariable("agentId") Integer agentId, HttpServletResponse response, 

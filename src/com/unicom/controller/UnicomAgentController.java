@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.sf.json.JSONObject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,10 +19,13 @@ import com.agent.common.CodeUtil;
 import com.agent.model.Agent;
 import com.agent.model.Grid;
 import com.agent.model.QueryData;
-import com.agent.model.User;
 import com.agent.service.UserService;
 import com.poiexcel.vo.Pagination;
+import com.unicom.model.UnicomInfoVo;
 import com.unicom.service.UnicomAgentService;
+import com.unicom.service.UnicomCardAgentService;
+
+import net.sf.json.JSONObject;
 
 @RequestMapping("/unicom")
 @Controller
@@ -35,22 +36,21 @@ public class UnicomAgentController {
 	UnicomAgentService service ;
 	@Autowired
 	UserService userService ;
+	@Autowired
+	UnicomCardAgentService cardAgentService;
 	
-	@RequestMapping("/user_query")
-	public void queryTest( HttpServletResponse response, HttpServletRequest request  ,HttpSession session ) {
-		String userName = request.getParameter("userName");
+	
+	@RequestMapping("/card_query/{agentId}")
+	public void queryCard(@PathVariable("agentId") Integer agentId, HttpServletResponse response, 
+			HttpServletRequest request  ,HttpSession session , QueryData qo) {
 		String pageNo = request.getParameter("pageNo");
 		String pageSize = request.getParameter("pageSize");
 		//System.out.println(userName);
 		Grid grid = new Grid();
-	    User user = new User();
-	    user.setUserName(userName);
-	    String agentCode = session.getAttribute("agentcode").toString();
-		user.setAgentCode(agentCode);
-		Pagination page =  new Pagination(pageNo, pageSize) ;
+		Pagination page =  new Pagination(pageNo, pageSize , 100) ;
 	    CodeUtil.initPagination(page);
-		List<User> list = userService.queryList(user , page );
-		grid.setTotal(Long.valueOf(userService.queryListCount(user)));
+	    List<UnicomInfoVo>  list = cardAgentService.queryCardInfo(agentId , page , qo);
+		grid.setTotal(Long.valueOf(cardAgentService.queryCardTotal(agentId  , qo)));
 		grid.setRows(list);
 		PrintWriter out;
 			try {
@@ -64,7 +64,6 @@ public class UnicomAgentController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		
 	}
 	
 	@RequestMapping("/card_move")
@@ -102,133 +101,16 @@ public class UnicomAgentController {
 		return mv ;
 	}
 	
-	
-	
-	@RequestMapping("/agent_query")
-	public ModelAndView  agentList(QueryData  qo , HttpSession session , String pageNo , String pageSize ){
-		ModelAndView  mv = new ModelAndView("/agent/agent/agent_query");
-		List<Agent> list =  new ArrayList<>();
-		String agentCode = session.getAttribute("agentcode").toString();
-		qo.setAgentCode(agentCode);
-		Pagination page = new Pagination();
-		page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
-		page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
-		page.setTotal(service.queryTatol(qo ));
-		CodeUtil.initPagination(page);
-		List<String> typeList = service.getTypeList();
-		list = service.queryList(qo , page);
-		mv.addObject("list", list);
-		 mv.addObject("page", page);
-		 mv.addObject("typeList", typeList);
-		return mv ;
-	}
-	
-	@RequestMapping("/checkAgent")
-	public void  checkAgent(String agentName , HttpServletResponse response ,HttpSession session   ){
-		QueryData qo = new QueryData();
-		qo.setAgentName(agentName);
-		qo.setAgentCode(session.getAttribute("agentcode").toString());
-		List<Agent> list =  service.queryList(qo , new Pagination());
-		response.setContentType("text/text;charset=UTF-8");
-		PrintWriter out;
-		try {
-			
-			out = response.getWriter();
-			JSONObject json = new JSONObject();
-			json.put("msg", "操作成功");
-			if(list.size() > 0 ){
-				 json.put("success", true);
-				 json.put("agentid", list.get(0).getId());
-			}else{
-				json.put("success", false);
-			}
-			out.println(json);
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@RequestMapping("/addInit")
-	public ModelAndView addInit(){
-		ModelAndView  mv = new ModelAndView( "/agent/agent/agent_add");
-		Agent agent = new Agent();
-		mv.addObject("agent", agent);
-		return mv;
-	}
-	
-	@RequestMapping("/insert")
-	public void insert(Agent agent , HttpSession session ,HttpServletResponse response ){
-		if(agent.getId()!=null && agent.getId() >0){
-			service.update(agent);
-		}else{
-			agent.setCreater(session.getAttribute("user").toString());
-			agent.setCode(session.getAttribute("agentcode").toString());
-			 int agentId = service.insert(agent );
-			User user = new User();
-			user.setAgentId(agentId);
-			user.setUserNo(agent.getUserNo());
-			user.setUserName(agent.getName());
-			user.setPwd("123456");
-			userService.insert(user);
-		}
-		response.setContentType("text/text;charset=UTF-8");
-		PrintWriter out;
-		try {
-			out = response.getWriter();
-			JSONObject json = new JSONObject();
-			json.put("msg", "操作成功");
-			json.put("success", true);
-			out.println(json);
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-			
-	}
-	
-	@RequestMapping(value="/updateInit/{id}")
-	public ModelAndView  updateInit(@PathVariable("id") Integer id){
-		ModelAndView  mv = new ModelAndView( "/agent/agent/agent_add");
-		QueryData qo = new QueryData();
-		qo.setAgentid(id+ "");
-		List<Agent> list = service.queryList(qo , new Pagination());
-		mv.addObject("agent", list.get(0));
-		return mv;
-	}
-	
-	@RequestMapping(value="/agent_delete/{id}")
+	@RequestMapping(value="/status/{id}")
 	public void delete(@PathVariable("id") Integer id, HttpServletResponse response ){
 		PrintWriter out;
 		try {
-			service.delete(id);
-			userService.delete(id);
+			service.updateOrderStatus(id);
+			response.setCharacterEncoding("UTF-8"); 
 			out = response.getWriter();
 			JSONObject json = new JSONObject();
 			json.put("msg", "操作成功");
 			json.put("success", true);
-			out.println(json);
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	@RequestMapping(value="/checkUser")
-	public void checkUser(String userNo, HttpServletResponse response ) {
-		PrintWriter out;
-		int num = service.checkUser(userNo);
-		try {
-			out = response.getWriter();
-			JSONObject json = new JSONObject();
-			if(num > 0 ) {
-				json.put("success", true);
-			}else {
-				json.put("success", false);
-			}
 			out.println(json);
 			out.flush();
 			out.close();

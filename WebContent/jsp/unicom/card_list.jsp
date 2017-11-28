@@ -25,6 +25,15 @@
 				{field:'IMSI',title:'卡号',align:'center'},
 				{field:'gprsUsed',title:'使用流量',align:'center'},
 				{field:'packageType',title:'套餐类型',align:'center'},
+				{field:'orderStatus' , title:'订单状态' , align:'center' ,
+					formatter: function(value,row,index){
+						if (value =='1'){
+							return "已充值";
+						} else {
+							return "未充值";
+						}
+					}
+				},
 				{field:'remark',title:'备注',align:'center'}
 			]],
 			toolbar : [ {
