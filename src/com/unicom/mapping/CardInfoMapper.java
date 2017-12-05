@@ -14,6 +14,8 @@ public interface CardInfoMapper {
 
     public UnicomInfoVo selectByPrimaryKey(Integer id);
     
+    public UnicomInfoVo selectByIccid(String iccid);
+    
     public List<UnicomInfoVo> selectByWhere(UnicomInfoVo cardInfo);
 
     public int updateByPrimaryKeySelective(UnicomInfoVo cardInfo);

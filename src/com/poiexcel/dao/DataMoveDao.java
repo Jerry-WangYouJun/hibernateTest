@@ -234,6 +234,7 @@ public class DataMoveDao {
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
 				InfoVo vo = new InfoVo();
 				vo.setId(rs.getString("id"));
+				vo.setCardCode(rs.getString("CardCode"));
 				vo.setIMSI(rs.getString("IMSI"));
 				vo.setICCID(rs.getString("ICCID"));
 				vo.setUserStatus(rs.getString("userStatus"));

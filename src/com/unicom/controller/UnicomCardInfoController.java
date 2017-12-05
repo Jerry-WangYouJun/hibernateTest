@@ -33,14 +33,18 @@ public class UnicomCardInfoController {
 	    public ModelAndView getCardInfo(String iccid){
 	    	ModelAndView mv = new ModelAndView("unicom/cardInfo");
 			try {
-				UnicomInfoVo info = new UnicomInfoVo();
-				info.setICCID(iccid);
-				List<UnicomInfoVo>  cardList = cardInfoDao.selectByWhere(info);
-		    	if(cardList!=null && cardList.size() > 0){
-		    		mv.addObject("info", cardList.get(0));
+				UnicomInfoVo  cardInfo = cardInfoDao.selectByIccid(iccid);
+		    	if(cardInfo!=null ){
+		    		if("1".equals(cardInfo.getOrderStatus())) {
+		    			return new ModelAndView("redirect:http://open.m-m10010.com/Html/Terminal/"
+		    					+ "simcard_lt_new.aspx?simNo="+iccid+"&apptype=null"
+		    					+ "&wechatId=oyVv8s1UDHqZ9BtLIYJsD5P8QA9k&mchId=&accessname=null");
+		    		}
+		    		mv.addObject("info", cardInfo);
+		    		
 		    	}else{
-		    		InfoVo   wrongInfo = new InfoVo();
-		    		wrongInfo.setUserStatus("卡号错误，请联系管理员确认");
+		    		UnicomInfoVo   wrongInfo = new UnicomInfoVo();
+		    		wrongInfo.setGprsRest("卡号错误，请联系管理员确认");
 		    		mv.addObject("info", wrongInfo);
 		    	}
 			} catch (Exception e) {
