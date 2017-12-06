@@ -48,7 +48,7 @@ public class WeixinPayController {
 	
 	@Autowired
 	CardInfoService service ; 
-	
+	private String iccid = "";
 	private static String baseUrl = "http://www.pay-sf.com";
 	Map<String,String>  excuteResultMap = new HashMap<>();
 	
@@ -78,7 +78,7 @@ public class WeixinPayController {
 	@RequestMapping("/userAuth")
 	public String userAuth(HttpServletRequest request, HttpServletResponse response){
 		try {
-			String iccid = request.getParameter("iccid");
+			iccid = request.getParameter("iccid");
 			String orderId = OrderUtils.genOrderNo(iccid);
 			String totalFee = request.getParameter("totalFee");
 			//String totalFee = "0.01";
@@ -284,6 +284,14 @@ public class WeixinPayController {
                     			String content = out_trade_no+"        "+sdf.format(new Date());
                     			String fileUrl = System.getProperty("user.dir") + File.separator+"WebContent" + File.separator + "data" + File.separator + "order.txt";
                     			TxtUtil.writeToTxt(content, fileUrl);
+                    			History  history = new History();
+                        		history.setIccid(iccid);
+                        		history.setMoney(WxPayConfig.money);
+                        		history.setUpdateDate(DateUtil.formatDate(new Date(), "yyyy-MM-dd"));
+                        		history.setPackageId(WxPayConfig.packageId);
+                        		service.insertHistory(history);
+                        		
+                        		service.updateCardStatus(iccid);
                     		}catch(Exception e){
                     			e.printStackTrace();
                     		}
@@ -344,14 +352,6 @@ public class WeixinPayController {
             	    model.addAttribute("err_code_des", err_code_des);
         			model.addAttribute("payResult", "0");
         		}
-        		History  history = new History();
-        		history.setIccid(iccid);
-        		history.setMoney(WxPayConfig.money);
-        		history.setUpdateDate(DateUtil.formatDate(new Date(), "yyyy-MM-dd"));
-        		history.setPackageId(WxPayConfig.packageId);
-        		service.insertHistory(history);
-        		
-        		service.updateCardStatus(iccid);
         	}else{
         	    model.addAttribute("payResult", "0");
         	    model.addAttribute("err_code_des", "通信错误");
