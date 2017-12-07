@@ -283,7 +283,7 @@ public class WeixinPayController {
                     			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh24:mm:ss");
                     			String content = out_trade_no+"        "+sdf.format(new Date());
                     			String fileUrl = System.getProperty("user.dir") + File.separator+"WebContent" + File.separator + "data" + File.separator + "order.txt";
-                    			TxtUtil.writeToTxt(content, fileUrl);
+                    			//TxtUtil.writeToTxt(content, fileUrl);
                     			History  history = new History();
                         		history.setIccid(iccid);
                         		history.setMoney(WxPayConfig.money);
