@@ -20,9 +20,9 @@ public class UnicomUploadService extends DataMoveServiceImpl {
 	HistoryMapper historyDao ;
 
 	public String insertUnicomList(List<List<Object>> listObject) {
-		uploadDao.insertAgentCard();
 	  	int total =  uploadDao.insertDataTemp(listObject);
 	  	int actual = uploadDao.insertData();
+	  	int aaa  =  uploadDao.insertAgentCard();
 	  	return  "共"+ total + "条数据, 插入成功 " + actual + "条" ;
 	}
 
