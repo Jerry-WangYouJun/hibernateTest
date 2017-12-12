@@ -66,7 +66,7 @@ public class CardInfoService {
 		    }
 		    updateGprsUsed(gprsUsed , info.getICCID());
 		    //gprsUsed = 0.1 ;
-		    	if(gprsUsed == 0 && info.getRestDay()>0 && "待激活".equals(info.getUserStatus())){
+		    	if(gprsUsed == 0  && info.getRestDay() >0 &&"待激活".equals(info.getUserStatus())){
 		    		info.setUserStatus("待激活");
 		    		info.setRestDay(365L);
 		    		info.setDateEnd("****-**-**");
