@@ -251,36 +251,48 @@ public class DataMoveDao {
 				vo.setUpdateTime(rs.getString("updateTime"));
 				vo.setApiCode(rs.getString("apicode"));
 				Long restDays = 0L;
-				String deadLine ;
-				if(vo.getUpdateTime() == null){
-					int nextYear = Integer.valueOf(DateUtils.formatDateYear("yyyy" ,vo.getOpenDate())) + 1;
-					int curMonth = Integer.valueOf(vo.getOpenDate().split("-")[1]) ;
-					int lastMonth = curMonth -1 ;
-					if(curMonth == 1 ){
-						lastMonth = 12 ;
+				String deadLine;
+				if (vo.getUpdateTime() == null) {
+					int nextYear = Integer.valueOf(DateUtils.formatDateYear(
+							"yyyy", vo.getOpenDate())) + 1;
+					int curMonth = Integer
+							.valueOf(vo.getOpenDate().split("-")[1]);
+					int lastMonth = curMonth - 1;
+					if (curMonth == 1) {
+						lastMonth = 12;
 					}
-					if( lastMonth > 9 ){
-						deadLine = DateUtils.getEndDate(nextYear + lastMonth + "");
-					}else{
-						deadLine = DateUtils.getEndDate(nextYear + "0" + lastMonth );
+					if (lastMonth > 9) {
+						deadLine = DateUtils.getEndDate(String.valueOf(nextYear) + String.valueOf(lastMonth)
+								+ "");
+					} else {
+						deadLine = DateUtils.getEndDate(nextYear + "0"
+								+ lastMonth);
 					}
-					restDays = 	DateUtils.betweenDays( DateUtils.formatDate("yyyyMMdd"), deadLine);
-					
-				}else{
-					int nextYear = Integer.valueOf(DateUtils.formatDateYear("yyyy" ,vo.getUpdateTime())) + 1;
-					int curMonth =  Integer.valueOf(vo.getUpdateTime().split("-")[1]) ;
-					int lastMonth = curMonth -1 ;
-					if(curMonth == 1 ){
-						lastMonth = 12 ;
+					restDays = DateUtils.betweenDays(
+							DateUtils.formatDate("yyyyMMdd"), deadLine);
+
+				} else {
+					int nextYear = Integer.valueOf(DateUtils.formatDateYear(
+							"yyyy", vo.getUpdateTime())) + 1;
+					int curMonth = Integer.valueOf(vo.getUpdateTime()
+							.split("-")[1]);
+					int lastMonth = curMonth - 1;
+					if (curMonth == 1) {
+						lastMonth = 12;
 					}
-					if( lastMonth > 9 ){
-						deadLine = DateUtils.getEndDate(nextYear + lastMonth + "");
-					}else{
-						deadLine = DateUtils.getEndDate(nextYear + "0" + lastMonth );
+					if (lastMonth > 9) {
+						deadLine = DateUtils.getEndDate(String.valueOf(nextYear) + String.valueOf(lastMonth)
+								+ "");
+					} else {
+						deadLine = DateUtils.getEndDate(nextYear + "0"
+								+ lastMonth);
 					}
-					restDays = 	DateUtils.betweenDays(DateUtils.formatDate("yyyyMMdd"),  deadLine );
+					restDays = DateUtils.betweenDays(
+							DateUtils.formatDate("yyyyMMdd"), deadLine);
 				}
-				vo.setDateEnd(deadLine.substring(0, 4) + "-" + deadLine.substring(4, 6) + "-" + deadLine.substring(6));
+				vo.setDateEnd(deadLine.substring(0, 4) + "-"
+						+ deadLine.substring(4, 6) + "-"
+						+ deadLine.substring(6));
 				vo.setRestDay(restDays);
 				list.add(vo);
 				return null;
