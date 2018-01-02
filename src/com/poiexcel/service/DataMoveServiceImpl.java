@@ -66,7 +66,8 @@ public class DataMoveServiceImpl implements DataMoveService {
 				+ "	 c.gprsUsed !=t.gprsUsed or  c.messageUsed !=t.messageUsed or "
 				+ "	 c.openDate !=t.openDate or c.withMessageService !=t.withMessageService or "
 				+ "  c.withGPRSService !=t.withGPRSService or  c.packageType !=t.packageType OR "
-				+ "  c.monthTotalStream !=t.monthTotalStream  or c.updateTime != t.updateTime or c.userStatus != t.userStatus ) ";
+				+ "  c.monthTotalStream !=t.monthTotalStream  or c.updateTime != t.updateTime or "
+				+ "  c.userStatus != t.userStatus or c.flag != t.flag ) ";
 		System.out.println(updateSql);
 		List<InfoVo>  list =  dataMoveDao.queryDataList(updateSql);
 		return dataMoveDao.updateTables(list);

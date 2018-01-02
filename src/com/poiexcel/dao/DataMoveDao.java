@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.poiexcel.util.DateUtils;
 import com.poiexcel.vo.CardDetail;
 import com.poiexcel.vo.History;
 import com.poiexcel.vo.InfoPackage;
@@ -38,7 +37,7 @@ public class DataMoveDao {
 	StringBuffer mailMessage = new StringBuffer("");
 	String columuns = "cardcode,	remark,	IMSI,	ICCID,	userStatus,	cardStatus,	gprsUsed,"
 			+ "	messageUsed,	openDate,	withMessageService,	withGPRSService,	"
-			+ "packageType , apiCode , monthTotalStream ";
+			+ "packageType , apiCode , monthTotalStream , flag ";
 	String updateColumns = "cardcode,	remark,	IMSI,	ICCID,	cardStatus,	gprsUsed,"
 			+ "	messageUsed,	openDate,	withMessageService,	withGPRSService,	"
 			+ "packageType , apiCode , monthTotalStream";
@@ -54,7 +53,7 @@ public class DataMoveDao {
 
 	public int insertTables(List<InfoVo> list) {
 		String insertsqlTemp = "INSERT INTO cmtp ( " + columuns + "  ) "
-				+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , 10 )";
+				+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ? , 10 )";
 		voList = list;
 		if (voList != null && voList.size() > 0) {
 			jdbcTemplate.batchUpdate(insertsqlTemp,
@@ -87,6 +86,7 @@ public class DataMoveDao {
 										String.valueOf(info.getPackageType()));
 								ps.setString(13,
 										String.valueOf(info.getApiCode()));
+								ps.setString(14,  info.getFlag());
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -105,7 +105,7 @@ public class DataMoveDao {
 		String updatesqlTemp = "update cmtp set cardcode = ? , remark = ? ,IMSI = ? ,ICCID =? ,"
 				+ " cardStatus = ? ,gprsUsed=? ,"
 				+ " messageUsed=? ,openDate = ? ,withMessageService=? ,withGPRSService =? ,"
-				+ " packageType = ? , apiCode = ? , monthTotalStream = ? , userStatus = ? where iccid = ? ";
+				+ " packageType = ? , apiCode = ? , monthTotalStream = ? , userStatus = ? , flag = ? where iccid = ? ";
 		voList = list;
 		if (voList != null && voList.size() > 0) {
 			jdbcTemplate.batchUpdate(updatesqlTemp,
@@ -142,11 +142,12 @@ public class DataMoveDao {
 										.getMonthTotalStream()));
 								ps.setString(14, String.valueOf(info
 										.getUserStatus()));
-								ps.setString(15,
+								ps.setString(15, String.valueOf(info
+										.getFlag()));
+								ps.setString(16,
 										String.valueOf(info.getICCID()));
 							} catch (Exception e) {
 								System.out.println("问题行是：" + i);
-								// e.printStackTrace();
 							}
 						}
 
@@ -161,7 +162,7 @@ public class DataMoveDao {
 
 	public int insertDataTemp(List<List<Object>> listob, String apiCode) {
 		String insertsqlTemp = "INSERT INTO cmtp_temp ( " + columuns + ") "
-				+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , '" + apiCode
+				+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ?,'" + apiCode
 				+ "' , 10 )";
 		objectList = listob;
 		// batchUpdate可以高效进行批量插入操作
@@ -200,6 +201,8 @@ public class DataMoveDao {
 												.valueOf(valueList.get(10)));
 										ps.setString(12, String
 												.valueOf(valueList.get(11)));
+										ps.setString(13, String
+												.valueOf(valueList.get(12)));
 									}
 									// ps.setString(13,
 									// String.valueOf(valueList.get(12)));
@@ -249,6 +252,7 @@ public class DataMoveDao {
 				vo.setRemark(rs.getString("remark"));
 				vo.setStatus(rs.getString("status"));
 				vo.setUpdateTime(rs.getString("updateTime"));
+				vo.setFlag(rs.getString("flag"));
 				list.add(vo);
 				return null;
 			}
