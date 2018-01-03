@@ -278,6 +278,7 @@ public class DataMoveDao {
 							.split("-")[1]);
 					int lastMonth = curMonth - 1;
 					if (curMonth == 1) {
+						nextYear -= 1 ;
 						lastMonth = 12;
 					}
 					if (lastMonth > 9) {
