@@ -34,7 +34,7 @@ public class CardInfoService {
 //			 	dao.queryPackage(info);
 //			 	dao.queryHistory(info);
 			 try {
-					 getDetail(info);
+					// getDetail(info);
 			} catch (Exception e) {
 				System.out.println("Iccid:" + iccid + ",信息错误:" + e.getMessage());
 				throw new Exception("Iccid:" + iccid + ",信息错误:" + e.getMessage());

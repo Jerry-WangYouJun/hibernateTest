@@ -56,8 +56,9 @@ public class UploadExcelControl {
 	@RequestMapping(value = "dataList.do", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	public ModelAndView dataList(HttpServletRequest request,
-			HttpServletResponse response, Model model  , @RequestParam("dateBegin") String dateBegin ,
-			@RequestParam("dateEnd") String dateEnd , String datastatus ,String iccid,Pagination pagination ) {
+			HttpServletResponse response, Model model  , @RequestParam(value = "dateBegin",required=false) String dateBegin ,
+			@RequestParam(value = "dateEnd",required=false) String dateEnd , 
+			String datastatus ,String iccid,Pagination pagination ) {
 		if(pagination.getTotal() == 0 ){
 			pagination.setTotal(moveDataServices.queryDataSize(dateBegin,dateEnd,datastatus , iccid));
 		}

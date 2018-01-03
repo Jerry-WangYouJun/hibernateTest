@@ -54,7 +54,7 @@ public class DataMoveDao {
 
 	public int insertTables(List<InfoVo> list) {
 		String insertsqlTemp = "INSERT INTO cmtp ( " + columuns + "  ) "
-				+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ? , ? , 10 )";
+				+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ?  , 10 , ?)";
 		voList = list;
 		if (voList != null && voList.size() > 0) {
 			jdbcTemplate.batchUpdate(insertsqlTemp,
@@ -163,8 +163,8 @@ public class DataMoveDao {
 
 	public int insertDataTemp(List<List<Object>> listob, String apiCode) {
 		String insertsqlTemp = "INSERT INTO cmtp_temp ( " + columuns + ") "
-				+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? , ?,'" + apiCode
-				+ "' , 10 )";
+				+ "VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? ,'" + apiCode
+				+ "' , 10 , ? )";
 		objectList = listob;
 		// batchUpdate可以高效进行批量插入操作
 		try {
@@ -203,7 +203,7 @@ public class DataMoveDao {
 										ps.setString(12, String
 												.valueOf(valueList.get(11)));
 										ps.setString(13, String
-												.valueOf(valueList.get(12)));
+												.valueOf(valueList.get(13)));
 									}
 									// ps.setString(13,
 									// String.valueOf(valueList.get(12)));
