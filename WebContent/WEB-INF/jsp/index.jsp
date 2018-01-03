@@ -13,12 +13,18 @@
 <script type="text/javascript">
 
 	    function getPrepay(){
-	    	if('${info.ICCID }' == ''){
-	    		  alert('无效的iccid，请点击【切换】按钮获得iccid');
-	    		  return false ;
-	    	}
-	    	window.location.href='${basePath}/card/xinfu_wechat_pay?iccid=${info.ICCID}';
+		    	if('${info.ICCID }' == ''){
+		    		  alert('无效的iccid，请点击【切换】按钮获得iccid');
+		    		  return false ;
+		    	}
+		    	window.location.href='${basePath}/card/xinfu_wechat_pay?iccid=${info.ICCID}';
 	    }
+	    
+	    $(function(){
+	    	     if('${info.flag}' == '1'){
+	    	    	  	  alert("此号码不支持充值，请换卡！");
+	    	     }
+	    });
 </script>
 </head>
 <body>

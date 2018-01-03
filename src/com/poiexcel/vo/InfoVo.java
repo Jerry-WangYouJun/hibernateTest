@@ -32,6 +32,7 @@ public class InfoVo {
 	private List<History> history ;
 	private Long restDay ;
 	private String apiCode;
+	private String flag ;
 	
 	
 	
@@ -200,5 +201,10 @@ public class InfoVo {
 	public void setApiCode(String apiCode) {
 		this.apiCode = apiCode;
 	}
-	
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
 }
