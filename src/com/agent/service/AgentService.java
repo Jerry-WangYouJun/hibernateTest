@@ -24,7 +24,7 @@ public class AgentService {
 	 Map<Integer , List<Agent>> mapTree = new HashMap<>();
 
 	public List<Agent> queryList(QueryData qo, Pagination page) {
-		return dao.queryList(qo,page);
+		return dao.queryList(qo,page );
 	}
 
 	public int insert(Agent agent ) {
@@ -41,8 +41,7 @@ public class AgentService {
 	}
 
 	public List<TreeNode> getTreeData(Integer agentid  , String urlType, HttpServletRequest request) {
-		QueryData qo = new QueryData();
-		 List<Agent> agentList = dao.queryList(qo, new Pagination());
+		 List<Agent> agentList = dao.queryTreeList(urlType);
 		 mapTree  = getMap(agentList);
 		 return getNodeList(agentList , agentid , urlType , request);
 	}

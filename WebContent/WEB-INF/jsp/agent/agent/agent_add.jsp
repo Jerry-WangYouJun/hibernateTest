@@ -74,6 +74,7 @@
 			 $("#userNo").attr("disabled" , "true");
 			 $("#name").attr("disabled" , "true");
 		 };
+		 $("#groupId").val("${agent.groupId}");
 	});
 </script>
 </head>
@@ -102,6 +103,15 @@
 		  		</td>
 		  	</tr>
 		  	<tr>
+		  		<td>代理类型：</td>
+			  		<td style="padding: 20px">
+			  			 <form:select path="groupId" id ="groupId" >  
+				           <option>请选择</option> 
+				           <option value="1">移动</option>
+				           <option value="2">联通</option>
+				           <option value="3">联通，移动</option>  
+				        </form:select>	
+			  		</td>
 		  		<c:if test="${sessionScope.roleid eq 1}">
 			  		<td>套餐类型：</td>
 			  		<td style="padding: 20px">

@@ -12,6 +12,7 @@ public class User {
 	  private String type ; 
 	  private double renew;
 	  private double cost;
+	  private Integer groupId;
 	public Integer getId() {
 		return id;
 	}
@@ -77,6 +78,12 @@ public class User {
 	}
 	public void setCost(double cost) {
 		this.cost = cost;
+	}
+	public Integer getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
 	} 
 	 
 }

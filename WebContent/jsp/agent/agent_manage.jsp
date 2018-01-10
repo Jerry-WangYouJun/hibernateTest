@@ -177,7 +177,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				var id;
 				var checkTotal = 0;
 				$("input[type=checkbox]").each(function() {
-					if (this.checked) {
+					if (this.checked && $(this).val() != "on") {
 						id = $(this).val();
 						checkTotal++;
 					}

@@ -32,7 +32,7 @@ public class AgentDao {
 	private JdbcTemplate jdbcTemplate;
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List<Agent> queryList(QueryData qo, Pagination page) {
+	public List<Agent> queryList(QueryData qo, Pagination page ) {
 		String sql = "select a.* , u.userno from a_agent a , a_user u   where a.id = u.agentid " + whereSQL(qo) ;
 		String finalSql = Dialect.getLimitString(sql, page.getPageNo(), page.getPageSize(), "MYSQL");
          final  List<Agent> list =   new ArrayList<>();
@@ -48,6 +48,36 @@ public class AgentDao {
 					vo.setParengId(rs.getInt("parentid"));
 					vo.setCreater(rs.getString("creater"));
 					vo.setUserNo(rs.getString("userNo"));
+					vo.setGroupId(rs.getInt("groupId"));
+					list.add(vo);
+				 return null ;
+			}
+		});
+		return list;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List<Agent> queryTreeList(String urlType) {
+		String sql = "select a.* , u.userno from a_agent a , a_user u   where a.id = u.agentid " ;
+		if(urlType.startsWith("unicom")) {
+			sql += " and a.groupId in (2 , 3 )";
+		}else {
+			sql += " and a.groupId in (1 , 3)";
+		}
+         final  List<Agent> list =   new ArrayList<>();
+         jdbcTemplate.query(sql, new RowMapper() {
+			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
+					Agent  vo = new Agent(); 
+					vo.setId(rs.getInt("id"));
+					vo.setCode(rs.getString("code"));
+					vo.setName(rs.getString("name"));
+					vo.setType(rs.getString("type"));
+					vo.setCost(rs.getDouble("cost"));
+					vo.setRenew(rs.getDouble("renew"));
+					vo.setParengId(rs.getInt("parentid"));
+					vo.setCreater(rs.getString("creater"));
+					vo.setUserNo(rs.getString("userNo"));
+					vo.setGroupId(rs.getInt("groupId"));
 					list.add(vo);
 				 return null ;
 			}
@@ -57,7 +87,7 @@ public class AgentDao {
 
 	public int insert(final Agent agent) {
 		//KeyHolder keyHolder = new GeneratedKeyHolder();
-		 final String sql = "insert into a_agent (code,name,cost,renew,type,creater,parentid) values(?,?,?,?,?,?,?)";
+		 final String sql = "insert into a_agent (code,name,cost,renew,type,creater,parentid,groupId) values(?,?,?,?,?,?,?,?)";
 		 KeyHolder keyHolder = new GeneratedKeyHolder();
 		 jdbcTemplate.update(new PreparedStatementCreator() {
 	        @Override
@@ -71,6 +101,7 @@ public class AgentDao {
                 ps.setString(5, agent.getType());
                 ps.setString(6, agent.getCreater());
                 ps.setInt(7, parentId);
+                ps.setInt(8, agent.getGroupId());
 	            return ps;
 	        }
 	    }, keyHolder);
@@ -126,7 +157,7 @@ public class AgentDao {
 		if(agent.getType()!= null && StringUtils.isNotEmpty(agent.getType())){
 			 sql += ", type = ?  " ;
 		}
-		sql += " where id = ? ";
+		sql += " , groupId = ? where id = ? ";
 		jdbcTemplate.update(sql,   
                 new PreparedStatementSetter(){  
                     @Override  
@@ -135,9 +166,11 @@ public class AgentDao {
                         ps.setDouble(2 , agent.getRenew());
                         if(agent.getType()!= null && StringUtils.isNotEmpty(agent.getType())){
                         	ps.setString(3, agent.getType());
-                        	ps.setString(4, agent.getId()+ "");
+                        	ps.setInt(4, agent.getGroupId());
+                        	ps.setString(5, agent.getId()+ "");
                         }else{
-                        	ps.setString(3, agent.getId()+ "");
+                        	ps.setInt(3, agent.getGroupId());
+                        	ps.setString(4, agent.getId()+ "");
                         }
                     }  
         });
