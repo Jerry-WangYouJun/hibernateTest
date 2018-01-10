@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.agent.common.CodeUtil;
-import com.agent.common.ContextString;
 import com.agent.model.Grid;
 import com.agent.model.QueryData;
 import com.agent.model.TreeNode;
@@ -41,28 +40,28 @@ public class TreeController {
 	@RequestMapping("/tree")
 	public void getTreeData(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
 			TreeNode treeNode = new TreeNode();
-			treeNode.setText("SIM卡管理");
+			treeNode.setText("移动SIM卡管理");
 			getTreeDataBytype(session, response, request, "card", treeNode);
 	}
 	
 	@RequestMapping("/tree_unicom")
 	public void getUnicomTreeData(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
 			TreeNode treeNode = new TreeNode();
-			treeNode.setText("SIM卡管理");
+			treeNode.setText("联通SIM卡管理");
 			getTreeDataBytype(session, response, request, "unicom_card", treeNode);
 	}
 
 	@RequestMapping("/kickback")
 	public void getKickbackData(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
 		TreeNode treeNode = new TreeNode();
-		treeNode.setText("返佣管理");
+		treeNode.setText("移动返佣管理");
 		getTreeDataBytype(session, response, request, "kickback", treeNode);
 	}
 	
 	@RequestMapping("/kickback_unicom")
 	public void getUnicomKickbackData(HttpSession session, HttpServletResponse response, HttpServletRequest request) {
 		TreeNode treeNode = new TreeNode();
-		treeNode.setText("返佣管理");
+		treeNode.setText("联通返佣管理");
 		getTreeDataBytype(session, response, request, "unicom_kickback", treeNode);
 	}
 

@@ -19,7 +19,7 @@
 				children:[{
 					text:"代理商管理",
 					attributes:{
-						url:"${basePath}/jsp/agent/agent_manage.jsp"
+						urlType:"${basePath}/jsp/agent/agent_manage.jsp"
 					}
 				}]
 			}];
@@ -32,35 +32,68 @@
 					}
 				}
 			});
-			$("#cardtree").tree({
-				url:"${basePath}/treeindex/tree_unicom", 
-				loadFilter: function(data){	
-							 return data;	
-					},
-				lines:true,
-				onClick:function( node){
-					if(node.attributes.priUrl != ""){
-						openTab("卡信息-"+ node.text , node.attributes);
-						return false;
+			if("${groupId}"=="2" || "${groupId}"=="3"){
+				$("#cardtree").tree({
+					url:"${basePath}/treeindex/tree_unicom", 
+					loadFilter: function(data){	
+								 return data;	
+						},
+					lines:true,
+					onClick:function( node){
+						if(node.attributes.priUrl != ""){
+							openTab("联通卡信息-"+ node.text , node.attributes);
+							return false;
+						}
 					}
-				}
-			});
-			$("#kickbacktree").tree({
-				url:"${basePath}/treeindex/kickback_unicom", 
-				loadFilter: function(data){	
-							 return data;	
-					},
-				lines:true,
-				onClick:function( node){
-					if(node.attributes.priUrl != ""){
-						openTab("返佣-"+ node.text , node.attributes);
-						return false;
+				});
+				$("#kickbacktree").tree({
+					url:"${basePath}/treeindex/kickback_unicom", 
+					loadFilter: function(data){	
+								 return data;	
+						},
+					lines:true,
+					onClick:function( node){
+						if(node.attributes.priUrl != ""){
+							openTab("联通返佣-"+ node.text , node.attributes);
+							return false;
+						}
 					}
-				}
-			});
+				});
+			}
+			if("${groupId}"=="1" || "${groupId}"=="3"){
+				$("#cardtree2").tree({
+					url:"${basePath}/treeindex/tree", 
+					loadFilter: function(data){	
+								 return data;	
+						},
+					lines:true,
+					onClick:function( node){
+						if(node.attributes.priUrl != ""){
+							openTab("移动卡信息-"+ node.text , node.attributes);
+							return false;
+						}
+					}
+				});
+				$("#kickbacktree2").tree({
+					url:"${basePath}/treeindex/kickback", 
+					loadFilter: function(data){	
+								 return data;	
+						},
+					lines:true,
+					onClick:function( node){
+						if(node.attributes.priUrl != ""){
+							openTab("移动返佣-"+ node.text , node.attributes);
+							return false;
+						}
+					}
+				});
+			}
+			
+			
+			
 			
 			function openTab(text, attr ){
-				var url = attr.url;
+				var url = attr.urlType;
 				if($("#tabs").tabs('exists',text)){
 					$("#tabs").tabs('select',text);
 				}else{
@@ -68,6 +101,10 @@
 						url = "${basePath}/jsp/unicom/card_list.jsp"
 					}else if(attr.urlType == "unicom_kickback"){
 						url = "${basePath}/jsp/unicom/kickback_list.jsp"
+					}else if(attr.urlType == "card"){
+						 url = "${basePath}/jsp/agent/card_list.jsp"
+					}else if(attr.urlType == "kickback"){
+						url = "${basePath}/jsp/agent/kickback_list.jsp"
 					}
 					var content="<iframe frameborder='0' scrolling='auto' style='width:100%;height:100%' src="+ url+"></iframe>";
 					$("#tabs").tabs('add',{
@@ -113,6 +150,12 @@
 		
 		</ul>
 		<ul id="kickbacktree">
+		
+		</ul>
+		<ul id="cardtree2">
+		
+		</ul>
+		<ul id="kickbacktree2">
 		
 		</ul>
 	</div>

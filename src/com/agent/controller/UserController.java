@@ -40,13 +40,15 @@ public class UserController {
 			session.setAttribute("user", user.getUserName());
 			session.setAttribute("agentId", user.getAgentId());
 			session.setAttribute("roleid", user.getRoleId());
-			if(ContextString.ROLE_ADMIN.equals(user.getRoleId())
-					|| ContextString.ROLE_AGENT.equals(user.getRoleId())) {
-				
-				return "/agent/index" ;
-			}else {
-				return "/unicom/index" ;
-			}
+			session.setAttribute("groupId", user.getGroupId());
+//			if(ContextString.ROLE_ADMIN.equals(user.getRoleId())
+//					|| ContextString.ROLE_AGENT.equals(user.getRoleId())) {
+//				
+//				return "/agent/index" ;
+//			}else {
+//				return "/unicom/index" ;
+//			}
+			return "/unicom/index" ;
 		}else{
 			request.setAttribute("msg", "用户名或者密码错误");
 			return "/agent/login" ;
@@ -66,6 +68,7 @@ public class UserController {
 	public String logout(HttpSession session){
 		session.removeAttribute("agentcode");
 		session.removeAttribute("user");
+		session.removeAttribute("groupId");
 		return "/agent/login";
 	}
 	

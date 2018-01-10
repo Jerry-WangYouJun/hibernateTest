@@ -18,6 +18,7 @@ public class Agent implements Serializable{
 	  private String iccid;
 	  private Integer parengId ;
 	  private String userNo;
+	  private Integer groupId;
 	public Integer getId() {
 		return id;
 	}
@@ -84,6 +85,10 @@ public class Agent implements Serializable{
 	public void setUserNo(String userNo) {
 		this.userNo = userNo;
 	}
-	
-	
+	public Integer getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
 }

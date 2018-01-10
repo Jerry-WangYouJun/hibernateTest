@@ -26,7 +26,7 @@ public class UserDao {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public User checkUser(final User user) {
-		String sql = "select u.* , a.code from a_user u , a_agent a where u.agentid = a.id"
+		String sql = "select u.* , a.code ,a.groupId gid from a_user u , a_agent a where u.agentid = a.id"
 				+ "  and  u.userNo = '" + user.getUserNo() + "' and u.pwd = '" + user.getPwd() + "' " ;
 		jdbcTemplate.query(sql, new RowMapper() {
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
@@ -36,6 +36,7 @@ public class UserDao {
 					user.setRoleId(rs.getString("roleid"));
 					user.setAgentId(rs.getInt("agentid"));
 					user.setAgentCode(rs.getString("code"));
+					user.setGroupId(rs.getInt("gid"));
 				 return null ;
 			}
 		});
