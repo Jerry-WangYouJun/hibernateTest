@@ -31,7 +31,7 @@ public class UnicomUploadController {
 			RequestMethod.POST })
 	public String  uploadUnicomInit(HttpSession session ){
 		String roleId =  session.getAttribute("roleid").toString();
-		if(!ContextString.ROLE_ADMIN_UNICOM.equals(roleId)){
+		if(!(ContextString.ROLE_ADMIN_UNICOM.equals(roleId) && ContextString.ROLE_ADMIN.equals(roleId) )){
 			   return "unicom/agent";
 		}
 		 return "unicom/main";
