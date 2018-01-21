@@ -33,7 +33,7 @@ public class InfoVo {
 	private Long restDay ;
 	private String apiCode;
 	private String flag ;
-	
+	private String orderNo;
 	
 	
 	public Long getRestDay() {
@@ -207,4 +207,11 @@ public class InfoVo {
 	public void setFlag(String flag) {
 		this.flag = flag;
 	}
+	public String getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
+	
 }
