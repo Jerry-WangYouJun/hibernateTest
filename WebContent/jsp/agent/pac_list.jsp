@@ -17,8 +17,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   <body id="mainpanel" >
  	<div id="tb" region="north" title="查询条件区" class="easyui-panel"  iconCls="icon-search"  style="padding:5px; height:60px; width: 80%;margin-bottom: 3px "  >
-		<span>用户名:</span>
-		<input id="search-userNo" name="userNo"/>
+		<span>套餐名:</span>
+		<input id="search-typename" name="typename"/>
 		<a  href="javascript:void(0)"
 			class="easyui-linkbutton" plain="true" iconCls="icon-search"
 			onclick="doSearch()">查询</a> 
@@ -32,20 +32,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript">
     	$(function(){
 			$('#company_table').datagrid({
-				url:'${basePath}/agent/user_query',
+				url:'${basePath}/pac/query',
 				rownumbers : true,
 				pagination: true,
 				fitColumns: true,
 				singleSelect: true,
 				columns:[[
-					{field:'agentId',align : 'center',halign:'center',checkbox : true}, 
-					{field:'id', hidden:'true'},
-					{field:'agentName',title:'代理商名称',align:'center'},
-					{field:'agentCode',title:'代理商代码',align:'center'},
-					{field:'userNo',title:'登录名',align:'center'},
-					{field:'type',title:'套餐类型',align:'center'},
+					{field:'id',align : 'center',halign:'center',checkbox : true}, 
+					{field:'typename',title:'套餐名称',align:'center'},
+					{field:'discrip',title:'套餐描述',align:'center'},
 					{field:'cost',title:'成本价',align:'center'},				
-					{field:'renew',title:'续费价',align:'center'}
+					{field:'renew',title:'续费价',align:'center'},
+					{field:'remark',title:'备注',align:'center'}
 				]],
 				toolbar: [
 				{
@@ -115,13 +113,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	function doSearch(){
 	    		var pageNo = $(".pagination-num").val(); 
 			var pageSize = $(".pagination-page-list").val();
-	    		var userName = $("#search-userNo").val();
+	    		var typename = $("#search-typename").val();
 		    $('#company_table').datagrid('reload',{
-		    		userName : userName,pageNo:pageNo,pageSize:pageSize
+		    		typename : typename
 			} );
 		 }
 	    	function addUser() {
-	    		var path = "${basePath}/agent/addInit";
+	    		var path = "${basePath}/pac/addInit";
 	    		document.getElementById('frameContent').src = path;
 	    		$('#dlg-frame').dialog('open');
 	    	}
@@ -129,7 +127,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	function updateUser() {
 	    		var id = getChecked();
 	    		if (id > 0) {
-	    			var path = "${basePath}/agent/updateInit/" + id;
+	    			var path = "${basePath}/pac/updateInit/" + id;
 	    			document.getElementById('frameContent').src = path;
 	    			$('#dlg-frame').dialog('open');
 	    		}
@@ -142,7 +140,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    		}
 	    		var id = getChecked();
 	    		if (id > 0) {
-	    			var url = "${basePath}/agent/agent_delete/" + id;
+	    			var url = "${basePath}/pac/pac_delete/" + id;
 	    			$.ajax({
 	    				url : url,
 	    				type : 'post',
@@ -155,7 +153,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    					} else {
 	    						$.messager.alert('提示', data.msg, "error");
 	    					}
-
 	    				},
 	    				error : function(transport) {
 	    					$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");

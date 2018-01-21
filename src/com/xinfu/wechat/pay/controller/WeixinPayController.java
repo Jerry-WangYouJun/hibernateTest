@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -14,8 +16,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.JSONObject;
 
 import org.apache.commons.httpclient.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +26,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.poiexcel.service.CardInfoService;
 import com.poiexcel.util.StringUtils;
 import com.poiexcel.vo.History;
+import com.poiexcel.vo.InfoVo;
 import com.xinfu.wechat.pay.util.OrderUtils;
 import com.xinfu.wechat.pay.util.SignUtil;
-import com.xinfu.wechat.pay.util.TxtUtil;
 import com.xinfu.weixin.config.WxPayConfig;
 import com.xinfu.weixin.util.CommonUtil;
 import com.xinfu.weixin.util.RequestHandler;
 import com.xinfu.weixin.util.Sha1Util;
 import com.xinfu.weixin.util.WeixinPayUtil;
+
+import net.sf.json.JSONObject;
 
 /**
  * 微信支付Controller
@@ -284,14 +286,19 @@ public class WeixinPayController {
                     			String content = out_trade_no+"        "+sdf.format(new Date());
                     			String fileUrl = System.getProperty("user.dir") + File.separator+"WebContent" + File.separator + "data" + File.separator + "order.txt";
                     			//TxtUtil.writeToTxt(content, fileUrl);
-                    			History  history = new History();
-                        		history.setIccid(iccid);
-                        		history.setMoney(WxPayConfig.money);
-                        		history.setUpdateDate(DateUtil.formatDate(new Date(), "yyyy-MM-dd"));
-                        		history.setPackageId(WxPayConfig.packageId);
-                        		service.insertHistory(history);
-                        		
-                        		service.updateCardStatus(iccid);
+                    			InfoVo info = new InfoVo();
+                    			info.setOrderNo(out_trade_no);
+                    			service.queryHistoryList(info);
+                    			if(info.getHistory().size() == 0) {
+                    				History  history = new History();
+                    				history.setOrderNo(out_trade_no);
+                    				history.setIccid(iccid);
+                    				history.setMoney(WxPayConfig.money);
+                    				history.setUpdateDate(DateUtil.formatDate(new Date(), "yyyy-MM-dd"));
+                    				history.setPackageId(WxPayConfig.packageId);
+                    				service.insertHistory(history);
+                    				service.updateCardStatus(iccid);
+                    			}
                     		}catch(Exception e){
                     			e.printStackTrace();
                     		}
@@ -316,7 +323,6 @@ public class WeixinPayController {
 		
 		return null;
 	}
-	
 	/**
 	 * 页面js返回支付成功后，查询微信后台是否支付成功，然后跳转结果页面
 	 * @param request

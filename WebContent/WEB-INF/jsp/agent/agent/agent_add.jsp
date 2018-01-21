@@ -69,12 +69,30 @@
         	} 
        	});
 	}
+	function getPackages(){
+		$.ajax({
+	    	url : "${basePath}/pac/query",
+       		type:'post',  
+       		data: { },
+       		dataType: 'json',
+       		success: function(data){
+       			for (var i = 0; i < data.rows.length; i++) {
+		       		$("#type").append("<option value=" + data.rows[i].id +">" 
+		       				+ data.rows[i].typename + "</option>");
+				}
+       		},
+       		error: function(transport) { 
+       			$.messager.alert('提示',"系统产生错误,请联系管理员!","error");
+        	} 
+       	});
+	}
 	$(function(){
 		 if( Number("${agent.id}") > 0 ){
 			 $("#userNo").attr("disabled" , "true");
 			 $("#name").attr("disabled" , "true");
 		 };
 		 $("#groupId").val("${agent.groupId}");
+		 getPackages();
 	});
 </script>
 </head>
@@ -115,7 +133,9 @@
 		  		<c:if test="${sessionScope.roleid eq 1}">
 			  		<td>套餐类型：</td>
 			  		<td style="padding: 20px">
-			  			<form:input id="type" path="type" />
+			  			 <form:select path="type" id ="type" >  
+				           <option>请选择</option> 
+				        </form:select>	
 			  		</td>
 		  		</c:if>
 		  	</tr>

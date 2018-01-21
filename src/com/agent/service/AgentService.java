@@ -21,6 +21,7 @@ public class AgentService {
 	  
 	 @Autowired
 	 AgentDao dao ;
+	 
 	 Map<Integer , List<Agent>> mapTree = new HashMap<>();
 
 	public List<Agent> queryList(QueryData qo, Pagination page) {

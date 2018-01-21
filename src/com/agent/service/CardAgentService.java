@@ -17,8 +17,10 @@ import com.poiexcel.vo.Pagination;
 
 @Service
 public class CardAgentService {
-	   private final String KICKBACK_SQL ="select h.iccid , h.money , c.packageType , h.update_date , h.money - u.cost  kickback "
+	   private final String KICKBACK_SQL ="select h.iccid , h.money , c.packageType "
+	   		+ ", h.update_date , h.money - IFNULL(p.cost,u.cost)  kickback "
 				+ "from history h , cmtp c , card_agent a , a_agent u "
+				+ " left join t_package p on p.id=u.type "
 				+ " where h.iccid = c.iccid and c.iccid = a.iccid "
 				+ " and  u.id = a.agentid  and  u.id = " ;
 		 @Autowired
@@ -89,8 +91,9 @@ public class CardAgentService {
 		}
 		
 		 public Map<String , Double > queryKickbackTotal(Integer agentid ,  QueryData qo  , int timeType){
-			 String sql = "select   sum(h.money) - sum(u.cost) sumKick , count(*) total  "
+			 String sql = "select   sum(h.money) - sum(IFNULL(p.cost,u.cost)) sumKick , count(*) total  "
 						+ "from history h , cmtp c , card_agent a , a_agent u "
+						+ " left join t_package p on p.id=u.type "
 						+ " where h.iccid = c.iccid and c.iccid = a.iccid "
 						+ " and  u.id = a.agentid  and  u.id = " + agentid  ;
 				if(StringUtils.isNotEmpty(qo.getDateStart())){

@@ -25,6 +25,10 @@ public class QueryData {
 	  private String dateStart ; 
 	  private String dateEnd ;
 	  private Integer timeType;
+	  
+	  private String typename;
+	  private String discrip;
+	  private String pacId;
 	public String getType() {
 		return type;
 	}
@@ -105,5 +109,24 @@ public class QueryData {
 	}
 	public void setTimeType(Integer timeType) {
 		this.timeType = timeType;
+	}
+	public String getTypename() {
+		return typename;
+	}
+	public void setTypename(String typename) {
+		this.typename = typename;
+	}
+	public String getDiscrip() {
+		return discrip;
+	}
+	public void setDiscrip(String discrip) {
+		this.discrip = discrip;
+	}
+	public String getPacId() {
+		return pacId;
+	}
+	public void setPacId(String pacId) {
+		this.pacId = pacId;
 	} 
+	
 }

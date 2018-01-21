@@ -8,6 +8,7 @@ public class History {
 	 private String pname ;
 	 private String premark;
 	 private String iccid ; 
+	 private String orderNo ;
 	 
 	 
 	public String getIccid() {
@@ -52,5 +53,10 @@ public class History {
 	public void setMoney(double money) {
 		this.money = money;
 	}
-	 
+	public String getOrderNo() {
+		return orderNo;
+	}
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
 }

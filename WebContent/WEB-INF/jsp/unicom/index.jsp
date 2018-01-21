@@ -15,11 +15,16 @@
 		}
 		$(function(){
 			var treeData = [{
-				text:"用户管理",	
+				text:"基本信息管理",	
 				children:[{
 					text:"代理商管理",
 					attributes:{
 						urlType:"${basePath}/jsp/agent/agent_manage.jsp"
+					}
+				},{
+					text:"套餐管理",
+					attributes:{
+						urlType:"${basePath}/jsp/agent/pac_list.jsp"
 					}
 				}]
 			}];
@@ -164,9 +169,6 @@
 		<div title="首页" >
 			<div align="center" style="padding-top: 100px;"><font color="red" size="10">欢迎使用丰宁物联网管理系统</font></div>		
 		</div>
-	</div>
-	<div region="south" style="height:3%;background-color:#13A7D5;" align="center"  >
-		<font color="#ffffff"> 版权所有:wang_yjun@163.com&copy;丰宁物联网公司</font>
 	</div>
 </body>
 </html>
