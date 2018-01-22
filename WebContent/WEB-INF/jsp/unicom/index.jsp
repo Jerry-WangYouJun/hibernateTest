@@ -167,7 +167,7 @@
 	
 	<div region="center" class="easyui-tabs" fit="true" border="false" id="tabs" style="height: 80%">
 		<div title="首页" >
-			<div align="center" style="padding-top: 100px;"><font color="red" size="10">欢迎使用丰宁物联网管理系统</font></div>		
+			<div align="center" style="padding-top: 100px;"><font color="red" size="10">欢迎使用物联网管理系统</font></div>		
 		</div>
 	</div>
 </body>
