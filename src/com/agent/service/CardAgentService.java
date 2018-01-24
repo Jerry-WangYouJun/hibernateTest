@@ -18,7 +18,7 @@ import com.poiexcel.vo.Pagination;
 @Service
 public class CardAgentService {
 	   private final String KICKBACK_SQL ="select h.iccid , h.money , c.packageType "
-	   		+ ", h.update_date , h.money - IFNULL(p.cost,u.cost)  kickback "
+	   		+ ", h.update_date , h.money - IFNULL(p.cost,u.cost)  kickback ,h.orderNo "
 				+ "from history h , cmtp c , card_agent a , a_agent u "
 				+ " left join t_package p on p.id=u.type "
 				+ " where h.iccid = c.iccid and c.iccid = a.iccid "

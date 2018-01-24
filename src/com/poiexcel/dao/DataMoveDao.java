@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -353,9 +354,14 @@ public class DataMoveDao {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void queryHistory(InfoVo info) {
-		String sql = "select  h.imsi ,  p.package_name pname ,  h.update_date utime  , money  ,p.remark  premark "
-				+ " from history  h,  package p    where h.package_id= p.id and h.iccid = '"
-				+ info.getICCID() + "'";
+		String sql = "select  h.imsi ,  p.package_name pname ,  h.update_date utime  , money  ,p.remark  premark , h.orderNo  orderNo "
+				+ " from history  h,  package p    where h.package_id= p.id ";
+		if(StringUtils.isNotEmpty(info.getICCID())){
+			sql += " and h.iccid = '" + info.getICCID() +  "'";
+		}
+		if(StringUtils.isNotEmpty(info.getOrderNo())){
+			sql += " and h.orderNo = '" + info.getOrderNo() +  "'";
+		}
 		final List<History> list = new ArrayList<History>();
 		// Map<String, String> map = new HashMap<String, String>();
 		jdbcTemplate.query(sql, new RowMapper() {
@@ -366,6 +372,7 @@ public class DataMoveDao {
 				vo.setUpdateDate(rs.getString("utime"));
 				vo.setMoney(rs.getDouble("money"));
 				vo.setPremark(rs.getString("premark"));
+				vo.setOrderNo(rs.getString("orderNo"));
 				list.add(vo);
 				return null;
 			}
@@ -444,6 +451,8 @@ public class DataMoveDao {
 				map.put("packageType", rs.getString("packageType"));
 				map.put("update_date", rs.getString("update_date"));
 				map.put("kickback", rs.getString("kickback"));
+				map.put("orderNo", rs.getString("orderNo"));
+				
 				list.add(map);
 				return null;
 			}

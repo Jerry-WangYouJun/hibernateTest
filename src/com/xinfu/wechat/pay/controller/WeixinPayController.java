@@ -117,7 +117,7 @@ public class WeixinPayController {
 			if(StringUtils.isNotEmpty(totalFeeStr)){
 				totalFee = new Float(totalFeeStr);
 			}
-
+			//TODO 测试用代码 totalFee = 0.01f ;
 			//网页授权后获取传递的参数
 			//String userId = request.getParameter("userId"); 	
 			String code = request.getParameter("code");
@@ -287,6 +287,7 @@ public class WeixinPayController {
                     			String fileUrl = System.getProperty("user.dir") + File.separator+"WebContent" + File.separator + "data" + File.separator + "order.txt";
                     			//TxtUtil.writeToTxt(content, fileUrl);
                     			InfoVo info = new InfoVo();
+                    			info.setICCID(iccid);
                     			info.setOrderNo(out_trade_no);
                     			service.queryHistoryList(info);
                     			if(info.getHistory().size() == 0) {

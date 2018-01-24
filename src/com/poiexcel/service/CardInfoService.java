@@ -123,8 +123,8 @@ public class CardInfoService {
 	}
 
 	public void insertHistory(History history) {
-		String  insertHistorySql = "insert history (iccid , package_id , money , update_date) values "
-				+ "('" + history.getIccid() + "','" + history.getPackageId() + "','" + history.getMoney() + "','" + history.getUpdateDate() + "')";
+		String  insertHistorySql = "insert history (iccid , package_id , money , update_date ,orderNo) values "
+				+ "('" + history.getIccid() + "','" + history.getPackageId() + "','" + history.getMoney() + "','" + history.getUpdateDate() + "','" + history.getOrderNo() + "' )";
 		dao.update(insertHistorySql);
 	}
 

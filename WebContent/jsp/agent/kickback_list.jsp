@@ -20,6 +20,7 @@
 			fit: true,
 			columns:[[
 				{field:'iccid',title:'ICCID',align:'center'},
+				{field:'orderNo',title:'订单编号',align:'center'},
 				{field:'money',title:'充值金额',align:'center'},
 				{field:'packageType',title:'套餐类型',align:'center'},
 				{field:'update_date',title:'充值时间',align:'center'},				
