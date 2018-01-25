@@ -50,7 +50,6 @@ public class WeixinPayController {
 	
 	@Autowired
 	CardInfoService service ; 
-	private String iccid = "";
 	private static String baseUrl = "http://www.pay-sf.com";
 	Map<String,String>  excuteResultMap = new HashMap<>();
 	
@@ -80,7 +79,7 @@ public class WeixinPayController {
 	@RequestMapping("/userAuth")
 	public String userAuth(HttpServletRequest request, HttpServletResponse response){
 		try {
-			iccid = request.getParameter("iccid");
+			String iccid = request.getParameter("iccid");
 			String orderId = OrderUtils.genOrderNo(iccid);
 			String totalFee = request.getParameter("totalFee");
 			//String totalFee = "0.01";
@@ -287,6 +286,7 @@ public class WeixinPayController {
                     			String fileUrl = System.getProperty("user.dir") + File.separator+"WebContent" + File.separator + "data" + File.separator + "order.txt";
                     			//TxtUtil.writeToTxt(content, fileUrl);
                     			InfoVo info = new InfoVo();
+                    			String iccid =out_trade_no.substring(2, out_trade_no.length()- 8) ;
                     			info.setICCID(iccid);
                     			info.setOrderNo(out_trade_no);
                     			service.queryHistoryList(info);
