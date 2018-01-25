@@ -180,8 +180,8 @@ public class UnicomUploadDao {
 		return list;
 	}
 
-	public int insertAgentCard() {
-		String insertsqlTemp = "insert u_card_agent (iccid , agentid ) select t.iccid , '21'"
+	public int insertAgentCard(String agentId) {
+		String insertsqlTemp = "insert u_card_agent (iccid , agentid ) select t.iccid , '" + agentId+ "'"
 				+ " from u_cmtp_temp t  "
 				+ " where  t.iccid not in (select iccid  from  u_card_agent ) ";
 		return jdbcTemplate.update(insertsqlTemp);

@@ -21,6 +21,7 @@ public class QueryData {
 	  //角色
 	  private String roleId;
 	  private String userId ;
+	  private String groupId;
 	  
 	  private String dateStart ; 
 	  private String dateEnd ;
@@ -29,6 +30,8 @@ public class QueryData {
 	  private String typename;
 	  private String discrip;
 	  private String pacId;
+	  private String moveFlag;//卡信息移动时对联通、移动代理商的判断标志
+	  private String moveAgent;//卡信息移动时选中的agentID
 	public String getType() {
 		return type;
 	}
@@ -127,6 +130,24 @@ public class QueryData {
 	}
 	public void setPacId(String pacId) {
 		this.pacId = pacId;
+	}
+	public String getGroupId() {
+		return groupId;
+	}
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+	public String getMoveFlag() {
+		return moveFlag;
+	}
+	public void setMoveFlag(String moveFlag) {
+		this.moveFlag = moveFlag;
+	}
+	public String getMoveAgent() {
+		return moveAgent;
+	}
+	public void setMoveAgent(String moveAgent) {
+		this.moveAgent = moveAgent;
 	} 
 	
 }

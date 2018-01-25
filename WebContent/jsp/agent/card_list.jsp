@@ -92,6 +92,7 @@
 		$("#search-iccidEnd").val("");
 	}
 	function updateCard() {
+		var agentId = parent.$('#tabs').tabs('getSelected').panel('options').id;
 		var id = "";
 		$("input[type=checkbox]").each(function() {
 			if (this.checked) {
@@ -101,7 +102,7 @@
 		if(id.indexOf("on,")>=0){
 			id = id.substring(3);
 		}
-		var path = "${basePath}/agent/move?iccids=" + id ;
+		var path = "${basePath}/agent/move?iccids=" + id + "&moveFlag=1&moveAgent="+agentId;
 		document.getElementById('frameContent').src = path;
 		$('#dlg-frame').dialog('open');
 	}

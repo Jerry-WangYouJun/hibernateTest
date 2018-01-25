@@ -90,8 +90,14 @@ public class AgentController {
 		ModelAndView  mv = new ModelAndView("/agent/agent/agent_move");
 		List<Agent> list =  new ArrayList<>();
 		String agentCode = session.getAttribute("agentcode").toString();
-		qo.setAgentCode(agentCode);
 		Pagination page = new Pagination();
+		QueryData  qd = new QueryData();
+		qd.setAgentid(qo.getMoveAgent());
+		List<Agent> listAgent = service.queryList(qd , page);
+		if(listAgent != null && listAgent.size() >0) {
+			 agentCode = listAgent.get(0).getCode();
+		}
+		qo.setAgentCode(agentCode);
 		page.setPageNo(pageNo==null?1:Integer.valueOf(pageNo));
 		page.setPageSize(pageSize ==null?50:Integer.valueOf(pageSize));
 		page.setTotal(service.queryTatol(qo ));

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,34 +43,43 @@ public class UnicomUploadController {
 	@RequestMapping(value = "uploadExcelUnicom", method = { RequestMethod.GET,
 			RequestMethod.POST })
 	public void uploadExcelUnicom(HttpServletRequest request,
-			HttpServletResponse response , String act) throws Exception {
+			HttpServletResponse response , String act, HttpSession session) throws Exception {
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 		response.setCharacterEncoding("utf-8");
 		Long startTime = System.currentTimeMillis(); 
 		PrintWriter out =  response.getWriter();
 		System.out.println("导入表数据开始：" + DateUtils.formatDate("MM-dd:HH-mm-ss"));
 		List<List<Object>> listob = dataServices.getDataList(multipartRequest, response);
+		String agentId = session.getAttribute("agentId").toString();
 		if(listob != null ){
 			System.out.println("读取xls数据用时：" + (System.currentTimeMillis() - startTime));
 			String msg = "";
 			dataServices.deleteDataTemp("u_cmtp_temp");
 			System.out.println("删除临时表,用时" + (System.currentTimeMillis() - startTime));
 			if("insert".equals(act)) {
-				msg = dataServices.insertUnicomList(listob );
+				msg = dataServices.insertUnicomList(listob ,agentId);
 			}else if("update".equals(act)) {
 				msg = dataServices.updateUnicomList(listob );
 			}
 			List<UnicomHistory>  historyList =  new ArrayList<>();
 			for(int i = 0 ; i < listob.size() ; i ++){//1 iccid  10 money 11.updatetime
-				  if(Double.valueOf(listob.get(i).get(9).toString()) > 0){
-					   UnicomHistory history =   new UnicomHistory();
-					   history.setIccid(listob.get(i).get(0).toString());
-					   history.setMoney(Double.valueOf(listob.get(i).get(9).toString()));
-					   history.setUpdateDate(listob.get(i).get(10).toString());
-					   historyList.add(history);
-				  }
+				try {
+					String money  =  listob.get(i).get(9).toString();
+					if(StringUtils.isNotEmpty(money) && Double.valueOf(money) > 0){
+						UnicomHistory history =   new UnicomHistory();
+						history.setIccid(listob.get(i).get(0).toString());
+						history.setMoney(Double.valueOf(money));
+						history.setUpdateDate(listob.get(i).get(10).toString());
+						historyList.add(history);
+					}
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 			}
-			dataServices.insertHistoryList(historyList);
+			if(historyList != null && historyList.size() > 0) {
+				
+				dataServices.insertHistoryList(historyList);
+			}
 			out.print(msg);
 		}
 		out.flush();

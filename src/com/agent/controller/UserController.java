@@ -69,6 +69,7 @@ public class UserController {
 		session.removeAttribute("agentcode");
 		session.removeAttribute("user");
 		session.removeAttribute("groupId");
+		session.removeAttribute("agentId");
 		return "/agent/login";
 	}
 	

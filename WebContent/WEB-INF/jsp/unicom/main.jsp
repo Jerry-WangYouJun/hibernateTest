@@ -42,7 +42,6 @@
 			function resutlMsg(msg) {
 				alert(msg);
 				parent.$('#dlg-frame').dialog('close');
-				//window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=&dateEnd=&status=";
 				$("#upfile").val("");
 			}
 			function errorMsg() {

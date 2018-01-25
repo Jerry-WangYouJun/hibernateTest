@@ -19,10 +19,10 @@ public class UnicomUploadService extends DataMoveServiceImpl {
 	@Autowired
 	HistoryMapper historyDao ;
 
-	public String insertUnicomList(List<List<Object>> listObject) {
+	public String insertUnicomList(List<List<Object>> listObject, String agentId) {
 	  	int total =  uploadDao.insertDataTemp(listObject);
 	  	int actual = uploadDao.insertData();
-	  	int aaa  =  uploadDao.insertAgentCard();
+	  	int aaa  =  uploadDao.insertAgentCard(agentId);
 	  	return  "共"+ total + "条数据, 插入成功 " + actual + "条" ;
 	}
 

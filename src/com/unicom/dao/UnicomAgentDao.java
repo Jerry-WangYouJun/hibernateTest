@@ -114,13 +114,22 @@ public class UnicomAgentDao {
 		if(StringUtils.isNotEmpty(qo.getAgentid())){
 			whereSql += " and   a.id =  '" + qo.getAgentid() + "' ";
 		}
+		if(StringUtils.isNotEmpty(qo.getMoveFlag()) ) {
+			String group = "1,2,3";
+			if("1".equals(qo.getMoveFlag())) {
+				 group = "1,3";
+			}else if("2".equals(qo.getMoveFlag())) {
+				group = "2,3";
+			}
+			whereSql += " and a.groupId in (" + group + " )";
+		}
 		return whereSql ;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public int queryTotal(QueryData qo) {
 		final Integer[] total =  {0} ;
-		String  sql  = "select count(*) total from a_agent a where 1=1 " + whereSQL(qo) ;
+		String  sql  = "select count(*) total from a_agent a , a_user u where  a.id = u.agentid  " + whereSQL(qo) ;
 		jdbcTemplate.query(sql, new RowMapper() {
 			public Object mapRow(ResultSet rs, int arg1) throws SQLException {
 				 total[0] = rs.getInt("total");
