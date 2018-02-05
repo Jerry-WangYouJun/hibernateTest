@@ -29,8 +29,8 @@
 				});
 				function resutlMsg(msg) {
 					alert(msg);
-					parent.closeModal();
-					window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=&dateEnd=&status=";
+					parent.$('#dlg-frame').dialog("close");
+					//window.location.href = "${basePath}/uploadExcel/dataList.do?dateBegin=&dateEnd=&status=";
 					$("#upfile").val("");
 				}
 				function errorMsg() {

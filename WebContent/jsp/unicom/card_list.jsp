@@ -219,7 +219,7 @@
 </head>
 <body >
 	<div id="tb" region="north" title="查询条件区" class="easyui-panel"
-		iconCls="icon-search" style="padding: 3px; height: 60px; width: 86%">
+		iconCls="icon-search" style="padding: 3px; height: 60px; width: 80%">
 		<%-- <span>套餐类型:</span>
 		<select id="search-type" name="type" >
 			 <option value="0">--选择--</option>

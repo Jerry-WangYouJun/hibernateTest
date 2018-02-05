@@ -17,7 +17,7 @@
 			autoRowHeight : true,
 			pagination : true,
 			fitColumns: true,
-			nowrap : false,
+			nowrap : true,
 			fit: true, 
 			columns:[[
 				{field : 'id',align : 'center',halign:'center',checkbox : true}, 
@@ -50,6 +50,12 @@
 				iconCls : 'icon-edit',
 				handler : function() {
 					updateCard();
+				}
+			},'-',{
+				text : '导入数据',
+				iconCls : 'icon-edit',
+				handler : function() {
+					upload();
 				}
 			}]
 		});
@@ -106,43 +112,11 @@
 		document.getElementById('frameContent').src = path;
 		$('#dlg-frame').dialog('open');
 	}
-
-	function updateUser() {
-		var id = getChecked();
-		if (id > 0) {
-			var path = "${basePath}/agent/updateInit/" + id;
-			document.getElementById('frameContent').src = path;
-			$('#dlg-frame').dialog('open');
-		}
-	}
-
-	function deleteUser() {
-		var del = confirm("确认删除？");
-		if (!del) {
-			return false;
-		}
-		var id = getChecked();
-		if (id > 0) {
-			var url = "${basePath}/agent/agent_delete/" + id;
-			$.ajax({
-				url : url,
-				type : 'post',
-				data : $("#dataForm").serialize(),
-				dataType : 'json',
-				success : function(data) {
-					if (data.success) {
-						$.messager.alert('提示', data.msg);
-						doSearch();
-					} else {
-						$.messager.alert('提示', data.msg, "error");
-					}
-
-				},
-				error : function(transport) {
-					$.messager.alert('提示', "系统产生错误,请联系管理员!", "error");
-				}
-			});
-		}
+	
+	function upload() {
+		var path = "${basePath}/uploadExcel/uploadInit"  ;
+		document.getElementById('frameContent').src = path;
+		$('#dlg-frame').dialog('open');
 	}
 
 	function getChecked() {
@@ -173,7 +147,7 @@
 </head>
 <body >
 	<div id="tb" region="north" title="查询条件区" class="easyui-panel"
-		iconCls="icon-search" style="padding: 3px; height: 60px; width: 86%">
+		iconCls="icon-search" style="padding: 3px; height: 60px; width: 80%">
 		<%-- <span>套餐类型:</span>
 		<select id="search-type" name="type" >
 			 <option value="0">--选择--</option>
@@ -199,7 +173,7 @@
 
 		<div id="dlg-frame">
 			<iframe width="99%" height="98%" name="frameContent"
-				id="frameContent" frameborder="0"></iframe>
+				id="frameContent" frameborder="0" scrolling="no"></iframe>
 		</div>
 	</div>
 
