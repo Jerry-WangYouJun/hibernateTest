@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.agent.common.ContextString;
 import com.poiexcel.service.DataMoveService;
 import com.poiexcel.util.DateUtils;
 import com.poiexcel.vo.InfoVo;
@@ -41,7 +43,11 @@ public class UploadExcelControl {
 	
 	@RequestMapping(value = "uploadInit", method = { RequestMethod.GET,
 			RequestMethod.POST })
-	public String  uploadInit(){
+	public String  uploadInit(HttpSession session ){
+		String roleId =  session.getAttribute("roleid").toString();
+		if(!(ContextString.ROLE_ADMIN.equals(roleId) )){
+			   return "unicom/agent";
+		}
 		 return "main";
 	}
 	
