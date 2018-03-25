@@ -10,7 +10,7 @@
 <title>用户管理</title>
 <script type="text/javascript">
 	$(function() {
-		var role = ${roleid} ==1 ? false : true;
+		var role = '${roleid}' ==1 ? false : true;
 		 var agentId = parent.$('#tabs').tabs('getSelected').panel('options').id;
 		$('#card_table').datagrid({
 			url:"${basePath}/unicom/card_query/" + agentId ,
