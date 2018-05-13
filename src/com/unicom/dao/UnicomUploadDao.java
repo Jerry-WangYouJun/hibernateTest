@@ -186,6 +186,16 @@ public class UnicomUploadDao {
 				+ " where  t.iccid not in (select iccid  from  u_card_agent ) ";
 		return jdbcTemplate.update(insertsqlTemp);
 	}
+	
+	public int insertMlbHistory( String  cmtpTable , String historyTable) {
+		String insertsqlTemp = "insert "+historyTable +" "
+				+ "(iccid , imsi ,packageType ,money , update_date , packagedetail , orderno  ) " + 
+				" select  distinct  m.iccid ,  m.imsi , m.oldPackageName  ,"
+				+ "  m.Amount , m.PayTime , m.PackageName , m.OrderSign"
+				+ "  from t_mlb_temp m  join  "+cmtpTable +" c  where m.iccid = c.iccid " + 
+				"";
+		return jdbcTemplate.update(insertsqlTemp);
+	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public List<Map<String, String>> queryKickbackList(String sql) {

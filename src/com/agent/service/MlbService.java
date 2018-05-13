@@ -1,0 +1,14 @@
+package com.agent.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.unicom.mapping.TTaskPointMapper;
+
+@Service
+public class MlbService {
+	 
+	
+	
+	
+}

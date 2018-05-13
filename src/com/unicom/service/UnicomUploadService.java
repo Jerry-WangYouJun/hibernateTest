@@ -31,6 +31,10 @@ public class UnicomUploadService extends DataMoveServiceImpl {
 	  	int actual = uploadDao.updateData();
 	  	return  "共"+ total + "条数据, 更新成功 " + actual + "条" ;
 	}
+	
+	public void  insertMlbRenewData(String  cmtpTable , String historyTable) {
+		uploadDao.insertMlbHistory(  cmtpTable ,  historyTable);
+	}
 
 	public void insertHistoryList(List<UnicomHistory> historyList) {
 		historyDao.deleteAll();

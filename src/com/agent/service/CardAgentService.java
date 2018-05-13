@@ -26,8 +26,10 @@ public class CardAgentService {
 		 @Autowired
 		 DataMoveDao dao ;
 		 public List<InfoVo> queryCardInfo(Integer agentid , Pagination page, QueryData qo ){
-			 String sql = "select c.* from card_agent a , cmtp c "
-				 		+ "where a.iccid = c.ICCID  and a.agentid = " + agentid;
+			 String sql = "select c.* , ag.name  from card_agent a , cmtp c , a_agent ag  "
+				 		+ "where a.iccid = c.ICCID  and ag.id=a.agentid " 
+				 		+ "and ag.code like  CONCAT((select code from a_agent where id ="
+				 		+ agentid + "),'%' ) ";
 			if(StringUtils.isNotEmpty(qo.getIccidStart())){
 				 sql += " and c.ICCID >= '" + qo.getIccidStart() + "'" ;
 			}
@@ -48,8 +50,10 @@ public class CardAgentService {
 		 }
 		 
 		 public int queryCardTotal(Integer agentid ,  QueryData qo ){
-			 String sql = "select count(*) total from card_agent a , cmtp c "
-				 		+ "where a.iccid = c.ICCID  and a.agentid = " + agentid;
+			 String sql = "select count(*) total from card_agent a , cmtp c  , a_agent ag  "
+				 		+ "where a.iccid = c.ICCID  and ag.id=a.agentid "
+					    + "and ag.code like  CONCAT((select code from a_agent where id ="
+				 		+ agentid + "),'%' ) ";
 			if(StringUtils.isNotEmpty(qo.getIccidStart())){
 				 sql += " and c.ICCID >= '" + qo.getIccidStart() + "'" ;
 			}

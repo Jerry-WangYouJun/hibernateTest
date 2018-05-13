@@ -39,6 +39,7 @@ public class UnicomCardAgentDao {
 				vo.setDeadline(rs.getString("deadline"));
 				vo.setOrderStatus(rs.getString("orderStatus"));
 				vo.setRemark(rs.getString("remark"));
+				vo.setName(rs.getString("name"));
 				list.add(vo);
 				return null;
 			}
