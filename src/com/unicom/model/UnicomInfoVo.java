@@ -19,6 +19,15 @@ public class UnicomInfoVo {
 	private String updateTime ; //开卡时间、修改时间
 	private String orderStatus ; //充值状态（根据操作修改订单状态，判断跳转链接）
 	private String deadline; // 剩余时间
+	
+	private String name ;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public String getId() {
 		return id;
 	}
