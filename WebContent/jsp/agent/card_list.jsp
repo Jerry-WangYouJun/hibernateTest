@@ -22,6 +22,7 @@
 			columns:[[
 				{field : 'id',align : 'center',halign:'center',checkbox : true}, 
 				{field:'ICCID',title:'ICCID',align:'center'},
+				{field:'name',title:'所属代理商',align:'center'},
 				{field:'cardCode',title:'卡号',align:'center'},
 				{field:'gprsUsed',title:'使用流量',align:'center'},
 				{field:'packageType',title:'套餐类型',align:'center'},
