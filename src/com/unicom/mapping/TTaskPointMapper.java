@@ -1,9 +1,12 @@
 package com.unicom.mapping;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.unicom.model.TTaskPoint;
 import com.unicom.model.TTaskPointExample;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
 public interface TTaskPointMapper {
 
@@ -72,4 +75,8 @@ public interface TTaskPointMapper {
 	 * @mbg.generated  Sun May 13 12:26:08 CST 2018
 	 */
 	int updateByPrimaryKey(TTaskPoint record);
+	
+	
+	List<Map<String,String>> selectStartTime();
+	
 }
