@@ -11,7 +11,7 @@
  Target Server Version : 50719
  File Encoding         : utf-8
 
- Date: 05/19/2018 17:26:47 PM
+ Date: 05/19/2018 17:34:11 PM
 */
 
 SET NAMES utf8;
@@ -102,5 +102,18 @@ CREATE TABLE `t_mlb_temp` (
   PRIMARY KEY (`id`),
   KEY `iccid` (`ICCID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=941 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `t_task_point`
+-- ----------------------------
+DROP TABLE IF EXISTS `t_task_point`;
+CREATE TABLE `t_task_point` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `pointTime` varchar(30) DEFAULT NULL,
+  `endTime` varchar(30) DEFAULT NULL,
+  `reason` varchar(255) DEFAULT NULL,
+  `error` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8;
 
 SET FOREIGN_KEY_CHECKS = 1;
